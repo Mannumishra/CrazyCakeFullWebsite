@@ -1,0 +1,131 @@
+.allproducts {
+  margin: 50px 0;
+  overflow: hidden; /* Prevent overflow */
+  box-sizing: border-box; /* Ensure the padding doesn't cause overflow */
+}
+
+.featured-menu {
+  margin-bottom: 30px;
+}
+
+.featured-menu-title {
+  text-align: center;
+  font-size: 36px;
+  font-family: var(--font-family-design);
+  font-weight: bold;
+  color: var(--color-pink);
+  margin-bottom: 20px;
+}
+
+.product-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  box-sizing: border-box; /* Prevent overflow */
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+}
+
+.product-image{
+  display: flex;
+  justify-content: center;
+}
+
+.product-image img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.product-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--color-pink);
+  font-family: var(--font-family-design);
+  margin-top: 15px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.product-description {
+  font-size: 14px;
+  color: #666;
+  height: fit-content;
+  height: 50px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.order-button {
+  display: block;
+  padding: 12px 30px;
+  background-color: #f92c8b;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 50px;
+  margin-top: auto; /* Ensure button is at the bottom */
+  transition: background-color 0.3s ease;
+  width: 100%;
+  max-width: 250px; /* Ensure the button doesn't stretch too wide */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.order-button:hover {
+  background-color: #b02cd6;
+}
+/* 
+.slick-slide {
+  padding: 10px;
+} */
+
+.slick-prev {
+  left: -25px;
+}
+
+.slick-next {
+  right: 0px;
+}
+
+.custom-next-arrow,
+.custom-prev-arrow {
+  font-size: 30px;
+  color: #f92c8b;
+  cursor: pointer;
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+  background-color: #b02cd6;
+}
+
+@media (max-width: 768px) {
+  .featured-menu-title {
+    font-size: 28px;
+  }
+
+  .product-title {
+    font-size: 18px;
+  }
+
+  .product-description {
+    font-size: 12px;
+  }
+
+  .order-button {
+    font-size: 14px;
+    width: 80%; /* Reduce width on mobile */
+  }
+}
