@@ -92,9 +92,7 @@ const AllProduct = () => {
                             <th>Sku</th>
                             <th>Category</th>
                             <th>Subcategory</th>
-                            <th>Inner Subcategory</th>
                             <th>Product Name</th>
-                            <th>Company Refrence</th>
                             <th>Images</th>
                             <th>Actions</th>
                         </tr>
@@ -119,20 +117,7 @@ const AllProduct = () => {
                                     <td>{product.sku}</td>
                                     <td>{product.categoryName?.mainCategoryName || "N/A"}</td>
                                     <td>{product.subcategoryName?.subcategoryName || "N/A"}</td>
-                                    <td>{product.innersubcategoryName?.innerSubcategoryName || "N/A"}</td>
                                     <td>{product.productName}</td>
-                                    <td>{product?.refrenceCompany?.refCompanyName}</td>
-                                    {/* <td>{product.productDescription}</td> */}
-                                    {/* <td>
-                                        {product.Variant.map((variant, idx) => (
-                                            <div key={idx}>
-                                                <strong>Color:</strong> {variant.color?.colorName || "N/A"},
-                                                <strong> Weight:</strong> {variant.weight?.sizeweight || "N/A"},
-                                                <strong> Flower:</strong> {variant.flover?.floverName || "N/A"},
-                                                <strong> Price:</strong> ₹{variant.finalPrice}
-                                            </div>
-                                        ))}
-                                    </td> */}
                                     <td>
                                         {product.productImage.map((image, imgIndex) => (
                                             <img

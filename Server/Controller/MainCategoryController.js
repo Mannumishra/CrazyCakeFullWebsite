@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const MainCategory = require("../Model/MainCategoryModel");
+const Subcategory = require("../Model/SubcategoryModel");
 
 
 const deleteImageFile = (relativeFilePath) => {
@@ -166,7 +167,7 @@ const getSingleMainCategory = async (req, res) => {
 const getSingleMainCategoryByName = async (req, res) => {
     try {
         const { name } = req.params;
-        const category = await MainCategory.findOne({mainCategoryName:name});
+        const category = await MainCategory.findOne({ mainCategoryName: name });
 
         if (!category) {
             return res.status(404).json({ message: "Main Category not found" });
@@ -179,6 +180,53 @@ const getSingleMainCategoryByName = async (req, res) => {
     }
 };
 
+const getCategoriesWithSubcategories = async (req, res) => {
+    try {
+        // Fetch all main categories
+        const categories = await MainCategory.find();
+
+        // Initialize an array to hold categories with their subcategories
+        const categoriesWithSubcategories = [];
+
+        // Loop over each category
+        for (const category of categories) {
+            // Fetch subcategories related to the current category
+            const subcategories = await Subcategory.find({ categoryName: category._id });
+
+            // Transform subcategories to only include subcategoryName and subcategoryImage
+            const transformedSubcategories = subcategories.map(subcategory => ({
+                subcategoryName: subcategory.subcategoryName,
+                subcategoryImage: subcategory.subcategoryImage,
+            }));
+
+            // Combine the category and its transformed subcategories into one object
+            const categoryWithSubcategories = {
+                _id: category._id,  // Retain the category _id
+                mainCategoryName: category.mainCategoryName,  // Retain the category name
+                mainCategoryImage: category.mainCategoryImage,  // Retain the category image
+                subcategories: transformedSubcategories,  // Add the transformed subcategories array
+            };
+
+            // Push the combined object into the result array
+            categoriesWithSubcategories.push(categoryWithSubcategories);
+        }
+
+        // Send the response with the combined data
+        res.status(200).json({
+            message: "Categories with subcategories retrieved successfully",
+            data: categoriesWithSubcategories,
+        });
+    } catch (error) {
+        console.error("Error retrieving categories with subcategories:", error);
+        res.status(500).json({
+            message: "Error retrieving categories with subcategories",
+            error: error.message,
+        });
+    }
+};
+
+
+
 module.exports = {
     createMainCategory,
     updateMainCategory,
@@ -186,6 +234,7 @@ module.exports = {
     getAllMainCategories,
     getSingleMainCategory,
     getAllMainCategoriesStatusTrue,
-    getSingleMainCategoryByName
+    getSingleMainCategoryByName,
+    getCategoriesWithSubcategories
 };
 

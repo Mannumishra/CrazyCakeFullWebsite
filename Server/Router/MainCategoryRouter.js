@@ -1,5 +1,5 @@
 const express = require("express");
-const { createMainCategory, getAllMainCategories, getSingleMainCategory, updateMainCategory, deleteMainCategory, getAllMainCategoriesStatusTrue, getSingleMainCategoryByName } = require("../Controller/MainCategoryController");
+const { createMainCategory, getAllMainCategories, getSingleMainCategory, updateMainCategory, deleteMainCategory, getAllMainCategoriesStatusTrue, getSingleMainCategoryByName, getCategoriesWithSubcategories } = require("../Controller/MainCategoryController");
 const upload = require("../MiddleWare/Multer");
 const MainCategoryRouter = express.Router();
 
@@ -7,6 +7,7 @@ const MainCategoryRouter = express.Router();
 // Define routes
 MainCategoryRouter.post("/create-main-category" ,upload.single("mainCategoryImage"), createMainCategory);
 MainCategoryRouter.get("/get-main-category", getAllMainCategories);
+MainCategoryRouter.get("/get-category-with-subcategory", getCategoriesWithSubcategories);
 MainCategoryRouter.get("/get-main-category-by-status", getAllMainCategoriesStatusTrue);
 MainCategoryRouter.get("/get-single-main-category/:id", getSingleMainCategory);
 MainCategoryRouter.get("/get-main-category/by-name/:name", getSingleMainCategoryByName);

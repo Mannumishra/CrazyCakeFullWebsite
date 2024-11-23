@@ -1,9 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
-import banner1 from '../../images/banner/banner1.jpg';
-import banner2 from '../../images/banner/banner2.jpg';
-import './homebanner.css'
+import './homebanner.css';
+import axios from 'axios';
+
 const HomeBannerSlider = () => {
+  const [data, setData] = useState([]);
+
+  // Function to fetch API data
+  const getApiData = async () => {
+    try {
+      const res = await axios.get('http://localhost:8000/api/get-banners');
+      if (res.status===200) {
+        setData(res.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching banner data:', error);
+    }
+  };
+
+  // Fetch data on component mount
+  useEffect(() => {
+    getApiData();
+  }, []);
+
   const settings = {
     dots: true,
     fade: true,
@@ -11,42 +30,40 @@ const HomeBannerSlider = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,           
-    autoplaySpeed: 3000,      
+    autoplay: true,
+    autoplaySpeed: 3000,
     waitForAnimate: false,
-    arrows: false,            
+    arrows: false,
   };
 
   return (
     <div className="container-fluid px-0 position-relative">
       <div className="slider-container">
         <Slider {...settings}>
-          <div>
-            <img className="img-fluid w-100" alt="bannerImage" src={banner1} />
-          </div>
-          <div>
-            <img className="img-fluid w-100" alt="bannerImage" src={banner2} />
-          </div>
-          <div>
-            <img className="img-fluid w-100" alt="bannerImage" src={banner1} />
-          </div>
-          <div>
-            <img className="img-fluid w-100" alt="bannerImage" src={banner2} />
-          </div>
+          {data.map((banner) => (
+            <div key={banner._id}>
+              <img
+                className="img-fluid w-100"
+                alt={banner.bannerName}
+                src={`http://localhost:8000/${banner.bannerImage}`}
+              />
+              <div className="overlay-content start-50 translate-middle text-center text-white">
+                <div className="overlay">
+                  <div className="bannerContent">
+                    {/* <h1>{banner.bannerName}</h1> */}
+                    <p className="lead">{banner.bannerName}</p>
+                    <a className="ordernowBtn" href="">
+                      ORDER NOW
+                    </a>
+                    <h5>
+                      Or Call <a href="tel:+919999999999">+91 9999999999</a>
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </Slider>
-      </div>
-
-      {/* Fixed overlay content */}
-      <div className="overlay-content start-50 translate-middle text-center text-white">
-        <div className='overlay'>
-        <div className='bannerContent'>
-
-        <h1>We Bake Happiness</h1>
-        <p className="lead">"Without Eggs As Well"</p>
-        <a className='ordernowBtn' href="">ORDER NOW</a>
-        <h5>Or Call <a href="tel:+919999999999">+91 9999999999</a></h5>
-        </div>
-        </div>
       </div>
     </div>
   );

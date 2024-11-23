@@ -14,10 +14,9 @@ const deleteImageFile = (relativeFilePath) => {
         }
     });
 };
-
 const createProduct = async (req, res) => {
     console.log(req.body);
-    const { categoryName, subcategoryName, productName, productSubDescription, productDescription, productTag, refrenceCompany, Variant, refrenceCompanyUrl, innersubcategoryName } = req.body;
+    const { categoryName, subcategoryName, productName, productSubDescription, productDescription, productTag, Variant } = req.body;
     const errorMessage = [];
 
     // Validation for required fields
@@ -26,9 +25,6 @@ const createProduct = async (req, res) => {
     if (!productName) errorMessage.push("Product Name is required");
     if (!productSubDescription) errorMessage.push("Product Sub Description is required");
     if (!productDescription) errorMessage.push("Product Description is required");
-    if (!productTag) errorMessage.push("Product Tag is required");
-    if (!refrenceCompany) errorMessage.push("Reference Company is required");
-    if (!Variant) errorMessage.push("Variant is required");
 
     // If there are any missing fields, return an error
     if (errorMessage.length > 0) {
@@ -60,7 +56,6 @@ const createProduct = async (req, res) => {
 
     // Generate a unique SKU code for the product
     const generateSKU = async () => {
-        // Find the last product created and get its SKU
         const lastProduct = await Product.findOne().sort({ createdAt: -1 }).select('sku');
         if (lastProduct) {
             const lastSku = lastProduct.sku; // Get the last SKU
@@ -70,6 +65,14 @@ const createProduct = async (req, res) => {
         return 'SKU001'; // Default SKU if no products exist
     };
 
+    // Check and parse Variant if it's a string (JSON string)
+    let parsedVariant = [];
+    try {
+        parsedVariant = Array.isArray(Variant) ? Variant : JSON.parse(Variant); // Parse if it's a string
+    } catch (error) {
+        return res.status(400).json({ message: "Invalid Variant data" });
+    }
+
     // Proceed with creating the product
     const productData = {
         categoryName,
@@ -77,11 +80,13 @@ const createProduct = async (req, res) => {
         productName,
         productSubDescription,
         productDescription,
-        productTag,
-        refrenceCompany,
-        innersubcategoryName,
-        refrenceCompanyUrl,
-        Variant: JSON.parse(Variant), // Assuming it's a stringified JSON
+        productTag: productTag ? mongoose.Types.ObjectId(productTag) : null,
+        Variant: parsedVariant.map(variant => ({
+            ...variant,
+            color: variant.color ? mongoose.Types.ObjectId(variant.color) : null,  // Handle empty color
+            weight: variant.weight ? mongoose.Types.ObjectId(variant.weight) : null,  // Handle empty weight
+            flover: variant.flover ? mongoose.Types.ObjectId(variant.flover) : null   // Handle empty flover
+        })),
         productImage: req.files.map(file => file.path), // Save paths to the uploaded images
         sku: await generateSKU(), // Generate unique SKU
     };
@@ -91,6 +96,7 @@ const createProduct = async (req, res) => {
         await product.save();
         res.status(201).json({ message: 'Product created successfully', product });
     } catch (err) {
+        console.log(err)
         res.status(500).json({ error: err.message });
     }
 };
@@ -104,8 +110,6 @@ const getProducts = async (req, res) => {
             .populate('categoryName')
             .populate('subcategoryName')
             .populate('productTag')
-            .populate('refrenceCompany')
-            .populate('innersubcategoryName')
             .populate({
                 path: 'Variant.color',
                 model: 'Color',
@@ -130,12 +134,20 @@ const getProducts = async (req, res) => {
 const getProduct = async (req, res) => {
     const { id } = req.params;
     try {
-        const product = await Product.findById(id).populate('categoryName subcategoryName innersubcategoryName productTag refrenceCompany');
+        const product = await Product.findById(id)
+            .populate('categoryName')
+            .populate('subcategoryName')
+            .populate('productTag')
+            .populate('Variant.color')
+            .populate('Variant.weight')
+            .populate('Variant.flover');
+
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
         res.status(200).json({ data: product });
     } catch (err) {
+        console.log(err)
         res.status(500).json({ error: err.message });
     }
 };
@@ -145,7 +157,7 @@ const getProduct = async (req, res) => {
 const getProductByname = async (req, res) => {
     const { name } = req.params;
     try {
-        const product = await Product.findOne({productName:name}).populate('categoryName subcategoryName innersubcategoryName productTag refrenceCompany');
+        const product = await Product.findOne({ productName: name }).populate('categoryName subcategoryName  productTag ');
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
@@ -156,7 +168,6 @@ const getProductByname = async (req, res) => {
 };
 
 
-// Update Product
 const updateProduct = async (req, res) => {
     const { id } = req.params;
     console.log(req.body);
@@ -168,11 +179,8 @@ const updateProduct = async (req, res) => {
         productName: req.body.productName,
         productSubDescription: req.body.productSubDescription,
         productDescription: req.body.productDescription,
-        productTag: req.body.productTag,
-        refrenceCompany: req.body.refrenceCompany,
-        refrenceCompanyUrl: req.body.refrenceCompanyUrl,
-        innersubcategoryName: req.body.innersubcategoryName,
-        Variant: JSON.parse(req.body.Variant), // Assuming it's a stringified JSON
+        productTag: req.body.productTag ? mongoose.Types.ObjectId(req.body.productTag) : null, // Handle optional productTag
+        Variant: req.body.Variant ? JSON.parse(req.body.Variant) : [], // Assuming it's a stringified JSON, default to empty array if not present
     };
 
     // If new images are uploaded, add them to the updated data
@@ -194,7 +202,6 @@ const updateProduct = async (req, res) => {
             });
 
             if (existingProduct) {
-                // If a product with the same name exists, return an error
                 return res.status(400).json({ message: 'Product with this name already exists' });
             }
         }
@@ -216,6 +223,7 @@ const updateProduct = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
 
 
 // Delete Product

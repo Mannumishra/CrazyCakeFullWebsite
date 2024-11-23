@@ -12,13 +12,10 @@ const EditProduct = () => {
     const [formData, setFormData] = useState({
         categoryName: "",
         subcategoryName: "",
-        innersubcategoryName: '',
         productName: "",
         productDescription: "",
         productSubDescription: "",
-        refrenceCompany: "",
         productTag: "",
-        refrenceCompanyUrl: "",
         Variant: [
             {
                 color: "",
@@ -28,7 +25,6 @@ const EditProduct = () => {
                 discountPrice: "",
                 finalPrice: "",
                 stock: "",
-                eggLess: false,
             },
         ],
         productImage: [],
@@ -37,17 +33,15 @@ const EditProduct = () => {
     // State to store dynamic data
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
-    const [innersubcategories, setInnersubcategories] = useState([]);
     const [colors, setColors] = useState([]);
     const [flowers, setFlowers] = useState([]);
     const [weights, setWeights] = useState([]);
-    const [refCompany, setRefCompany] = useState([]);
     const [tag, setTag] = useState([]);
 
 
     // State to store filtered subcategories
     const [filteredSubcategories, setFilteredSubcategories] = useState([]);
-    const [filteredInnersubcategories, setFilteredInnersubcategories] = useState([]);
+  
 
 
     // Fetch product details and dynamic data
@@ -68,20 +62,14 @@ const EditProduct = () => {
                 const weightResponse = await axios.get(
                     "http://localhost:8000/api/get-size"
                 );
-                const refCompanyResponse = await axios.get(
-                    "http://localhost:8000/api/all-ref-companies"
-                );
+              
                 const tagResponse = await axios.get("http://localhost:8000/api/get-tags");
-
-                const innersubcategoryResponse = await axios.get('http://localhost:8000/api/get-inner-subcategory');
 
                 setCategories(categoryResponse.data.data);
                 setSubcategories(subcategoryResponse.data.data);
-                setInnersubcategories(innersubcategoryResponse.data.data);
                 setColors(colorResponse.data.data);
                 setFlowers(flowerResponse.data.data);
                 setWeights(weightResponse.data.data);
-                setRefCompany(refCompanyResponse.data.data);
                 setTag(tagResponse.data.data);
 
                 // Fetch product details
@@ -93,7 +81,6 @@ const EditProduct = () => {
                     ...productData,
                     categoryName: productData.categoryName ? productData.categoryName._id : "",
                     subcategoryName: productData.subcategoryName ? productData.subcategoryName._id : "",
-                    refrenceCompany: productData.refrenceCompany ? productData.refrenceCompany._id : "",
                     productTag: productData.productTag ? productData.productTag._id : "",
                     Variant: productData.Variant || [],
                     productImage: [], // Reset images for new uploads
@@ -108,58 +95,23 @@ const EditProduct = () => {
     }, [id]);
 
     // Handle input change
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setFormData({
-    //         ...formData,
-    //         [name]: value,
-    //     });
-
-    //     // If categoryName changes, filter subcategories
-    //     if (name === 'categoryName') {
-    //         const filteredSubcategories = subcategories.filter(
-    //             (subcategory) => subcategory.categoryName._id === value
-    //         );
-    //         setFilteredSubcategories(filteredSubcategories);
-    //     }
-    // };
-
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        // Updating form data based on the changed field
-        setFormData((prevFormData) => ({
-            ...prevFormData,
+        setFormData({
+            ...formData,
             [name]: value,
-            ...(name === "categoryName" && {
-                subcategoryName: '',
-                innersubcategoryName: ''
-            }),
-            ...(name === "subcategoryName" && {
-                innersubcategoryName: ''
-            }),
-        }));
+        });
 
-        // Filter subcategories when categoryName changes
-        if (name === "categoryName") {
+        // If categoryName changes, filter subcategories
+        if (name === 'categoryName') {
             const filteredSubcategories = subcategories.filter(
                 (subcategory) => subcategory.categoryName._id === value
             );
             setFilteredSubcategories(filteredSubcategories);
         }
-
-        // Filter innersubcategories when subcategoryName changes
-        if (name === "subcategoryName") {
-            const filteredInnersubcategories = innersubcategories.filter(
-                (innersubcategory) => innersubcategory.subcategoryName._id === value
-            );
-            setFilteredInnersubcategories(filteredInnersubcategories);
-        }
     };
 
-
-
-
+   
     // Handle file change for images
     const handleFileChange = (e) => {
         setFormData({
@@ -223,27 +175,14 @@ const EditProduct = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-
-        // Validate that all required fields in variants are filled
-        for (const variant of formData.Variant) {
-            if (!variant.color || !variant.weight || !variant.flover) {
-                toast.error("Please fill out all fields in variants.");
-                setIsLoading(false);
-                return;
-            }
-        }
-
         const form = new FormData();
         form.append("categoryName", formData.categoryName);
         form.append("subcategoryName", formData.subcategoryName);
-        form.append('innersubcategoryName', formData.innersubcategoryName);
         form.append("productName", formData.productName);
         form.append("productDescription", formData.productDescription);
         form.append("productSubDescription", formData.productSubDescription);
-        form.append("refrenceCompany", formData.refrenceCompany);
         form.append("productTag", formData.productTag);
-        form.append("refrenceCompanyUrl", formData.refrenceCompanyUrl)
-
+     
         // Append variants
         form.append("Variant", JSON.stringify(formData.Variant));
 
@@ -267,7 +206,6 @@ const EditProduct = () => {
             setIsLoading(false);
         }
     };
-    console.log(formData)
     return (
         <>
             <ToastContainer />
@@ -313,38 +251,22 @@ const EditProduct = () => {
                         </select>
                     </div>
 
-                    <div className="col-md-3">
-                        <label htmlFor="innersubcategoryName" className="form-label">Inner Subcategory Name<sup className='text-danger'>*</sup></label>
-                        <select
-                            name="innersubcategoryName"
-                            className="form-select"
-                            id="innersubcategoryName"
-                            value={formData.innersubcategoryName}
-                            onChange={handleChange}
-                            disabled={!formData.subcategoryName}  // Disable until subcategory is selected
-                        // required
-                        >
-                            <option value="" selected disabled>Select Inner Subcategory</option>
-                            {filteredInnersubcategories.map((item, index) => (
-                                <option key={index} value={item._id}>{item.innerSubcategoryName}</option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="col-md-3">
+                    <div className="col-md-6">
                         <label htmlFor="productName" className="form-label">Product Name<sup className="text-danger">*</sup></label>
-                        <input type="text" name='productName' className="form-control" id="productName" value={formData.productName} onChange={handleChange} />
-                    </div>
-
-                    <div className="col-md-12">
-                        <label htmlFor="productDescription" className="form-label">Product Description<sup className="text-danger">*</sup></label>
-                        <textarea name='productDescription' className="form-control" id="productDescription" value={formData.productDescription} onChange={handleChange} />
+                        <input type="text" name='productName' className="form-control" id="productName" value={formData.productName} onChange={handleChange} required/>
                     </div>
 
                     <div className="col-md-12">
                         <label htmlFor="productSubDescription" className="form-label">Product Sub Description<sup className="text-danger">*</sup></label>
-                        <textarea name='productSubDescription' className="form-control" id="productSubDescription" value={formData.productSubDescription} onChange={handleChange} />
+                        <textarea name='productSubDescription' rows={2} className="form-control" id="productSubDescription" value={formData.productSubDescription} onChange={handleChange} required/>
                     </div>
+
+                    <div className="col-md-12">
+                        <label htmlFor="productDescription" className="form-label">Product Description<sup className="text-danger">*</sup></label>
+                        <textarea name='productDescription' rows={6} className="form-control" id="productDescription" value={formData.productDescription} onChange={handleChange} required/>
+                    </div>
+
+                    
                     <div className="col-md-4">
                         <label htmlFor="productTag" className="form-label">Product Tag<sup className="text-danger">*</sup></label>
                         <select name='productTag' className="form-select" id="productTag" value={formData.productTag} onChange={handleChange}>
@@ -356,31 +278,19 @@ const EditProduct = () => {
                             }
                         </select>
                     </div>
-                    <div className="col-md-4">
-                        <label htmlFor="refrenceCompany" className="form-label">Refrence Company<sup className="text-danger">*</sup></label>
-                        <select name='refrenceCompany' className="form-select" id="refrenceCompany" value={formData.refrenceCompany} onChange={handleChange}>
-                            <option value="" selected disabled>Select Category</option>
-                            {
-                                refCompany.map((item, index) =>
-                                    <option value={item._id}>{item.refCompanyName}</option>
-                                )
-                            }
-                        </select>
-                    </div>
 
-                    <div className="col-md-4">
-                        <label htmlFor="refrenceCompanyUrl" className="form-label">Company Refrence Url<sup className="text-danger">*</sup></label>
-                        <input type="text" name="refrenceCompanyUrl" id="refrenceCompanyUrl" className='form-control' value={formData.refrenceCompanyUrl} onChange={handleChange} />
+                    <div className="col-md-8">
+                        <label htmlFor="productImage" className="form-label">Product Images<sup className="text-danger">*</sup></label>
+                        <input type="file" className="form-control" id="productImage" name="productImage" multiple onChange={handleFileChange} />
                     </div>
-
 
                     {/* Variant Fields */}
                     <div className="col-md-12">
-                        <label className="form-label">Product Variants<sup className="text-danger">*</sup></label>
+                        {/* <label className="form-label">Product Variants<sup className="text-danger">*</sup></label> */}
                         {formData.Variant.map((variant, index) => (
                             <div key={index} className="variant-container">
                                 <div className="row">
-                                    <div className="col-md-3">
+                                    <div className="col-md-3 mb-1">
                                         <label htmlFor={`color-${index}`} className="form-label">Color<sup className="text-danger">*</sup></label>
                                         <select
                                             name="color"
@@ -398,7 +308,7 @@ const EditProduct = () => {
                                         </select>
                                     </div>
 
-                                    <div className="col-md-3">
+                                    <div className="col-md-3 mb-1">
                                         <label htmlFor={`weight-${index}`} className="form-label">Weight<sup className="text-danger">*</sup></label>
                                         <select
                                             name="weight"
@@ -416,7 +326,7 @@ const EditProduct = () => {
                                         </select>
                                     </div>
 
-                                    <div className="col-md-3">
+                                    <div className="col-md-3 mb-1">
                                         <label htmlFor={`flover-${index}`} className="form-label">Flover<sup className="text-danger">*</sup></label>
                                         <select
                                             name="flover"
@@ -434,6 +344,17 @@ const EditProduct = () => {
                                         </select>
                                     </div>
 
+                                    <div className="col-md-3 mb-1">
+                                        <label htmlFor={`stock-${index}`} className="form-label">Stock<sup className="text-danger">*</sup></label>
+                                        <input
+                                            type="number"
+                                            name="stock"
+                                            className="form-control"
+                                            value={variant.stock}
+                                            onChange={(e) => handleVariantChange(index, e)}
+                                        />
+                                    </div>
+
                                     <div className="col-md-3">
                                         <label htmlFor={`price-${index}`} className="form-label">Price<sup className="text-danger">*</sup></label>
                                         <input
@@ -444,9 +365,7 @@ const EditProduct = () => {
                                             onChange={(e) => handleVariantChange(index, e)}
                                         />
                                     </div>
-                                </div>
-
-                                <div className="row mt-2">
+                                
                                     <div className="col-md-3">
                                         <label htmlFor={`discountPrice-${index}`} className="form-label">Discount Price<sup className="text-danger">*</sup></label>
                                         <input
@@ -467,55 +386,12 @@ const EditProduct = () => {
                                             readOnly // Make the field read-only
                                         />
                                     </div>
-                                    <div className="col-md-3">
-                                        <label htmlFor={`stock-${index}`} className="form-label">Stock<sup className="text-danger">*</sup></label>
-                                        <input
-                                            type="number"
-                                            name="stock"
-                                            className="form-control"
-                                            value={variant.stock}
-                                            onChange={(e) => handleVariantChange(index, e)}
-                                        />
-                                    </div>
-                                    <div className="col-md-3">
-                                        <label className="form-label">Eggless<sup className="text-danger">*</sup></label>
-                                        <div className="form-check">
-                                            <input
-                                                type="radio"
-                                                name={`eggLess-${index}`}
-                                                id={`eggLess-yes-${index}`}
-                                                className="form-check-input"
-                                                value="true"
-                                                checked={variant.eggLess === true}
-                                                onChange={(e) => handleVariantChange(index, { target: { name: 'eggLess', value: true } })}
-                                            />
-                                            <label htmlFor={`eggLess-yes-${index}`} className="form-check-label">Eggless<sup className="text-danger">*</sup></label>
-                                        </div>
-                                        <div className="form-check">
-                                            <input
-                                                type="radio"
-                                                name={`eggLess-${index}`}
-                                                id={`eggLess-no-${index}`}
-                                                className="form-check-input"
-                                                value="false"
-                                                checked={variant.eggLess === false}
-                                                onChange={(e) => handleVariantChange(index, { target: { name: 'eggLess', value: false } })}
-                                            />
-                                            <label htmlFor={`eggLess-no-${index}`} className="form-check-label">Egg<sup className="text-danger">*</sup></label>
-                                        </div>
-                                    </div>
-
                                 </div>
 
                                 <button type="button" className="btn btn-danger mt-2" onClick={() => handleRemoveVariant(index)}>Remove Variant</button>
                             </div>
                         ))}
                         <button type="button" className="btn btn-primary mt-2" onClick={handleAddVariant}>Add Variant</button>
-                    </div>
-
-                    <div className="col-md-6">
-                        <label htmlFor="productImage" className="form-label">Product Images<sup className="text-danger">*</sup></label>
-                        <input type="file" className="form-control" id="productImage" name="productImage" multiple onChange={handleFileChange} />
                     </div>
 
                     <div className="col-md-12 text-center">

@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./header.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Header = () => {
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/get-category-with-subcategory");
+        if (response.data.message === "Categories with subcategories retrieved successfully") {
+          setCategories(response.data.data); // Store the categories data
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
     <>
     <div>
@@ -67,87 +86,31 @@ const Header = () => {
                 <Link className="nav-link" to="/all-products">All Products</Link>
               </li>
 
-              {/* Cake Dropdown */}
-              <li className="nav-item dropdown">
-                <Link
-                  className="nav-link dropdown-toggle"
-                  to="#cake"
-                  id="cakeDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  Cake
-                </Link>
-                <ul className="dropdown-menu" aria-labelledby="cakeDropdown">
-                  <li><Link className="dropdown-item" to="/cake/all-cake">All Cake</Link></li>
-                  <li><Link className="dropdown-item" to="#birthday-cake">Birthday Cake</Link></li>
-                  <li><Link className="dropdown-item" to="#wedding-cake">Wedding Cake</Link></li>
-                  <li><Link className="dropdown-item" to="#custom-cake">Custom Cake</Link></li>
-                </ul>
-              </li>
 
-              {/* Candle Dropdown */}
-              <li className="nav-item dropdown">
-                <Link
-                  className="nav-link dropdown-toggle"
-                  to="#candle"
-                  id="candleDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  Candle
-                </Link>
-                <ul className="dropdown-menu" aria-labelledby="candleDropdown">
-                  <li><Link className="dropdown-item" to="/candle/all-candles">All Candles</Link></li>
-                  <li><Link className="dropdown-item" to="#scented-candle">Scented Candle</Link></li>
-                  <li><Link className="dropdown-item" to="#pillar-candle">Pillar Candle</Link></li>
-                  <li><Link className="dropdown-item" to="#tea-light-candle">Tea Light Candle</Link></li>
-                </ul>
-              </li>
+              {categories.map((category) => (
+                  <li key={category._id} className="nav-item dropdown">
+                    <Link
+                      className="nav-link dropdown-toggle"
+                      to={`#${category.mainCategoryName}`}
+                      id={`${category.mainCategoryName}Dropdown`}
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      {category.mainCategoryName}
+                    </Link>
+                    <ul className="dropdown-menu" aria-labelledby={`${category.mainCategoryName}Dropdown`}>
+                      <li><Link className="dropdown-item" to={`/${category.mainCategoryName}/all-${category.mainCategoryName}`}>All {category.mainCategoryName}</Link></li>
+                      {category.subcategories.map((subcategory, index) => (
+                        <li key={index}>
+                          <Link className="dropdown-item" to={`#${subcategory.subcategoryName}`}>{subcategory.subcategoryName}</Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
 
-              {/* Flowers Dropdown */}
-              <li className="nav-item dropdown">
-                <Link
-                  className="nav-link dropdown-toggle"
-                  to="#flowers"
-                  id="flowersDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  Flowers
-                </Link>
-                <ul className="dropdown-menu" aria-labelledby="flowersDropdown">
-                  <li><Link className="dropdown-item" to="#roses">Roses</Link></li>
-                  <li><Link className="dropdown-item" to="#tulips">Tulips</Link></li>
-                  <li><Link className="dropdown-item" to="#lilies">Lilies</Link></li>
-                </ul>
-              </li>
-
-              {/* Chocolate Dropdown */}
-              <li className="nav-item dropdown">
-                <Link
-                  className="nav-link dropdown-toggle"
-                  to="#chocolate"
-                  id="chocolateDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  Chocolate
-                </Link>
-                <ul className="dropdown-menu" aria-labelledby="chocolateDropdown">
-                  <li><Link className="dropdown-item" to="#dark-chocolate">Dark Chocolate</Link></li>
-                  <li><Link className="dropdown-item" to="#milk-chocolate">Milk Chocolate</Link></li>
-                  <li><Link className="dropdown-item" to="#white-chocolate">White Chocolate</Link></li>
-                </ul>
-              </li>
 
               <li className="nav-item">
                 <Link className="nav-link" to="/contact-us">Contact Us</Link>

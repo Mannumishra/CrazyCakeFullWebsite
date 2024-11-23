@@ -4,17 +4,17 @@ const VariantSchema = new mongoose.Schema({
     color: {
         type: mongoose.Schema.ObjectId,
         ref: "Color",
-        required: true,
+        default: null
     },
     weight: {
         type: mongoose.Schema.ObjectId,
         ref: "Size",
-        required: true,
+        default: null
     },
     flover: {
         type: mongoose.Schema.ObjectId,
         ref: "Flover",
-        required: true,
+        default: null
     },
     price: {
         type: Number,
@@ -31,10 +31,6 @@ const VariantSchema = new mongoose.Schema({
     stock: {
         type: Number,
         default: 0
-    },
-    eggLess: {
-        type: String,
-        required: true
     }
 });
 
@@ -48,10 +44,6 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: "Subcategory",
         required: true
-    },
-    innersubcategoryName: {
-        type: mongoose.Schema.ObjectId,
-        ref: "InnerSubcategory",
     },
     productName: {
         type: String,
@@ -67,14 +59,8 @@ const productSchema = new mongoose.Schema({
     },
     productTag: {
         type: mongoose.Schema.ObjectId,
-        ref: "TagModel"
-    },
-    refrenceCompany: {
-        type: mongoose.Schema.ObjectId,
-        ref: "RefrenceCompany"
-    },
-    refrenceCompanyUrl: {
-        type: String,
+        ref: "TagModel",
+        default: null
     },
     Variant: {
         type: [VariantSchema],
@@ -84,9 +70,9 @@ const productSchema = new mongoose.Schema({
         type: [String],
         required: true
     },
-    sku:{
-        type:String,
-        default:"SKU001"
+    sku: {
+        type: String,
+        default: "SKU001"
     }
 })
 
