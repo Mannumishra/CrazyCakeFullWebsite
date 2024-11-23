@@ -104,7 +104,7 @@ const Header = () => {
                       {/* <li><Link className="dropdown-item" to={`/${category.mainCategoryName}/all-${category.mainCategoryName}`}>All {category.mainCategoryName}</Link></li> */}
                       {category.subcategories.map((subcategory, index) => (
                         <li key={index}>
-                          <Link className="dropdown-item" to={`#${subcategory.subcategoryName}`}>{subcategory.subcategoryName}</Link>
+                          <Link className="dropdown-item" to={`/product-related/${subcategory.subcategoryName}`}>{subcategory.subcategoryName}</Link>
                         </li>
                       ))}
                     </ul>
