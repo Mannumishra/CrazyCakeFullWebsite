@@ -1,15 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Slider from "react-slick";
-import productImage from "../../images/cake1.jpg";
-import productImage1 from "../../images/cake2.jpg";
-import productImage2 from "../../images/cake3.jpg";
-import productImage3 from "../../images/cake4.jpg";
-import productImage4 from "../../images/cake1.jpg";
 import "./productDetails.css";
 import AllProducts from "../../Components/AllProducts/AllProducts";
+import axios from 'axios';
 
 const ProductDetails = () => {
+  const { name } = useParams();
+  const [data, setData] = useState({});
+  const [activeWeight, setActiveWeight] = useState(null);
+  const [price, setPrice] = useState(0);
+
+  const getApiData = async () => {
+    try {
+      const res = await axios.get("http://localhost:8000/api/get-product-by-name/" + name);
+      setData(res.data.data);
+      if (res.data.data?.Variant?.length > 0) {
+        setPrice(res.data.data.Variant[0].finalPrice);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getApiData();
+  }, [name]);
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -17,25 +34,21 @@ const ProductDetails = () => {
     });
   }, []);
 
-  const [activeWeight, setActiveWeight] = useState(null);
-
   const handleWeightSelection = (weight) => {
     setActiveWeight(weight);
+    // Update price based on selected weight
+    const selectedVariant = data.Variant.find((v) => v?.weight?.sizeweight === weight);
+    if (selectedVariant) {
+      setPrice(selectedVariant.finalPrice);
+    }
   };
 
   const settings = {
     customPaging: function (i) {
-      const thumbnails = [
-        productImage,
-        productImage1,
-        productImage2,
-        productImage3,
-        productImage4,
-      ];
       return (
         <a>
           <img
-            src={thumbnails[i]}
+            src={`http://localhost:8000/${data.productImage[i]}`}
             className="w-100"
             style={{ borderRadius: "1rem" }}
             alt={`Thumbnail ${i + 1}`}
@@ -51,22 +64,14 @@ const ProductDetails = () => {
     slidesToScroll: 1,
   };
 
-  const sliderImages = [
-    productImage,
-    productImage1,
-    productImage2,
-    productImage3,
-    productImage4,
-  ];
-
   return (
     <>
       {/* Breadcrumb Section */}
       <section className="breadCrumb">
         <div className="breadCrumbContent">
           <h1>Product Details</h1>
-          <Link to="/">Home /</Link> <Link to="">Product Section Name /</Link>{" "}
-          <Link to="">Product Name</Link>
+          <Link to="/">Home /</Link> <Link to="">{data?.categoryName?.mainCategoryName} /</Link>{" "}
+          <Link to="">{data.productName}</Link>
         </div>
       </section>
 
@@ -77,10 +82,10 @@ const ProductDetails = () => {
             <div className="col-md-6">
               <div className="slider-container">
                 <Slider {...settings}>
-                  {sliderImages.map((image, index) => (
+                  {data.productImage?.map((image, index) => (
                     <div key={index} className="d-flex justify-content-end">
                       <img
-                        src={image}
+                        src={`http://localhost:8000/${image}`}
                         style={{ borderRadius: "1rem" }}
                         alt={`Product Image ${index + 1}`}
                       />
@@ -91,19 +96,31 @@ const ProductDetails = () => {
             </div>
             <div className="col-md-6">
               <div className="detailSection">
-                <h5 className="detailsHeading">Lemongrass Dreams Candle</h5>
+                <h5 className="detailsHeading">{data.productName}</h5>
                 <p className="detailPrice">
-                  ₹ <span>499</span>
+                  ₹ <span>{price}</span>
                 </p>
-                <div className="productDetail_buttons">
-                  <button className="add_to_cart">
-                    <i className="bi bi-cart3"></i> Add To Cart
-                  </button>
-                  <button className="by_now">
-                    <i className="bi bi-lightning-fill"></i> Buy Now
-                  </button>
+                <div className="select_weight">
+                  {data.Variant?.some(variant => variant?.weight?.sizeweight) && (
+                    <>
+                      <p>Select Weight :</p>
+                      {data.Variant?.map((variant) => (
+                        variant?.weight?.sizeweight && (
+                          <button
+                            key={variant._id}
+                            className={`weight_button ${activeWeight === variant?.weight?.sizeweight ? "active" : ""}`}
+                            onClick={() => handleWeightSelection(variant?.weight?.sizeweight)}
+                          >
+                            {variant?.weight?.sizeweight}
+                          </button>
+                        )
+                      ))}
+                    </>
+                  )}
                 </div>
-                <div className="calander">
+
+
+                <div className="calander mt-2">
                   <div>
                     <label htmlFor="deliveryDate">Select Delivery Date</label>
                     <input
@@ -134,36 +151,27 @@ const ProductDetails = () => {
                   </div>
                 </div>
 
+                <div className="productDetail_buttons mt-3">
+                  <button className="add_to_cart">
+                    <i className="bi bi-cart3"></i> Add To Cart
+                  </button>
+                  <button className="by_now">
+                    <i className="bi bi-lightning-fill"></i> Buy Now
+                  </button>
+                </div>
+
                 <div className="message">
-                  <textarea className="form-control" name="" id="" placeholder="Enter Message Related To Category..." />
+                  <textarea
+                    className="form-control"
+                    placeholder="Enter Message Related To Category..."
+                  />
                 </div>
 
                 <div className="productDescription">
                   <div className="descrip">
                     <b>Description :</b>
                     <hr />
-                    <p>
-                      Immerse your loved one in a rejuvenating experience with
-                      this lemongrass-scented candle. Perfect for the busy bee
-                      in your life who deserves a moment of relaxation and
-                      serenity.
-                    </p>
-                  </div>
-                  <div className="select_weight">
-                    <p>Select Weight :</p>
-                    {["1 Kg", "1.5 Kg", "2 Kg", "2.5 Kg", "3 Kg"].map(
-                      (weight) => (
-                        <button
-                          key={weight}
-                          className={`weight_button ${
-                            activeWeight === weight ? "active" : ""
-                          }`}
-                          onClick={() => handleWeightSelection(weight)}
-                        >
-                          {weight}
-                        </button>
-                      )
-                    )}
+                    <p>{data.productDescription}</p>
                   </div>
                 </div>
               </div>

@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const Product = require('../Model/ProductModel');
-const { error } = require('console');
+const mongoose = require("mongoose")
+
 
 // deleteImageFile function to delete images
 const deleteImageFile = (relativeFilePath) => {
@@ -14,6 +15,7 @@ const deleteImageFile = (relativeFilePath) => {
         }
     });
 };
+
 const createProduct = async (req, res) => {
     console.log(req.body);
     const { categoryName, subcategoryName, productName, productSubDescription, productDescription, productTag, Variant } = req.body;
@@ -83,9 +85,9 @@ const createProduct = async (req, res) => {
         productTag: productTag ? mongoose.Types.ObjectId(productTag) : null,
         Variant: parsedVariant.map(variant => ({
             ...variant,
-            color: variant.color ? mongoose.Types.ObjectId(variant.color) : null,  // Handle empty color
-            weight: variant.weight ? mongoose.Types.ObjectId(variant.weight) : null,  // Handle empty weight
-            flover: variant.flover ? mongoose.Types.ObjectId(variant.flover) : null   // Handle empty flover
+            color: variant.color ? new mongoose.Types.ObjectId(variant.color) : null,  // Handle empty color
+            weight: variant.weight ? new mongoose.Types.ObjectId(variant.weight) : null,  // Handle empty weight
+            flover: variant.flover ? new mongoose.Types.ObjectId(variant.flover) : null   // Handle empty flover
         })),
         productImage: req.files.map(file => file.path), // Save paths to the uploaded images
         sku: await generateSKU(), // Generate unique SKU
@@ -96,7 +98,7 @@ const createProduct = async (req, res) => {
         await product.save();
         res.status(201).json({ message: 'Product created successfully', product });
     } catch (err) {
-        console.log(err)
+        console.log(err);
         res.status(500).json({ error: err.message });
     }
 };
@@ -156,16 +158,47 @@ const getProduct = async (req, res) => {
 // Get Single Product
 const getProductByname = async (req, res) => {
     const { name } = req.params;
+    console.log(name)
     try {
-        const product = await Product.findOne({ productName: name }).populate('categoryName subcategoryName  productTag ');
+        const product = await Product.findOne({ productName: name }).populate('categoryName')
+            .populate('subcategoryName')
+            .populate('productTag')
+            .populate('Variant.color')
+            .populate('Variant.weight')
+            .populate('Variant.flover');
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
         res.status(200).json({ data: product });
     } catch (err) {
+        console.log(err)
         res.status(500).json({ error: err.message });
     }
 };
+
+
+// Get Products By Subcategory Name
+const getProductsBySubcategory = async (req, res) => {
+    const { subcategoryName } = req.params;  // Expecting a single subcategory name
+    console.log('Subcategory name:', subcategoryName);
+    try {
+        const products = await Product.find()
+            .populate('categoryName')
+            .populate('subcategoryName')
+            .populate('productTag')
+
+        const filterProductData = products.filter((x) => x.subcategoryName.subcategoryName === subcategoryName)
+        if (!filterProductData || filterProductData.length === 0) {
+            return res.status(404).json({ message: 'No products found for the provided subcategory' });
+        }
+
+        res.status(200).json({ data: filterProductData });
+    } catch (err) {
+        console.log('Error:', err);
+        res.status(500).json({ error: err.message });
+    }
+};
+
 
 
 const updateProduct = async (req, res) => {
@@ -255,5 +288,6 @@ module.exports = {
     getProduct,
     updateProduct,
     deleteProduct,
-    getProductByname
+    getProductByname,
+    getProductsBySubcategory
 };

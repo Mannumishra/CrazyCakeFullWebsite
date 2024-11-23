@@ -344,7 +344,7 @@ const EditProduct = () => {
                                         </select>
                                     </div>
 
-                                    <div className="col-md-3 mb-1">
+                                    {/* <div className="col-md-3 mb-1">
                                         <label htmlFor={`stock-${index}`} className="form-label">Stock<sup className="text-danger">*</sup></label>
                                         <input
                                             type="number"
@@ -353,7 +353,7 @@ const EditProduct = () => {
                                             value={variant.stock}
                                             onChange={(e) => handleVariantChange(index, e)}
                                         />
-                                    </div>
+                                    </div> */}
 
                                     <div className="col-md-3">
                                         <label htmlFor={`price-${index}`} className="form-label">Price<sup className="text-danger">*</sup></label>

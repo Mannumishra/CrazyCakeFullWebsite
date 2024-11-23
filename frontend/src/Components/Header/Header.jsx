@@ -101,7 +101,7 @@ const Header = () => {
                       {category.mainCategoryName}
                     </Link>
                     <ul className="dropdown-menu" aria-labelledby={`${category.mainCategoryName}Dropdown`}>
-                      <li><Link className="dropdown-item" to={`/${category.mainCategoryName}/all-${category.mainCategoryName}`}>All {category.mainCategoryName}</Link></li>
+                      {/* <li><Link className="dropdown-item" to={`/${category.mainCategoryName}/all-${category.mainCategoryName}`}>All {category.mainCategoryName}</Link></li> */}
                       {category.subcategories.map((subcategory, index) => (
                         <li key={index}>
                           <Link className="dropdown-item" to={`#${subcategory.subcategoryName}`}>{subcategory.subcategoryName}</Link>

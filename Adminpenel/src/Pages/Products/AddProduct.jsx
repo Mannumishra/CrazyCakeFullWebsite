@@ -220,7 +220,7 @@ const AddProduct = () => {
 
 
                     <div className="col-md-4">
-                        <label htmlFor="productTag" className="form-label">Product Tag<sup className='text-danger'>*</sup></label>
+                        <label htmlFor="productTag" className="form-label">Product Tag</label>
                         <select name='productTag' className="form-select" id="productTag" value={formData.productTag} onChange={handleChange}>
                             <option value=""selected disabled>Select Tag</option>
                             {tag.map((item, index) =>
@@ -239,52 +239,52 @@ const AddProduct = () => {
                         <div key={index} className="variant-container">
 
                             <div className="row">
-                                <div className="col-md-3 mb-1">
-                                    <label htmlFor={`variantColor-${index}`} className="form-label">Color<sup className='text-danger'>*</sup></label>
+                                <div className="col-md-4 mb-1">
+                                    <label htmlFor={`variantColor-${index}`} className="form-label">Color</label>
                                     <select name="color" className="form-select" id={`variantColor-${index}`} value={variant.color} onChange={(e) => handleVariantChange(index, e)} >
-                                        <option value="">Select Color</option>
+                                        <option value="" selected disabled>Select Color</option>
                                         {colors.map((color, i) => (
                                             <option key={i} value={color._id}>{color.colorName}</option>
                                         ))}
                                     </select>
                                 </div>
 
-                                <div className="col-md-3 mb-1">
-                                    <label htmlFor={`variantWeight-${index}`} className="form-label">Weight<sup className='text-danger'>*</sup></label>
+                                <div className="col-md-4 mb-1">
+                                    <label htmlFor={`variantWeight-${index}`} className="form-label">Weight</label>
                                     <select name="weight" className="form-select" id={`variantWeight-${index}`} value={variant.weight} onChange={(e) => handleVariantChange(index, e)} >
-                                        <option value="">Select Weight</option>
+                                        <option value="" selected disabled>Select Weight</option>
                                         {weights.map((weight, i) => (
                                             <option key={i} value={weight._id}>{weight.sizeweight}</option>
                                         ))}
                                     </select>
                                 </div>
 
-                                <div className="col-md-3 mb-1">
-                                    <label htmlFor={`variantFlower-${index}`} className="form-label">Flower<sup className='text-danger'>*</sup></label>
+                                <div className="col-md-4 mb-1">
+                                    <label htmlFor={`variantFlower-${index}`} className="form-label">Flower</label>
                                     <select name="flover" className="form-select" id={`variantFlower-${index}`} value={variant.flover} onChange={(e) => handleVariantChange(index, e)} >
-                                        <option value="">Select Flower</option>
+                                        <option value="" selected disabled>Select Flower</option>
                                         {flowers.map((flower, i) => (
                                             <option key={i} value={flower._id}>{flower.floverName}</option>
                                         ))}
                                     </select>
                                 </div>
 
-                                <div className="col-md-3">
-                                    <label htmlFor={`variantStock-${index}`} className="form-label">Stock<sup className='text-danger'>*</sup></label>
+                                {/* <div className="col-md-4">
+                                    <label htmlFor={`variantStock-${index}`} className="form-label">Stock</label>
                                     <input type="number" name="stock" className="form-control" id={`variantStock-${index}`} placeholder='Stock' value={variant.stock} onChange={(e) => handleVariantChange(index, e)}  />
-                                </div>
+                                </div> */}
 
-                                <div className="col-md-3">
+                                <div className="col-md-4">
                                     <label htmlFor={`variantPrice-${index}`} className="form-label">Price<sup className='text-danger'>*</sup></label>
                                     <input type="number" name="price" className="form-control" id={`variantPrice-${index}`} placeholder='Price' value={variant.price} onChange={(e) => handleVariantChange(index, e)} required />
                                 </div>
 
-                                <div className="col-md-3">
+                                <div className="col-md-4">
                                     <label htmlFor={`variantDiscountPrice-${index}`} className="form-label">Discount %<sup className='text-danger'>*</sup></label>
                                     <input type="number" name="discountPrice" className="form-control" id={`variantDiscountPrice-${index}`} placeholder='Discount %' value={variant.discountPrice} onChange={(e) => handleVariantChange(index, e)} required />
                                 </div>
 
-                                <div className="col-md-3">
+                                <div className="col-md-4">
                                     <label htmlFor={`variantFinalPrice-${index}`} className="form-label">Final Price<sup className='text-danger'>*</sup></label>
                                     <input type="number" name="finalPrice" className="form-control" id={`variantFinalPrice-${index}`} placeholder='Final Price' value={variant.finalPrice} readOnly />
                                 </div>
