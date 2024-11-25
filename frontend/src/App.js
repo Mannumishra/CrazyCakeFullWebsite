@@ -20,6 +20,7 @@ import TermsConditions from "./Pages/FooterPages/TermsConditions";
 import PrivacyPolicy from "./Pages/FooterPages/PrivacyPolicy";
 import FAQ from "./Pages/FooterPages/FAQ";
 import AllProducts from "./Pages/AllProducts/AllProducts";
+import CheckOut from "./Pages/checkout/Checkout";
 const App = () => {
   return (
     <>
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/checkout" element={<CheckOut />} />
           <Route path="/terms-&-conditions" element={<TermsConditions />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/frequently-asked-questions" element={<FAQ />} />

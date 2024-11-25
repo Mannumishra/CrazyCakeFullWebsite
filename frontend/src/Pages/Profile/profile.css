@@ -1,0 +1,62 @@
+.prifileContent {
+    border: 2px solid var(--color-pink);
+    max-width: fit-content;
+    padding: 2rem;
+    border-radius: 2rem;
+}
+
+.prifileContent p {
+    margin-bottom: 0;
+}
+
+.profile {
+    padding: 2rem;
+}
+
+.profile h1 {
+    text-align: center;
+    font-family: var(--font-family-design);
+    color: var(--color-pink);
+    margin-bottom: 1rem;
+}
+
+/* ----Order History---- */
+.orderHistory {
+    margin-top: 2rem;
+}
+
+.orderHistory h2 {
+    text-align: center;
+    font-family: var(--font-family-design);
+    color: var(--color-pink);
+    margin-bottom: 1rem;
+}
+
+.orderHistory table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.orderHistory th, .orderHistory td {
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    font-family: var(--font-family-text);
+}
+
+.orderHistory th {
+    background-color: var(--color-pink);
+    color: white;
+}
+
+.orderHistory td {
+    font-size: 0.95rem;
+}
+
+.orderHistory tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.orderHistory tr:hover {
+    background-color: #f1f1f1;
+}
