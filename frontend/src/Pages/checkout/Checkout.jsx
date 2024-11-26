@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";  // Import useNavigate
 import axios from "axios";
 import Swal from "sweetalert2";
 import "./checkout.css";
 
 const CheckOut = () => {
+    const navigate = useNavigate(); // Initialize useNavigate
     const [cartItems, setCartItems] = useState([])
     const [formData, setFormData] = useState({
         userId: '12345',
@@ -67,6 +69,7 @@ const CheckOut = () => {
                             Swal.fire("Success", "Payment Successful!", "success");
                             sessionStorage.removeItem("cart");
                             setCartItems([]);
+                            navigate('/success', { state: { paymentStatus: 'online', orderId: response.data.orderId } });
                         } else {
                             Swal.fire("Error", "Payment verification failed!", "error");
                         }
@@ -101,6 +104,7 @@ const CheckOut = () => {
                 Swal.fire("Success", "Order placed successfully!", "success");
                 sessionStorage.removeItem("cart");
                 setCartItems([]);
+                navigate('/success', { state: { paymentStatus: 'cod', orderId: response.data.orderId } });
             }
         } catch (error) {
             console.error("Error placing order:", error);

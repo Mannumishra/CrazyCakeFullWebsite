@@ -21,6 +21,7 @@ import PrivacyPolicy from "./Pages/FooterPages/PrivacyPolicy";
 import FAQ from "./Pages/FooterPages/FAQ";
 import AllProducts from "./Pages/AllProducts/AllProducts";
 import CheckOut from "./Pages/checkout/Checkout";
+import SuccessPage from "./Pages/successpage/SuccessPage";
 const App = () => {
   return (
     <>
@@ -40,6 +41,7 @@ const App = () => {
           <Route path="/terms-&-conditions" element={<TermsConditions />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/frequently-asked-questions" element={<FAQ />} />
+          <Route path="/success" element={<SuccessPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>

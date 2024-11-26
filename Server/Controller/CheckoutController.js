@@ -93,7 +93,7 @@ const verifyPayment = async (req, res) => {
 const getAllCheckouts = async (req, res) => {
     try {
         const checkouts = await Checkout.find({});
-        res.status(200).json(checkouts);
+        res.status(200).json(checkouts.reverse());
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server error occurred while retrieving checkouts." });

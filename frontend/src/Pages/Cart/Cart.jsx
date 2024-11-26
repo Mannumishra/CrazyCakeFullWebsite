@@ -111,7 +111,11 @@ const Cart = () => {
                 </div>
               ))
             ) : (
-              <p>Your cart is empty. Add some products to your cart!</p>
+              <>
+                <p>Your cart is empty. Add some products to your cart!</p>
+                <Link to='/' className="checkout-btn">GO TO Home Page</Link>
+              </>
+
             )}
           </div>
           {cartItems.length > 0 && (
