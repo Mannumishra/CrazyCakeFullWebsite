@@ -3,87 +3,57 @@ const crypto = require('crypto');
 const Checkout = require('../Model/CheckoutModel');
 
 const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_API_KEY || "rzp_live_1R3bvuk5Z7QUIO",
+    key_id: process.env.RAZORPAY_API_KEY || "rzp_test_XPcfzOlm39oYi8",
     key_secret: process.env.RAZORPAY_API_SECRET || "Q79P6w7erUar31TwW4GLAkpa",
 });
 
 const createCheckout = async (req, res) => {
     try {
         console.log(req.body)
-        const { userId, name, email, phone, address, state, city, pin, cartItems, totalPrice, transactionId, orderStatus, paymentMode, paymentStatus } = req.body;
-        const errorMessage = [];
-        if (!userId) errorMessage.push("UserId is required.");
-        if (!name) errorMessage.push("Name is required.");
-        if (!email) errorMessage.push("Email is required.");
-        if (!phone) errorMessage.push("Phone is required.");
-        if (!address) errorMessage.push("Address is required.");
-        if (!state) errorMessage.push("State is required.");
-        if (!city) errorMessage.push("City is required.");
-        if (!pin) errorMessage.push("Pin code is required.");
-        if (!Array.isArray(cartItems) || cartItems.length === 0) errorMessage.push("Cart items are required.");
-        if (typeof totalPrice !== 'number' || totalPrice <= 0) errorMessage.push("Total price must be a positive number.");
-        if (errorMessage.length > 0) {
-            return res.status(400).json({ errors: errorMessage });
+        const { userId, name, email, phone, address, state, city, pin, cartItems, totalPrice, paymentMode } = req.body;
+
+        if (!userId || !name || !email || !phone || !address || !state || !city || !pin || !Array.isArray(cartItems) || cartItems.length === 0 || totalPrice <= 0) {
+            return res.status(400).json({ message: "All fields are required and must be valid." });
         }
+
+        // Ensure totalPrice has only two decimal places
+        const formattedTotalPrice = Number(totalPrice.toFixed(2));
+
         if (paymentMode === "cod") {
             const newCheckout = new Checkout({
-                userId,
-                name,
-                email,
-                phone,
-                address,
-                state,
-                city,
-                pin,
-                cartItems,
-                totalPrice,
-                transactionId: null,
-                orderStatus,
-                paymentMode,
-                paymentStatus: 'Pending'
+                userId, name, email, phone, address, state, city, pin, cartItems, totalPrice: formattedTotalPrice,
+                transactionId: null, orderStatus: 'Order Confirmed', paymentMode, paymentStatus: 'Pending',
             });
             const savedCheckout = await newCheckout.save();
-            res.status(200).json(savedCheckout);
+            return res.status(200).json(savedCheckout);
         }
-        else if (paymentMode === 'online') {
-            const options = {
-                amount: Math.round(totalPrice * 100), // Convert to paise
-                currency: 'INR',
-                receipt: `receipt_${Date.now()}`, // Unique receipt ID
-            };
 
-            const order = await razorpay.orders.create(options);
-            if (!order) {
-                return res.status(500).json({ message: "Razorpay order creation failed." });
-            }
+        const options = {
+            amount: Math.round(totalPrice * 100), // Convert to paise
+            currency: 'INR',
+            receipt: `receipt_${Date.now()}`,
+        };
 
-            const newCheckout = new Checkout({
-                userId,
-                name,
-                email,
-                phone,
-                address,
-                state,
-                city,
-                pin,
-                cartItems,
-                totalPrice,
-                transactionId: order.id, // Save the Razorpay Order ID
-                orderStatus: 'Pending',
-                paymentMode,
-                paymentStatus: 'Pending' // Payment is pending until verified
-            });
-            const savedCheckout = await newCheckout.save();
-            res.status(200).json({
-                message: 'Order created successfully. Proceed with payment.',
-                checkout: savedCheckout,
-                razorpayOrderId: order.id,
-                amount: options.amount,
-                currency: options.currency,
-            });
+        const order = await razorpay.orders.create(options);
+        if (!order) {
+            return res.status(500).json({ message: "Razorpay order creation failed." });
         }
+
+        const newCheckout = new Checkout({
+            userId, name, email, phone, address, state, city, pin, cartItems, totalPrice: formattedTotalPrice,
+            transactionId: order.id, orderStatus: 'Order Confirmed', paymentMode, paymentStatus: 'Pending',
+        });
+        const savedCheckout = await newCheckout.save();
+
+        res.status(200).json({
+            message: 'Order created successfully. Proceed with payment.',
+            checkout: savedCheckout,
+            razorpayOrderId: order.id,
+            amount: options.amount,
+            currency: options.currency,
+        });
     } catch (error) {
-        console.error(error);
+        console.error("Checkout creation error:", error);
         res.status(500).json({ message: "Server error occurred while creating checkout." });
     }
 };
@@ -92,33 +62,32 @@ const verifyPayment = async (req, res) => {
     try {
         const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
 
-        // Create HMAC with your Razorpay API Secret
+        if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
+            return res.status(400).json({ message: "Payment verification failed. Missing parameters." });
+        }
+
         const hmac = crypto.createHmac('sha256', process.env.RAZORPAY_API_SECRET || "Q79P6w7erUar31TwW4GLAkpa");
-        hmac.update(razorpay_order_id + '|' + razorpay_payment_id);
+        hmac.update(`${razorpay_order_id}|${razorpay_payment_id}`);
         const generatedSignature = hmac.digest('hex');
 
         if (generatedSignature === razorpay_signature) {
-            // Payment verified successfully, update the checkout status
             const updatedCheckout = await Checkout.findOneAndUpdate(
                 { transactionId: razorpay_order_id },
-                { paymentStatus: 'Successfull', orderStatus: 'Confirmed' },
+                { paymentStatus: 'Success', orderStatus: 'Confirmed' },
                 { new: true }
             );
             if (!updatedCheckout) {
                 return res.status(404).json({ message: "Order not found." });
             }
-            res.status(200).json({ message: 'Payment successful and order confirmed.', checkout: updatedCheckout });
+            return res.status(200).json({ message: 'Payment successful and order confirmed.', checkout: updatedCheckout });
         } else {
-            res.status(400).json({ message: 'Invalid signature, payment verification failed.' });
+            return res.status(400).json({ message: 'Invalid signature, payment verification failed.' });
         }
     } catch (error) {
         console.error("Payment verification error:", error);
         res.status(500).json({ message: 'Server error during payment verification.' });
     }
 };
-
-
-
 
 
 const getAllCheckouts = async (req, res) => {

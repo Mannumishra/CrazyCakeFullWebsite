@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import "./checkout.css";
 import axios from "axios";
+import Swal from "sweetalert2";
+import "./checkout.css";
 
 const CheckOut = () => {
-    const [cartItems, setCartItems] = useState([]);
-    const [deliveryMethod, setDeliveryMethod] = useState("delivery");
+    const [cartItems, setCartItems] = useState([])
     const [formData, setFormData] = useState({
-        userId: '12345',  // Assume userId is hardcoded or fetched from session storage
+        userId: '12345',
         name: '',
         email: '',
         phone: '',
@@ -14,118 +14,97 @@ const CheckOut = () => {
         state: '',
         city: '',
         pin: '',
-        cartItems: [],
         totalPrice: 0,
-        transactionId: '',
-        orderStatus: 'Order Is Placed',
         paymentMode: 'online',
-        paymentStatus: 'Pending'
     });
 
     useEffect(() => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-
-        // Fetch the cart data from sessionStorage
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         const storedCart = JSON.parse(sessionStorage.getItem("cart")) || [];
         setCartItems(storedCart);
-        setFormData(prevData => ({
+        setFormData((prevData) => ({
             ...prevData,
             cartItems: storedCart,
             totalPrice: calculateTotal(storedCart),
         }));
     }, []);
 
-    const handleMethodChange = (e) => {
-        setDeliveryMethod(e.target.value);
-    };
 
-    // Calculate the total and shipping
-    const calculateTotal = (cartItems) => {
-        const subtotal = cartItems.reduce(
-            (acc, item) => acc + (item.price || 0) * (item.quantity || 1), 0
-        );
+    const calculateTotal = (items) => {
+        const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
         const shipping = subtotal < 500 ? 50 : 0;
         return subtotal + shipping;
     };
 
-    // Handle placing the order
     const handlePlaceOrder = async () => {
-        if (deliveryMethod === 'online') {
-            initiateOnlinePayment();
-        } else {
-            submitOrder();
+        if (formData.paymentMode === 'online') initiateOnlinePayment();
+        else submitOrder();
+    };
+
+    const initiateOnlinePayment = async () => {
+        try {
+            const response = await axios.post('http://localhost:8000/api/checkout', formData);
+            console.log(response)
+            const { razorpayOrderId, amount, currency } = response.data;
+            console.log(amount)
+            console.log(razorpayOrderId)
+            console.log(currency)
+            const options = {
+                key: "rzp_test_XPcfzOlm39oYi8",
+                amount,
+                currency,
+                name: "Crazy Cake",
+                description: "Order Payment",
+                order_id: razorpayOrderId,
+                handler: async (paymentResponse) => {
+                    try {
+                        const verifyResponse = await axios.post("http://localhost:8000/api/verify-payment", {
+                            razorpay_payment_id: paymentResponse.razorpay_payment_id,
+                            razorpay_order_id: paymentResponse.razorpay_order_id,
+                            razorpay_signature: paymentResponse.razorpay_signature,
+                        });
+                        if (verifyResponse.data.message === "Payment successful and order confirmed.") {
+                            Swal.fire("Success", "Payment Successful!", "success");
+                            sessionStorage.removeItem("cart");
+                            setCartItems([]);
+                        } else {
+                            Swal.fire("Error", "Payment verification failed!", "error");
+                        }
+                    } catch (error) {
+                        console.error("Verification error:", error);
+                        Swal.fire("Error", "Error verifying payment!", "error");
+                    }
+                },
+                prefill: {
+                    name: formData.name,
+                    email: formData.email,
+                    contact: formData.phone,
+                },
+                theme: {
+                    color: "#F37254",
+                },
+            };
+
+            const razorpayInstance = new window.Razorpay(options);
+            razorpayInstance.open();
+        } catch (error) {
+            console.error("Payment initiation error:", error);
+            Swal.fire("Error", "Error initiating payment. Please try again.", "error");
         }
     };
 
-    const initiateOnlinePayment = () => {
-        const options = {
-            key: 'razorpay_key', // Your Razorpay Key ID
-            amount: formData.totalPrice * 100, // Total amount in paise (1 INR = 100 paise)
-            currency: 'INR',
-            name: 'Your Company Name',
-            description: 'Order Payment',
-            image: 'https://yourdomain.com/logo.png', // Company logo
-            handler: function (response) {
-                // On successful payment, submit order
-                formData.transactionId = response.razorpay_payment_id;
-                formData.paymentStatus = 'Success';
-                submitOrder();
-            },
-            prefill: {
-                name: formData.name,
-                email: formData.email,
-                contact: formData.phone,
-            },
-            theme: {
-                color: '#F37254',
-            },
-        };
-
-        const rzp = new window.Razorpay(options);
-        rzp.open();
-    };
 
     const submitOrder = async () => {
-        const orderData = {
-            ...formData,
-            cartItems: cartItems,
-            totalPrice: formData.totalPrice,
-            orderStatus: deliveryMethod === 'online' ? 'Payment Pending' : 'Order Confirmed',
-            paymentMode: deliveryMethod,
-            paymentStatus: deliveryMethod === 'online' ? 'Pending' : 'Success',
-        };
         try {
-            // Make a POST request to your backend API
-            const response = await axios.post("http://localhost:8000/api/checkout", orderData);
-
-            if (response.status === 201) {
-                console.log("Order successfully placed:", response.data);
+            const response = await axios.post("http://localhost:8000/api/checkout", formData);
+            if (response.status === 200) {
+                Swal.fire("Success", "Order placed successfully!", "success");
                 sessionStorage.removeItem("cart");
                 setCartItems([]);
-                setFormData({
-                    ...formData,
-                    name: '',
-                    email: '',
-                    phone: '',
-                    address: '',
-                    state: '',
-                    city: '',
-                    pin: '',
-                    cartItems: [],
-                    totalPrice: 0,
-                });
-
-                alert("Order placed successfully!");
-            } else {
-                console.error("Failed to place order:", response.data);
-                alert("Something went wrong. Please try again.");
             }
         } catch (error) {
-            console.error("Error submitting order:", error);
-            alert("An error occurred while placing your order. Please try again later.");
+            console.error("Error placing order:", error);
+            Swal.fire("Error", "Failed to place the order. Please try again.", "error");
         }
     };
 
@@ -213,62 +192,71 @@ const CheckOut = () => {
                         </div>
                     </form>
                 </div>
-                <div className="cart-review">
-                    <h2>Review your cart</h2>
-                    {cartItems.length > 0 ? (
-                        <table className="cart-table">
-                            <thead>
-                                <tr>
-                                    <th>Product Image</th>
-                                    <th>Product Name</th>
-                                    <th>Weight</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {cartItems.map((item) => (
-                                    <tr key={`${item.id}-${item.weight}`}>
-                                        <td>
-                                            <img
-                                                src={`http://localhost:8000/${item.image}`}
-                                                alt={item.name}
-                                                style={{ height: 50 }}
-                                            />
-                                        </td>
-                                        <td className="carttext">{item.name}</td>
-                                        <td>{item.weight}</td>
-                                        <td>₹{item.price}</td>
-                                        <td>{item.quantity}</td>
-                                        <td>₹{(item.price * item.quantity).toFixed(2)}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    ) : (
-                        <p>Your cart is empty.</p>
-                    )}
-                    <div className="totals">
-                        <p>Subtotal: ₹{formData.totalPrice.toFixed(2)}</p>
-                        <p>Shipping: ₹{formData.totalPrice < 500 ? 50 : 0}</p>
-                        <h3>Total: ₹{formData.totalPrice.toFixed(2)}</h3>
-                    </div>
-                    <h5>Choose Payment Method</h5>
-                    <div className="form-group">
-                        <select value={deliveryMethod} onChange={handleMethodChange}>
-                            <option value="online">Online Payment</option>
-                            <option value="cash">Cash on Delivery</option>
-                        </select>
-                    </div>
-                    <button
-                        className="checkout-btn"
-                        type="button"
-                        onClick={handlePlaceOrder}
-                    >
-                        Place Order
-                    </button>
-                </div>
+                {
+                    cartItems.length > 0 ? (
+                        <div className="cart-review">
+                            <h2>Review your cart</h2>
+                            {cartItems.length > 0 ? (
+                                <table className="cart-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Image</th>
+                                            <th>Product Name</th>
+                                            <th>Weight</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {cartItems.map((item) => (
+                                            <tr key={`${item.id}-${item.weight}`}>
+                                                <td>
+                                                    <img
+                                                        src={`http://localhost:8000/${item.image}`}
+                                                        alt={item.name}
+                                                        style={{ height: 50 }}
+                                                    />
+                                                </td>
+                                                <td className="carttext">{item.name}</td>
+                                                <td>{item.weight}</td>
+                                                <td>₹{item.price}</td>
+                                                <td>{item.quantity}</td>
+                                                <td>₹{(item.price * item.quantity).toFixed(2)}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <p>Your cart is empty.</p>
+                            )}
+                            <div className="totals">
+                                {/* <p>Subtotal: ₹{formData.totalPrice.toFixed(2)}</p> */}
+                                <p>Shipping: ₹{formData.totalPrice < 500 ? 50 : 0}</p>
+                                <h3>Total: ₹{formData.totalPrice.toFixed(2)}</h3>
+                            </div>
+                            <h5>Choose Payment Method</h5>
+                            <div className="form-group">
+                                <select
+                                    value={formData.paymentMode}
+                                    onChange={(e) =>
+                                        setFormData({ ...formData, paymentMode: e.target.value })
+                                    }
+                                >
+                                    <option value="online">Online Payment</option>
+                                    <option value="cod">Cash on Delivery</option>
+                                </select>
+                            </div>
+                            <button
+                                className="checkout-btn"
+                                type="button"
+                                onClick={handlePlaceOrder}
+                            >
+                                Place Order
+                            </button>
+                        </div>
+                    ) : null
+                }
             </div>
         </section>
     );

@@ -6,6 +6,63 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AllOrder = () => {
+    const [orders, setOrders] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredOrders, setFilteredOrders] = useState([]);
+
+    // Fetch all orders from the backend
+    const fetchOrders = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/api/checkouts');
+            console.log(response)
+            setOrders(response.data);
+            setFilteredOrders(response.data); // Initialize filtered orders
+        } catch (error) {
+            console.error("Error fetching orders:", error);
+            toast.error("Failed to fetch orders.");
+        }
+    };
+
+    // Delete order
+    const deleteOrder = async (orderId) => {
+        try {
+            const confirmation = await Swal.fire({
+                title: 'Are you sure?',
+                text: 'This action cannot be undone!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
+            });
+
+            if (confirmation.isConfirmed) {
+                await axios.delete(`http://localhost:8000/api/checkout/${orderId}`);
+                setOrders((prevOrders) => prevOrders.filter(order => order._id !== orderId));
+                setFilteredOrders((prevOrders) => prevOrders.filter(order => order._id !== orderId));
+                toast.success("Order deleted successfully.");
+            }
+        } catch (error) {
+            console.error("Error deleting order:", error);
+            toast.error("Failed to delete order.");
+        }
+    };
+
+    // Filter orders based on search query
+    const handleSearch = (e) => {
+        const query = e.target.value.toLowerCase();
+        setSearchQuery(query);
+
+        const filtered = orders.filter(order =>
+            order.orderId.toLowerCase().includes(query) ||
+            order.name.toLowerCase().includes(query)
+        );
+        setFilteredOrders(filtered);
+    };
+
+    useEffect(() => {
+        fetchOrders();
+    }, []);
+
     return (
         <>
             <ToastContainer />
@@ -35,6 +92,8 @@ const AllOrder = () => {
                         type="text"
                         name="search"
                         id="search"
+                        value={searchQuery}
+                        onChange={handleSearch}
                     />
                 </div>
             </div>
@@ -55,30 +114,36 @@ const AllOrder = () => {
                         </tr>
                     </thead>
                     <tbody>
+                        {filteredOrders.length > 0 ? (
+                            filteredOrders.map((order, index) => (
+                                <tr key={order._id}>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>
+                                        <Link to={`/order/${order._id}`}>{order._id}</Link>
+                                    </td>
+                                    <td>{order.cartItems.length}</td>
+                                    <td>{order.totalPrice}</td>
+                                    <td>{order.orderStatus}</td>
+                                    <td>{order.paymentMode}</td>
+                                    <td>{order.paymentStatus}</td>
+                                    <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                                    <td>
+                                        <button
+                                            className="bt delete"
+                                            onClick={() => deleteOrder(order._id)}
+                                        >
+                                            Delete <i className="fa-solid fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
                             <tr>
-                                <th scope="row"></th>
-                                <td>
-                                    <Link></Link>
-                                </td>
-                                <td>
-                                        <div>
-                                            <strong></strong><br />
-                                            SKU: <br />
-                                            Quantity: <br />
-                                            Price: 
-                                        </div>
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <Link  className="bt delete">
-                                        Delete <i className="fa-solid fa-trash"></i>
-                                    </Link>
+                                <td colSpan="9" className="text-center">
+                                    No orders found.
                                 </td>
                             </tr>
+                        )}
                     </tbody>
                 </table>
             </section>
