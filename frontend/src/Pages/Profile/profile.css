@@ -60,3 +60,24 @@
 .orderHistory tr:hover {
     background-color: #f1f1f1;
 }
+
+/* ----Logout Button---- */
+.logout-btn-container {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.logout-btn {
+    background-color: var(--color-pink);
+    color: white;
+    font-size: 1rem;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #d47d9c; /* Lighter pink shade on hover */
+}

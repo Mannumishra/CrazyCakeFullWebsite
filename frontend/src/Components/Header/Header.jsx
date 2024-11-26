@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const Header = () => {
-
+  const loginvalue = sessionStorage.getItem("login")
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -24,70 +24,74 @@ const Header = () => {
 
   return (
     <>
-    <div>
-      <header className="custom-navbar navbar navbar-expand-lg navbar-light py-2">
-        <div className="container-fluid">
-          <div className="navbar-container">
-            <div className="logo-container">
-              <Link className="navbar-brand d-flex align-items-center" to="/">
-                <h1 style={{ fontFamily: "var(--font-family-design)", color: "var(--color-pink)" }}>Cake Crazzy</h1>
-              </Link>
-            </div>
+      <div>
+        <header className="custom-navbar navbar navbar-expand-lg navbar-light py-2">
+          <div className="container-fluid">
+            <div className="navbar-container">
+              <div className="logo-container">
+                <Link className="navbar-brand d-flex align-items-center" to="/">
+                  <h1 style={{ fontFamily: "var(--font-family-design)", color: "var(--color-pink)" }}>Cake Crazzy</h1>
+                </Link>
+              </div>
 
-            <div className="search-container">
-              <form action="">
-                <div className="d-flex">
-                  <input
-                    className="form-control searchInput"
-                    type="search"
-                    placeholder="Search"
-                  />
-                  <button className="searchBtn">Search</button>
-                </div>
-              </form>
-            </div>
+              <div className="search-container">
+                <form action="">
+                  <div className="d-flex">
+                    <input
+                      className="form-control searchInput"
+                      type="search"
+                      placeholder="Search"
+                    />
+                    <button className="searchBtn">Search</button>
+                  </div>
+                </form>
+              </div>
 
-            {/* Cart & Login */}
-            <div className="cart-login-container">
-              <Link to="/cart">
-                <i className="bi bi-bag"></i>
-              </Link>
-              <span className="mx-2">|</span>
-              <Link to="/login" className="me-2">
-                <i className="bi bi-person-fill"></i>
-              </Link>
+              {/* Cart & Login */}
+              <div className="cart-login-container">
+                <Link to="/cart">
+                  <i className="bi bi-bag"></i>
+                </Link>
+                <span className="mx-2">|</span>
+                {
+                  loginvalue ? <Link to="/profile" className="me-2">
+                    <i className="bi bi-person-fill"></i>
+                  </Link> : <Link to="/login" className="me-2">
+                    <i className="bi bi-person-fill"></i>
+                  </Link>
+                }
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <div className="navbar position-sticky navbar-expand-lg navbar-light">
-        <div className="container">
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav mx-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to="/">Home</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/about-us">About</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/all-products">All Products</Link>
-              </li>
+        <div className="navbar position-sticky navbar-expand-lg navbar-light">
+          <div className="container">
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarNav">
+              <ul className="navbar-nav mx-auto">
+                <li className="nav-item">
+                  <Link className="nav-link" to="/">Home</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/about-us">About</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/all-products">All Products</Link>
+                </li>
 
 
-              {categories.map((category) => (
+                {categories.map((category) => (
                   <li key={category._id} className="nav-item dropdown">
                     <Link
                       className="nav-link dropdown-toggle"
@@ -112,14 +116,14 @@ const Header = () => {
                 ))}
 
 
-              <li className="nav-item">
-                <Link className="nav-link" to="/contact-us">Contact Us</Link>
-              </li>
-            </ul>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/contact-us">Contact Us</Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 };

@@ -1,8 +1,35 @@
-import React from "react";
-import "./profile.css";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import "./profile.css";
+import axios from 'axios'
 
 const Profile = () => {
+  const userid = sessionStorage.getItem("userId")
+
+  const [user, setUser] = useState({})
+  const getApiData = async () => {
+    try {
+      const res = await axios.get("http://localhost:8000/api/user/" + userid)
+      if (res.status === 200) {
+        setUser(res.data.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getApiData()
+  }, [userid])
+
+  const handleLogout = () => {
+    // Clear user session or token and redirect to login page
+    sessionStorage.clear("login");
+    sessionStorage.clear("token");
+    sessionStorage.clear("userId");
+    window.location.href = "/login"; // Redirect to login page
+  };
+
   return (
     <>
       {/* ----breadCrumb----  */}
@@ -17,12 +44,17 @@ const Profile = () => {
       <div className="container profile">
         <h1>Our Profile</h1>
         <div className="d-flex justify-content-center">
-        <div className="prifileContent">
-          <p><b>Name</b>: Gourav Panchal</p>
-          <p><b>Email</b>: Gouravpanchal80107@gmail.com</p>
+          <div className="prifileContent">
+            <p><b>Name</b>: {user.name}</p>
+            <p><b>Email</b>: {user.email}</p>
+          </div>
         </div>
 
+        {/* ----Logout Button---- */}
+        <div className="logout-btn-container">
+          <button onClick={handleLogout} className="logout-btn">Logout</button>
         </div>
+        {/* ----Logout Button end---- */}
 
         {/* ----Order History---- */}
         <div className="orderHistory">

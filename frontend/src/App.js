@@ -22,6 +22,7 @@ import FAQ from "./Pages/FooterPages/FAQ";
 import AllProducts from "./Pages/AllProducts/AllProducts";
 import CheckOut from "./Pages/checkout/Checkout";
 import SuccessPage from "./Pages/successpage/SuccessPage";
+import Profile from "./Pages/Profile/Profile";
 const App = () => {
   return (
     <>
@@ -42,6 +43,7 @@ const App = () => {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/frequently-asked-questions" element={<FAQ />} />
           <Route path="/success" element={<SuccessPage />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
         <Footer />
       </BrowserRouter>

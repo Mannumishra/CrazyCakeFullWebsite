@@ -6,9 +6,10 @@ import "./checkout.css";
 
 const CheckOut = () => {
     const navigate = useNavigate(); // Initialize useNavigate
+    const userid = sessionStorage.getItem("userId")
     const [cartItems, setCartItems] = useState([])
     const [formData, setFormData] = useState({
-        userId: '12345',
+        userId: userid,
         name: '',
         email: '',
         phone: '',

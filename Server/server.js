@@ -17,6 +17,7 @@ const ProductRouter = require("./Router/productRoutes")
 const InnerSubcategoryRouter = require("./Router/InnerSubcategoryRouter")
 const ProductTagRouter = require("./Router/ProductTagRouter")
 const checkoutRouter = require("./Router/CheckoutRouter")
+const userRouter = require("./Router/UserRouter")
 
 const app = express()
 
@@ -42,6 +43,7 @@ app.use("/api", ProductRouter)
 app.use("/api", InnerSubcategoryRouter)
 app.use("/api", ProductTagRouter)
 app.use("/api", checkoutRouter)
+app.use("/api", userRouter)
 
 app.listen(process.env.PORT, () => {
     console.log(`Server Start in ${process.env.PORT}`)
