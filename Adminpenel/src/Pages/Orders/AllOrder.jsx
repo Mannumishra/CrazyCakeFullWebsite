@@ -119,7 +119,7 @@ const AllOrder = () => {
                                 <tr key={order._id}>
                                     <th scope="row">{index + 1}</th>
                                     <td>
-                                        <Link to={`/order/${order._id}`}>{order._id}</Link>
+                                        <Link to={`/order-details/${order._id}`}>{order._id}</Link>
                                     </td>
                                     <td>{order.cartItems.length}</td>
                                     <td>{order.totalPrice}</td>

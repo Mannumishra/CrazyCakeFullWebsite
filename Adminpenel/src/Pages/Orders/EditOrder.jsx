@@ -1,14 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const EditOrder = () => {
-   
+    const { id } = useParams();
+    const [orderData, setOrderData] = useState({});
+    const [orderStatus, setOrderStatus] = useState("");
+    const [paymentStatus, setPaymentStatus] = useState("");
+    const navigate = useNavigate()
+
+    // Fetch API data
+    const getApiData = async () => {
+        try {
+            const res = await axios.get(`http://localhost:8000/api/checkout/${id}`);
+            setOrderData(res.data);
+            setOrderStatus(res.data.orderStatus);
+            setPaymentStatus(res.data.paymentStatus);
+        } catch (error) {
+            console.error("Error fetching order data:", error);
+            toast.error("Failed to fetch order data.");
+        }
+    };
+
+    useEffect(() => {
+        getApiData();
+    }, []);
+
+    // Update Order Status and Payment Status
+    const handleUpdate = async () => {
+        try {
+            const updatedData = {
+                orderStatus,
+                paymentStatus,
+            };
+            const res = await axios.put(`http://localhost:8000/api/checkout/${id}`, updatedData);
+            toast.success("Order updated successfully!");
+            setOrderData(res.data); // Optionally refresh the data
+            navigate("/all-orders")
+        } catch (error) {
+            console.error("Error updating order:", error);
+            toast.error("Failed to update order.");
+        }
+    };
+
+    // Determine if the "Order Status" dropdown should be disabled
+    const isOrderStatusDisabled = paymentStatus === "Success" || orderStatus === "Delivered" || orderStatus === "Cancelled";
+
     return (
         <>
-
             <div className="bread">
                 <div className="head">
                     <h4>Update Order</h4>
@@ -30,43 +71,66 @@ const EditOrder = () => {
                                     <tbody>
                                         <tr>
                                             <th scope="row">Order ID</th>
-                                            <td></td>
+                                            <td>{orderData._id}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">User Name</th>
-                                            <td></td>
+                                            <td>{orderData.name}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Email</th>
-                                            <td></td>
+                                            <td>{orderData.email}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Phone Number</th>
-                                            <td></td>
+                                            <td>{orderData.phone}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Address</th>
-                                            <td></td>
+                                            <td>{orderData.address}, {orderData.city}, {orderData.state}, {orderData.pin}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Order Date</th>
-                                            <td></td>
+                                            <td>{new Date(orderData.orderDate).toLocaleString()}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Final Price</th>
-                                            <td></td>
+                                            <td>₹{orderData.totalPrice}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Order Status</th>
-                                            <td></td>
+                                            <td>
+                                                <select
+                                                    className="form-select"
+                                                    value={orderStatus}
+                                                    onChange={(e) => setOrderStatus(e.target.value)}
+                                                    disabled={isOrderStatusDisabled} // Disable the dropdown based on payment and status
+                                                >
+                                                    <option value="Confirmed">Confirmed</option>
+                                                    <option value="Processing">Processing</option>
+                                                    <option value="Shipped">Shipped</option>
+                                                    <option value="Delivered">Delivered</option>
+                                                    <option value="Cancelled">Cancelled</option>
+                                                </select>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Payment Mode</th>
-                                            <td></td>
+                                            <td>{orderData.paymentMode}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Payment Status</th>
-                                            <td></td>
+                                            <td>
+                                                <select
+                                                    className="form-select"
+                                                    value={paymentStatus}
+                                                    onChange={(e) => setPaymentStatus(e.target.value)}
+                                                    disabled={orderData.paymentStatus === "Success"} // Disable if payment is success
+                                                >
+                                                    <option value="Pending">Pending</option>
+                                                    <option value="Success">Success</option>
+                                                </select>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -79,22 +143,38 @@ const EditOrder = () => {
                                 <h5 className="card-title">Items</h5>
                             </div>
                             <div className="card-body">
-                                    <div className="mb-3">
-                                        <strong></strong><br />
-                                        <p className="mb-1">SKU: </p>
-                                        <p className="mb-1">Quantity:</p>
-                                        <p className="mb-0">Price: </p>
-                                    </div>
+                                {orderData.cartItems && orderData.cartItems.length > 0 ? (
+                                    orderData.cartItems.map((item, index) => (
+                                        <div key={index} className="mb-3">
+                                            <strong>{item.name}</strong><br />
+                                            <p className="mb-1">Quantity: {item.quantity}</p>
+                                            <p className="mb-1">Weight: {item.weight}</p>
+                                            <p className="mb-1">Price: ₹{item.price}</p>
+                                            <p className="mb-1">Delivery Date: {new Date(item.deliveryDate).toLocaleString()}</p>
+                                            <p className="mb-0">Message: {item.message}</p>
+                                            <img
+                                                src={`http://localhost:8000/${item.image}`}
+                                                alt={item.name}
+                                                style={{ width: "100px", height: "100px", marginTop: "10px" }}
+                                            />
+                                            <hr />
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p>No items in the cart.</p>
+                                )}
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="row mt-3">
                     <div className="col">
-                        <Link to="/all-orders" className="btn btn-secondary">Back</Link>
+                        <button className="btn btn-primary" onClick={handleUpdate}>Update Order</button>
+                        <Link to="/all-orders" className="btn btn-secondary ms-2">Back</Link>
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </>
     );
 };

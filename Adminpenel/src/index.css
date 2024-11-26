@@ -116,7 +116,8 @@ ul {
 .main-table i {
   font-size: 0.78rem;
 }
-.main-table thead{
+
+.main-table thead {
   position: sticky;
   top: 0px;
   text-align: left;
@@ -131,9 +132,11 @@ ul {
   background: #0d6efd !important;
   color: white;
 }
-.main-table tbody td{
+
+.main-table tbody td {
   text-wrap: nowrap;
 }
+
 .main-table img {
   height: 50px;
   width: 50px;

@@ -118,7 +118,7 @@ const Home = () => {
 
           {/* --- Orders --- */}
           <Route path={"/all-orders"} element={<AllOrder />} />
-          <Route path={"/edit-order/:id"} element={<EditOrder />} />
+          <Route path={"/order-details/:id"} element={<EditOrder />} />
 
           <Route path={"/all-category-titel"} element={<AllCategoryTitel />} />
           <Route path={"/add-category-titel"} element={<AddCategoryTitel />} />
