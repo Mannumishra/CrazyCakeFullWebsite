@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, "passowrd field is must required"]
     },
+    role: {
+        type: String,
+        default: "User"
+    },
     otp: {
         type: Number
     }

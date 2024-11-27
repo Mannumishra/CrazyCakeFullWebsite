@@ -284,9 +284,9 @@ const ProductDetails = () => {
                   <button className="add_to_cart" onClick={addToCart}>
                     <i className="bi bi-cart3"></i> Add To Cart
                   </button>
-                  <button className="by_now">
+                  {/* <button className="by_now">
                     <i className="bi bi-lightning-fill"></i> Buy Now
-                  </button>
+                  </button> */}
                 </div>
 
                 <div className="productDescription">

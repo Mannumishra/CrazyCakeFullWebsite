@@ -18,7 +18,7 @@ const checkoutSchema = new mongoose.Schema({
             price: { type: Number, required: true },
             deliveryDate: { type: String, required: true },
             eggOption: { type: String, required: true },
-            message: { type: String, required: true }
+            message: { type: String,}
         }
     ],
     totalPrice: { type: Number, required: true },
