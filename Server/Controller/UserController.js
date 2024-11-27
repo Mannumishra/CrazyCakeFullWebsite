@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../Model/SignupModel');
-const { transporter } = require("../Utils/Mailsender");
+const transporter = require("../Utils/Mailsender");
 
 
 // Create a new user record
@@ -23,14 +23,31 @@ const createRecord = async (req, res) => {
         const mailOptions = {
             from: process.env.MAIL_SENDER,
             to: newUser.email,
-            subject: "Account Created: Team HAPS",
-            text: `
-                Hello ${newUser.name},
-                Your account has been successfully created.
-                You can now buy the latest products with great deals.
-                Team: HAPS
-            `
+            subject: "Welcome to Cake Crazzy - Your Account Has Been Created!",
+            html: `
+                <html>
+                    <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;">
+                        <div style="width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
+                            <div style="text-align: center; background-color: #ff5733; color: #ffffff; padding: 20px;">
+                                <h1 style="margin: 0;">Welcome to Cake Crazzy!</h1>
+                            </div>
+                            <div style="margin-top: 20px; padding: 20px; text-align: center;">
+                                <p style="font-size: 16px; line-height: 1.6;">Hello ${newUser.name},</p>
+                                <p style="font-size: 16px; line-height: 1.6;">We're excited to let you know that your account has been successfully created with Cake Crazzy!</p>
+                                <p style="font-size: 16px; line-height: 1.6;">You can now explore a wide range of delicious cakes and treats available for you. Enjoy our amazing deals!</p>
+                                <a href="https://cakecrazzy.com" style="display: inline-block; padding: 12px 30px; background-color: #ff5733; color: white; text-decoration: none; border-radius: 5px; font-size: 16px;">Shop Now</a>
+                            </div>
+                            <div style="margin-top: 40px; text-align: center; font-size: 14px; color: #777777;">
+                                <p style="margin: 0;">Thank you for choosing Cake Crazzy. We are excited to serve you the best cakes in town!</p>
+                                <p style="margin: 0;">Team Cake Crazzy</p>
+                                <p style="margin: 0;">If you have any questions, feel free to contact us at <a href="mailto:support@cakecrazzy.com" style="color: #ff5733;">support@cakecrazzy.com</a></p>
+                            </div>
+                        </div>
+                    </body>
+                </html>
+            `,
         };
+
 
         transporter.sendMail(mailOptions, (error) => {
             if (error) {
@@ -45,6 +62,7 @@ const createRecord = async (req, res) => {
             data: newUser
         });
     } catch (error) {
+        console.log(error)
         if (error.keyValue?.phone) {
             return res.status(400).json({ success: false, message: "Phone number already registered." });
         } else if (error.keyValue?.email) {
@@ -83,6 +101,23 @@ const getSingleRecord = async (req, res) => {
             success: true,
             message: "User record found.",
             data: user
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Internal Server Error." });
+    }
+};
+
+const DeleteRecord = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        console.log(user)
+        if (!user) {
+            return res.status(400).json({ success: false, message: "User record not found." });
+        }
+        await user.deleteOne()
+        res.status(200).json({
+            success: true,
+            message: "User delete successfully.",
         });
     } catch (error) {
         res.status(500).json({ success: false, message: "Internal Server Error." });
@@ -196,5 +231,6 @@ module.exports = {
     forgetPassword1,
     forgetPassword2,
     forgetPassword3,
-    getRecord
+    getRecord,
+    DeleteRecord
 };
