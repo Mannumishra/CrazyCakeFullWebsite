@@ -8,6 +8,14 @@ const Header = () => {
   const handletoggleBtn = () => {
     setSideToggle(!sidetoggle)
   }
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('login'); // Remove login status
+    window.location.href='/login' // Redirect to login page
+  };
+
+
+
   return (
     <>
       <header>
@@ -24,8 +32,8 @@ const Header = () => {
               Go To Website
             </a>
 
-            <div className="logout">
-              Log Out <i class="fa-solid fa-right-from-bracket"></i>
+            <div className="logout" onClick={handleLogout}>
+              Log Out <i className="fa-solid fa-right-from-bracket"></i>
             </div>
           </div>
 
@@ -51,7 +59,9 @@ const Header = () => {
             {/* <li><Link to="/all-voucher" onClick={handletoggleBtn}> <i class="fa-solid fa-ticket"></i> Manage Voucher</Link></li> */}
             <li><Link to="/all-users" onClick={handletoggleBtn}> <i class="fa-solid fa-users"></i> All Users</Link></li>
 
-            <button className='logout mb-5'>Log Out <i class="fa-solid fa-right-from-bracket"></i></button>
+            <div className="logout" onClick={handleLogout}>
+              Log Out <i className="fa-solid fa-right-from-bracket"></i>
+            </div>
 
           </ul>
         </div>

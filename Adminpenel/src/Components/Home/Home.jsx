@@ -48,102 +48,114 @@ import AllProductTag from '../../Pages/ProductTag/AllProductTag'
 import AddProductTag from '../../Pages/ProductTag/AddProductTag'
 import EditProductTag from '../../Pages/ProductTag/EditProductTag'
 import AllContactQuery from '../../Pages/ContactQuery/AllContactQuery'
+import Login from '../auth/Login'
 
 const Home = () => {
+
+  const login = sessionStorage.getItem("login")
+
   return (
     <>
 
-      <Header />
-      <div className="rightside">
-        <Routes>
-          <Route path={"/dashboard"} element={<Dashboard />} />
+      {
+        login ? (
+          <>
+            <Header />
+            <div className="rightside">
+              <Routes>
+                <Route path={"/dashboard"} element={<Dashboard />} />
 
-          {/* Category --  */}
-          <Route path={"/all-category"} element={<AllCategory />} />
-          <Route path={"/add-category"} element={<AddCategory />} />
-          <Route path={"/edit-category/:id"} element={<EditCategory />} />
+                {/* Category --  */}
+                <Route path={"/all-category"} element={<AllCategory />} />
+                <Route path={"/add-category"} element={<AddCategory />} />
+                <Route path={"/edit-category/:id"} element={<EditCategory />} />
 
-          {/* Subcategory */}
+                {/* Subcategory */}
 
-          <Route path={"/all-subcategory"} element={<AllSubCategory />} />
-          <Route path={"/add-subcategory"} element={<AddSubCategory />} />
-          <Route path={"/edit-subcategory/:id"} element={<EditSubCategory />} />
+                <Route path={"/all-subcategory"} element={<AllSubCategory />} />
+                <Route path={"/add-subcategory"} element={<AddSubCategory />} />
+                <Route path={"/edit-subcategory/:id"} element={<EditSubCategory />} />
 
-          {/* Color */}
-          <Route path={"/all-color"} element={<AllColor />} />
-          <Route path={"/add-color"} element={<AddColor />} />
-          <Route path={"/edit-color/:id"} element={<EditColor />} />
+                {/* Color */}
+                <Route path={"/all-color"} element={<AllColor />} />
+                <Route path={"/add-color"} element={<AddColor />} />
+                <Route path={"/edit-color/:id"} element={<EditColor />} />
 
-          {/* Size */}
-          <Route path={"/all-size"} element={<AllSize />} />
-          <Route path={"/add-size"} element={<AddSize />} />
-          <Route path={"/edit-size/:id"} element={<EditSize />} />
+                {/* Size */}
+                <Route path={"/all-size"} element={<AllSize />} />
+                <Route path={"/add-size"} element={<AddSize />} />
+                <Route path={"/edit-size/:id"} element={<EditSize />} />
 
-          {/* Flover */}
-          <Route path={"/all-flower"} element={<AllFlavour />} />
-          <Route path={"/add-flover"} element={<AddFlavour />} />
-          <Route path={"/edit-flover/:id"} element={<EditFlavour />} />
-
-
-          <Route path={"/all-ref-companies"} element={<AllRefrenceCompany />} />
-          <Route path={"/add-ref-company"} element={<AddRefrenceCompany />} />
-          <Route path={"/edit-ref-company/:id"} element={<EditRefrenceCompany />} />
-
-          {/* Product --  */}
-          <Route path={"/all-products"} element={<AllProduct />} />
-          <Route path={"/add-product"} element={<AddProduct />} />
-          <Route path={"/edit-product/:id"} element={<EditProduct />} />
+                {/* Flover */}
+                <Route path={"/all-flower"} element={<AllFlavour />} />
+                <Route path={"/add-flover"} element={<AddFlavour />} />
+                <Route path={"/edit-flover/:id"} element={<EditFlavour />} />
 
 
-          {/* --- Orders --- */}
-          <Route path={"/all-users"} element={<AllUsers />} />
+                <Route path={"/all-ref-companies"} element={<AllRefrenceCompany />} />
+                <Route path={"/add-ref-company"} element={<AddRefrenceCompany />} />
+                <Route path={"/edit-ref-company/:id"} element={<EditRefrenceCompany />} />
 
-          <Route path={"/all-contact-query"} element={<AllContactQuery />} />
-
-
-          {/* --- Vouchers --- */}
-          <Route path={"/all-voucher"} element={<AllVoucher />} />   {/* // All Vouchers */}
-          <Route path={"/add-voucher"} element={<CreateVoucher />} />
-
-          {/* --- Tags --- */}
-          <Route path={"/all-tags"} element={<AllTags />} />
-          <Route path={"/add-tag"} element={<AddTag />} />
-          <Route path={"/edit-tag/:id"} element={<EditTag />} />
-
-          {/* --- Banners --- */}
-          <Route path={"/all-shop-banners"} element={<AllShopBanner />} />
-          <Route path={"/add-shop-banner"} element={<AddShopBanner />} />
-          <Route path={"/edit-shop-banner/:id"} element={<EditShopBanner />} />
-
-          {/* --- Banners --- */}
-          <Route path={"/all-banners"} element={<AllSBanner />} />
-          <Route path={"/add-banner"} element={<AddBanner />} />
-          <Route path={"/edit-banner/:id"} element={<EditBanner />} />
-
-          {/* --- Orders --- */}
-          <Route path={"/all-orders"} element={<AllOrder />} />
-          <Route path={"/order-details/:id"} element={<EditOrder />} />
-
-          <Route path={"/all-category-titel"} element={<AllCategoryTitel />} />
-          <Route path={"/add-category-titel"} element={<AddCategoryTitel />} />
-          <Route path={"/edit-category-titel/:id"} element={<EditCategoryTitel />} />
+                {/* Product --  */}
+                <Route path={"/all-products"} element={<AllProduct />} />
+                <Route path={"/add-product"} element={<AddProduct />} />
+                <Route path={"/edit-product/:id"} element={<EditProduct />} />
 
 
+                {/* --- Orders --- */}
+                <Route path={"/all-users"} element={<AllUsers />} />
 
-          <Route path={"/all-inner-subcategory"} element={<AllInnerSubCategory />} />
-          <Route path={"/add-innersubcategory"} element={<AddInnerSubCategory />} />
-          <Route path={"/edit-innersubcategory/:id"} element={<EditInnerSubCategory />} />
+                <Route path={"/all-contact-query"} element={<AllContactQuery />} />
 
 
-          <Route path={"/all-product-tag"} element={<AllProductTag />} />
-          <Route path={"/add-product-tag"} element={<AddProductTag />} />
-          <Route path={"/edit-product-tag/:id"} element={<EditProductTag />} />
+                {/* --- Vouchers --- */}
+                <Route path={"/all-voucher"} element={<AllVoucher />} />   {/* // All Vouchers */}
+                <Route path={"/add-voucher"} element={<CreateVoucher />} />
 
-          {/* all-shop */}
+                {/* --- Tags --- */}
+                <Route path={"/all-tags"} element={<AllTags />} />
+                <Route path={"/add-tag"} element={<AddTag />} />
+                <Route path={"/edit-tag/:id"} element={<EditTag />} />
 
-        </Routes>
-      </div>
+                {/* --- Banners --- */}
+                <Route path={"/all-shop-banners"} element={<AllShopBanner />} />
+                <Route path={"/add-shop-banner"} element={<AddShopBanner />} />
+                <Route path={"/edit-shop-banner/:id"} element={<EditShopBanner />} />
 
+                {/* --- Banners --- */}
+                <Route path={"/all-banners"} element={<AllSBanner />} />
+                <Route path={"/add-banner"} element={<AddBanner />} />
+                <Route path={"/edit-banner/:id"} element={<EditBanner />} />
+
+                {/* --- Orders --- */}
+                <Route path={"/all-orders"} element={<AllOrder />} />
+                <Route path={"/order-details/:id"} element={<EditOrder />} />
+
+                <Route path={"/all-category-titel"} element={<AllCategoryTitel />} />
+                <Route path={"/add-category-titel"} element={<AddCategoryTitel />} />
+                <Route path={"/edit-category-titel/:id"} element={<EditCategoryTitel />} />
+
+
+
+                <Route path={"/all-inner-subcategory"} element={<AllInnerSubCategory />} />
+                <Route path={"/add-innersubcategory"} element={<AddInnerSubCategory />} />
+                <Route path={"/edit-innersubcategory/:id"} element={<EditInnerSubCategory />} />
+
+
+                <Route path={"/all-product-tag"} element={<AllProductTag />} />
+                <Route path={"/add-product-tag"} element={<AddProductTag />} />
+                <Route path={"/edit-product-tag/:id"} element={<EditProductTag />} />
+
+                {/* all-shop */}
+
+              </Routes>
+            </div>
+          </>
+        ) : (
+          <Routes>
+            <Route path="/*" element={<Login />} />
+          </Routes>
+        )}
     </>
   )
 }
