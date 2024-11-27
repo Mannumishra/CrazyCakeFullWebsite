@@ -46,7 +46,8 @@ const EditOrder = () => {
     };
 
     // Determine if the "Order Status" dropdown should be disabled
-    const isOrderStatusDisabled = paymentStatus === "Success" || orderStatus === "Delivered" || orderStatus === "Cancelled";
+    const isOrderStatusDisabled =  orderStatus === "Delivered" || orderStatus === "Cancelled";
+    const isPaymentStatusDisabled = paymentStatus === "Success";
 
     return (
         <>
@@ -106,7 +107,7 @@ const EditOrder = () => {
                                                     onChange={(e) => setOrderStatus(e.target.value)}
                                                     disabled={isOrderStatusDisabled} // Disable the dropdown based on payment and status
                                                 >
-                                                    <option value="Confirmed">Confirmed</option>
+                                                    <option value="Order Confirmed	">Order Confirmed	</option>
                                                     <option value="Processing">Processing</option>
                                                     <option value="Shipped">Shipped</option>
                                                     <option value="Delivered">Delivered</option>
@@ -125,7 +126,7 @@ const EditOrder = () => {
                                                     className="form-select"
                                                     value={paymentStatus}
                                                     onChange={(e) => setPaymentStatus(e.target.value)}
-                                                    disabled={orderData.paymentStatus === "Success"} // Disable if payment is success
+                                                    disabled={isPaymentStatusDisabled} // Disable if payment is success
                                                 >
                                                     <option value="Pending">Pending</option>
                                                     <option value="Success">Success</option>

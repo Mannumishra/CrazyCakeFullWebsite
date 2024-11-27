@@ -43,6 +43,7 @@ const Login = () => {
           icon: 'success',
           confirmButtonText: 'Okay'
         });
+        window.location.href = "/"
       }
     } catch (error) {
       console.error("Error during login:", error.response?.data || error.message);
@@ -89,6 +90,8 @@ const Login = () => {
       });
     }
   };
+
+
 
   return (
     <div className="container-fluid">

@@ -73,7 +73,7 @@ const verifyPayment = async (req, res) => {
         if (generatedSignature === razorpay_signature) {
             const updatedCheckout = await Checkout.findOneAndUpdate(
                 { transactionId: razorpay_order_id },
-                { paymentStatus: 'Success', orderStatus: 'Confirmed' },
+                { paymentStatus: 'Success', orderStatus: 'Order Confirmed' },
                 { new: true }
             );
             if (!updatedCheckout) {

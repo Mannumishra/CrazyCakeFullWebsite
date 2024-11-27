@@ -13,12 +13,12 @@ const AllCakes = () => {
   const getProductrelatedSubcategory = async () => {
     try {
       let url = `http://localhost:8000/api/get-product-by-subcatname/${subcatname}`;
-      
+
       // Add price filter if selected
       if (selectedPrice) {
         url += `?priceRange=${selectedPrice}`;
       }
-      
+
       const res = await axios.get(url);
       console.log(res);
       if (res.status === 200) {
@@ -83,7 +83,7 @@ const AllCakes = () => {
                 {cakesArr.map((item, index) => (
                   <div className="col-md-3 mb-3" key={index}>
                     <div className="card">
-                      <Link to="/all-products/product-details">
+                      <Link to={`/product-details/${item.productName}`}>
                         <img src={`http://localhost:8000/${item.productImage[0]}`} className="w-100" alt="images" />
                         <div className="productDetails">
                           <p className="productTitle">{item.productName}</p>

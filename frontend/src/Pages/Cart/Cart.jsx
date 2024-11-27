@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import "./Cart.css";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
-
+  const loginvalue = sessionStorage.getItem("login")
+  const navigate = useNavigate()
   // Fetch cart data from sessionStorage
   useEffect(() => {
     const storedCart = JSON.parse(sessionStorage.getItem("cart")) || [];
@@ -52,6 +53,14 @@ const Cart = () => {
     (acc, item) => acc + (item.price || 0) * (item.quantity || 1),
     0
   );
+
+  const handleConfirmBooking = () => {
+    if (!loginvalue) {
+      navigate("/login"); // Redirect to login if not logged in
+    } else {
+      navigate("/checkout"); // Redirect to checkout if logged in
+    }
+  };
 
   return (
     <>
@@ -123,7 +132,9 @@ const Cart = () => {
               <h2>Order Summary</h2>
               <p>Items: {cartItems.length}</p>
               <p>Total: ₹{total.toFixed(2)}</p>
-              <Link to="/checkout" className="confirm-button">Confirm Booking</Link>
+              <button className="confirm-button" onClick={handleConfirmBooking}>
+                Confirm Booking
+              </button>
             </div>
           )}
         </div>

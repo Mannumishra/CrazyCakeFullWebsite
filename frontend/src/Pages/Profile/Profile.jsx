@@ -1,45 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import "./profile.css";
-import axios from 'axios'
 
 const Profile = () => {
-  const userid = sessionStorage.getItem("userId")
+  const userid = sessionStorage.getItem("userId");
 
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState({});
+  const [orders, setOrders] = useState([]);
+
   const getApiData = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/user/" + userid)
+      const res = await axios.get("http://localhost:8000/api/user/" + userid);
       if (res.status === 200) {
-        setUser(res.data.data)
+        setUser(res.data.data);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
+
+  const getOrderData = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:8000/api/checkout/user/" + userid
+      );
+      if (res.status === 200) {
+        setOrders(res.data.data); // Store orders in state
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    getApiData()
-  }, [userid])
+    getApiData();
+    getOrderData();
+  }, [userid]);
 
   const handleLogout = () => {
-    // Clear user session or token and redirect to login page
-    sessionStorage.clear("login");
-    sessionStorage.clear("token");
-    sessionStorage.clear("userId");
-    window.location.href = "/login"; // Redirect to login page
+    sessionStorage.clear();
+    window.location.href = "/login";
   };
 
   return (
     <>
-      {/* ----breadCrumb----  */}
       <section className="breadCrumb">
         <div className="breadCrumbContent">
           <h1>Profile</h1>
           <Link to="/">Home /</Link> <Link to="">Profile</Link>
         </div>
       </section>
-      {/* ----breadCrumb---- end  */}
 
       <div className="container profile">
         <h1>Our Profile</h1>
@@ -50,55 +61,60 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* ----Logout Button---- */}
         <div className="logout-btn-container">
           <button onClick={handleLogout} className="logout-btn">Logout</button>
         </div>
-        {/* ----Logout Button end---- */}
 
-        {/* ----Order History---- */}
         <div className="orderHistory">
           <h2>Order History</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Order ID</th>
-                <th>Date</th>
-                <th>Product Name</th>
-                <th>Quantity</th>
-                <th>Total Amount</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>101</td>
-                <td>2024-11-20</td>
-                <td>Wireless Mouse</td>
-                <td>2</td>
-                <td>$40</td>
-                <td>Delivered</td>
-              </tr>
-              <tr>
-                <td>102</td>
-                <td>2024-11-22</td>
-                <td>Bluetooth Speaker</td>
-                <td>1</td>
-                <td>$60</td>
-                <td>Shipped</td>
-              </tr>
-              <tr>
-                <td>103</td>
-                <td>2024-11-23</td>
-                <td>Gaming Keyboard</td>
-                <td>1</td>
-                <td>$80</td>
-                <td>Processing</td>
-              </tr>
-            </tbody>
-          </table>
+          {orders.length > 0 ? (
+            orders.map(order => (
+              <div className="order-container" key={order._id}>
+                <div className="order-details">
+                  <p><b>Order ID:</b> {order._id}</p>
+                  <p><b>Total Price:</b> ₹{order.totalPrice}</p>
+                  <p><b>Transaction ID:</b> {order.transactionId || "N/A"}</p>
+                  <p><b>Payment Status:</b> {order.paymentStatus}</p>
+                  <p><b>Order Status:</b> {order.orderStatus}</p>
+                  <p><b>Payment Mode:</b> {order.paymentMode}</p>
+                </div>
+                <div className="cart-items">
+                  <h3>Cart Items</h3>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Image</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Weight</th>
+                        <th>Egg Option</th>
+                        <th>Price</th>
+                        <th>Delivery Date</th>
+                        <th>Message</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {order.cartItems.map(item => (
+                        <tr key={item._id}>
+                          <td><img src={`http://localhost:8000/${item.image}`} alt="" style={{height:50}}/></td>
+                          <td>{item.name}</td>
+                          <td>{item.quantity}</td>
+                          <td>{item.weight}</td>
+                          <td>{item.eggOption}</td>
+                          <td>₹{item.price}</td>
+                          <td>{new Date(item.deliveryDate).toLocaleDateString()}</td>
+                          <td>{item.message}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No orders found.</p>
+          )}
         </div>
-        {/* ----Order History---- end */}
       </div>
     </>
   );

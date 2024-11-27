@@ -56,7 +56,7 @@ const ProductDetails = () => {
     const hasWeightVariants = data.Variant?.some(
       (variant) => variant?.weight?.sizeweight
     );
-  
+
     // If weights exist but none are selected
     if (hasWeightVariants && !activeWeight) {
       Swal.fire({
@@ -66,7 +66,7 @@ const ProductDetails = () => {
       });
       return;
     }
-  
+
     // Check if deliveryDate is provided
     if (!deliveryDate) {
       Swal.fire({
@@ -76,7 +76,7 @@ const ProductDetails = () => {
       });
       return;
     }
-  
+
     // Prepare the cart item
     const cartItem = {
       id: data._id,
@@ -90,9 +90,9 @@ const ProductDetails = () => {
       image: data.productImage?.[0] || "default-image.jpg", // Use default image if missing
       quantity: 1, // Initial quantity
     };
-  
+
     const cart = JSON.parse(sessionStorage.getItem("cart")) || [];
-  
+
     // Check for existing item in the cart with the same product, weight, and egg option
     const existingItemIndex = cart.findIndex(
       (item) =>
@@ -100,7 +100,7 @@ const ProductDetails = () => {
         item.weight === cartItem.weight &&
         item.eggOption === cartItem.eggOption
     );
-  
+
     if (existingItemIndex !== -1) {
       // Item already in the cart with the same weight and egg option
       Swal.fire({
@@ -110,7 +110,7 @@ const ProductDetails = () => {
       });
       return;
     }
-  
+
     // Check for the same product with a different weight or egg option
     const differentWeightItemIndex = cart.findIndex(
       (item) =>
@@ -118,7 +118,7 @@ const ProductDetails = () => {
         item.weight !== cartItem.weight &&
         item.eggOption === cartItem.eggOption
     );
-  
+
     if (differentWeightItemIndex !== -1) {
       // Different weight, allow adding to cart
       cart.push(cartItem);
@@ -139,8 +139,8 @@ const ProductDetails = () => {
       });
     }
   };
-  
-  
+
+
 
 
   const settings = {
