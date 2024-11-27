@@ -47,6 +47,7 @@ import EditInnerSubCategory from '../../Pages/InnerSubCategory/EditInnerSubCateg
 import AllProductTag from '../../Pages/ProductTag/AllProductTag'
 import AddProductTag from '../../Pages/ProductTag/AddProductTag'
 import EditProductTag from '../../Pages/ProductTag/EditProductTag'
+import AllContactQuery from '../../Pages/ContactQuery/AllContactQuery'
 
 const Home = () => {
   return (
@@ -96,6 +97,9 @@ const Home = () => {
 
           {/* --- Orders --- */}
           <Route path={"/all-users"} element={<AllUsers />} />
+
+          <Route path={"/all-contact-query"} element={<AllContactQuery />} />
+
 
           {/* --- Vouchers --- */}
           <Route path={"/all-voucher"} element={<AllVoucher />} />   {/* // All Vouchers */}
