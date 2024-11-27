@@ -45,20 +45,20 @@
   }
   
   .dashboard-card i {
-    font-size: 4rem; /* Increased icon size */
-    color: #28a745;
+    font-size: 2rem; /* Increased icon size */
+    color: #EC008C;
     margin-bottom: 15px;
   }
   
   .dashboard-card h3 {
-    font-size: 1.6rem; /* Increased font size */
+    font-size: 1.0rem; /* Increased font size */
     color: #333;
     font-weight: 600;
     margin-bottom: 12px;
   }
   
   .dashboard-card p {
-    font-size: 1.1rem; /* Increased font size */
+    font-size: 10px; /* Increased font size */
     color: #777;
   }
   
@@ -69,7 +69,7 @@
   }
   
   .dashboard-card p:hover {
-    color: #007bff;
+    color: #EC008C;
     cursor: pointer;
   }
   

@@ -16,7 +16,6 @@ const Dashboard = () => {
   const [colors, setColors] = useState([]);
   const [sizes, setSizes] = useState([]);
   const [flowers, setFlowers] = useState([]);
-  const [companies, setCompanies] = useState([]);
   const [products, setProducts] = useState([]);
   const [tags, setTags] = useState([]);
   const [vouchers, setVouchers] = useState([]);
@@ -26,9 +25,9 @@ const Dashboard = () => {
     // Function to fetch data sequentially
     const fetchData = async () => {
       try {
-        // // Fetch users
-        // const usersResponse = await axios.get('http://localhost:8000/api/users');
-        // setUsers(usersResponse.data);
+        // Fetch users
+        const usersResponse = await axios.get('http://localhost:8000/api/user');
+        setUsers(usersResponse.data.data);
 
         // Fetch banners
         const bannersResponse = await axios.get('http://localhost:8000/api/get-banners');
@@ -54,9 +53,6 @@ const Dashboard = () => {
         const flowersResponse = await axios.get('http://localhost:8000/api/get-flover');
         setFlowers(flowersResponse.data.data);
 
-        // Fetch companies
-        const companiesResponse = await axios.get('http://localhost:8000/api/all-ref-companies');
-        setCompanies(companiesResponse.data.data);
 
         // Fetch products
         const productsResponse = await axios.get('http://localhost:8000/api/all-product');
@@ -70,9 +66,10 @@ const Dashboard = () => {
         // const vouchersResponse = await axios.get('http://localhost:8000/api/vouchers');
         // setVouchers(vouchersResponse.data);
 
-        // // Fetch orders
-        // const ordersResponse = await axios.get('http://localhost:8000/api/orders');
-        // setOrders(ordersResponse.data);
+        // Fetch orders
+        const ordersResponse = await axios.get('http://localhost:8000/api/checkouts');
+        // console.log(ordersResponse)
+        setOrders(ordersResponse.data.data);
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -83,57 +80,57 @@ const Dashboard = () => {
   }, []); // Empty dependency array to run only once on mount
 
 
-    // States to store data for each section
-    const [orderss, setOrderss] = useState([]);
-    const [daySales, setDaySales] = useState([]);
-  
-    useEffect(() => {
-      // Function to fetch data sequentially
-      const fetchData = async () => {
-        try {
-          // Fetch orders for show order graph
-          const ordersResponse = await axios.get('http://localhost:8000/api/orders');
-          setOrderss(ordersResponse.data);
-  
-          // Fetch day-by-day sale data for the graph
-          const salesResponse = await axios.get('http://localhost:8000/api/day-sales');
-          setDaySales(salesResponse.data);
-  
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
-  
-      fetchData();
-    }, []); // Empty dependency array to run only once on mount
-  
-    // Prepare data for Show Orders Graph
-    const showOrdersData = {
-      labels: orders.map(order => order.date), // Assuming 'date' is available in the orders
-      datasets: [
-        {
-          label: 'Orders',
-          data: orders.map(order => order.totalOrders), // Assuming 'totalOrders' contains order count
-          fill: false,
-          borderColor: 'rgba(75,192,192,1)',
-          tension: 0.1
-        }
-      ]
-    };
-  
-    // Prepare data for Day by Day Sale Graph
-    const daySalesData = {
-      labels: daySales.map(sale => sale.date), // Assuming 'date' is available in day sales
-      datasets: [
-        {
-          label: 'Sales',
-          data: daySales.map(sale => sale.totalSales), // Assuming 'totalSales' contains sale amounts
-          fill: false,
-          borderColor: 'rgba(255,99,132,1)',
-          tension: 0.1
-        }
-      ]
-    };
+  // States to store data for each section
+  const [orderss, setOrderss] = useState([]);
+  const [daySales, setDaySales] = useState([]);
+
+  // useEffect(() => {
+  //   // Function to fetch data sequentially
+  //   const fetchData = async () => {
+  //     try {
+  //       // Fetch orders for show order graph
+  //       const ordersResponse = await axios.get('http://localhost:8000/api/orders');
+  //       setOrderss(ordersResponse.data);
+
+  //       // Fetch day-by-day sale data for the graph
+  //       const salesResponse = await axios.get('http://localhost:8000/api/day-sales');
+  //       setDaySales(salesResponse.data);
+
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []); // Empty dependency array to run only once on mount
+
+  // // Prepare data for Show Orders Graph
+  // const showOrdersData = {
+  //   labels: orders.map(order => order.date), // Assuming 'date' is available in the orders
+  //   datasets: [
+  //     {
+  //       label: 'Orders',
+  //       data: orders.map(order => order.totalOrders), // Assuming 'totalOrders' contains order count
+  //       fill: false,
+  //       borderColor: 'rgba(75,192,192,1)',
+  //       tension: 0.1
+  //     }
+  //   ]
+  // };
+
+  // Prepare data for Day by Day Sale Graph
+  const daySalesData = {
+    labels: daySales.map(sale => sale.date), // Assuming 'date' is available in day sales
+    datasets: [
+      {
+        label: 'Sales',
+        data: daySales.map(sale => sale.totalSales), // Assuming 'totalSales' contains sale amounts
+        fill: false,
+        borderColor: 'rgba(255,99,132,1)',
+        tension: 0.1
+      }
+    ]
+  };
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
@@ -147,6 +144,17 @@ const Dashboard = () => {
             <i className="fa-solid fa-gauge"></i>
             <h3>Dashboard</h3>
             <p>Overview of all your activities</p>
+          </Link>
+        </div>
+
+        <div className="dashboard-card">
+          <Link to="/all-orders">
+            <i className="fa-solid fa-truck"></i>
+            <h3>Manage Orders</h3>
+            <p>Track and manage your customer orders</p>
+            <p>{orders?.length} Orders</p>
+            {/* Display orders data */}
+            {/* <pre>{JSON.stringify(orders, null, 2)}</pre> */}
           </Link>
         </div>
 
@@ -217,17 +225,6 @@ const Dashboard = () => {
         </div>
 
         <div className="dashboard-card">
-          <Link to="/all-ref-companies">
-            <i className="fa-solid fa-building"></i>
-            <h3>Manage Reference Companies</h3>
-            <p>Maintain reference company details</p>
-            <p>{companies.length} Companies</p>
-            {/* Display companies data */}
-            {/* <pre>{JSON.stringify(companies, null, 2)}</pre> */}
-          </Link>
-        </div>
-
-        <div className="dashboard-card">
           <Link to="/all-products">
             <i className="fa-solid fa-boxes-stacked"></i>
             <h3>Manage Products</h3>
@@ -250,17 +247,6 @@ const Dashboard = () => {
         </div>
 
         <div className="dashboard-card">
-          <Link to="/all-voucher">
-            <i className="fa-solid fa-ticket"></i>
-            <h3>Manage Voucher</h3>
-            <p>Issue and manage vouchers for discounts</p>
-            <p>{vouchers.length} Vouchers</p>
-            {/* Display vouchers data */}
-            {/* <pre>{JSON.stringify(vouchers, null, 2)}</pre> */}
-          </Link>
-        </div>
-
-        <div className="dashboard-card">
           <Link to="/all-users">
             <i className="fa-solid fa-users"></i>
             <h3>All Users</h3>
@@ -271,19 +257,10 @@ const Dashboard = () => {
           </Link>
         </div>
 
-        <div className="dashboard-card">
-          <Link to="/all-orders">
-            <i className="fa-solid fa-truck"></i>
-            <h3>Manage Orders</h3>
-            <p>Track and manage your customer orders</p>
-            <p>{orders.length} Orders</p>
-            {/* Display orders data */}
-            {/* <pre>{JSON.stringify(orders, null, 2)}</pre> */}
-          </Link>
-        </div>
+
       </div>
 
-      <div className="dashboard-card">
+      {/* <div className="dashboard-card">
           <h3>Show Orders</h3>
           <p>Overview of your orders</p>
           <Line data={showOrdersData} />
@@ -293,7 +270,7 @@ const Dashboard = () => {
           <h3>Day by Day Sales</h3>
           <p>Overview of your sales</p>
           <Line data={daySalesData} />
-        </div>
+        </div> */}
     </div>
   )
 }
