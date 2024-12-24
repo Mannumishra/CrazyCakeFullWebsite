@@ -80,7 +80,7 @@ const Cart = () => {
               cartItems.map((item) => (
                 <div key={getUniqueId(item.id, item.weight)} className="cart-item">
                   <img
-                    src={`http://localhost:8000/${item.image}`}
+                    src={`https://api.cakecrazzy.com/${item.image}`}
                     alt={item.name}
                     className="item-image"
                   />

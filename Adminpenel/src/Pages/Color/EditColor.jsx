@@ -17,7 +17,7 @@ const EditColor = () => {
     useEffect(() => {
         const fetchColor = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/get-single-color/${id}`);
+                const response = await axios.get(`https://api.cakecrazzy.com/api/get-single-color/${id}`);
                 setColorData({
                     ...response.data.data,
                     colorStatus: response.data.data.colorStatus, // Assuming the API returns "True" or "False" as strings
@@ -43,7 +43,7 @@ const EditColor = () => {
         setBtnLoading(true); // Set loading state to true
 
         try {
-            const response = await axios.put(`http://localhost:8000/api/update-color/${id}`, colorData);
+            const response = await axios.put(`https://api.cakecrazzy.com/api/update-color/${id}`, colorData);
             toast.success(response.data.message); // Show success message
             navigate('/all-color'); // Redirect to the all colors page
         } catch (error) {

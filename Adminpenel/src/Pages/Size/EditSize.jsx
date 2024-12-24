@@ -16,7 +16,7 @@ const EditSize = () => {
     useEffect(() => {
         const fetchSize = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/get-single-size/${id}`); // Adjust the endpoint for sizes
+                const response = await axios.get(`https://api.cakecrazzy.com/api/get-single-size/${id}`); // Adjust the endpoint for sizes
                 // Convert sizeStatus to boolean for easier handling
                 setSizeData({
                     ...response.data.data,
@@ -49,7 +49,7 @@ const EditSize = () => {
         };
 
         try {
-            const response = await axios.put(`http://localhost:8000/api/update-size/${id}`, updatedData); // Adjust the update endpoint
+            const response = await axios.put(`https://api.cakecrazzy.com/api/update-size/${id}`, updatedData); // Adjust the update endpoint
             toast.success(response.data.message); // Show success message
             navigate('/all-size'); // Redirect to the all sizes page
         } catch (error) {

@@ -46,7 +46,7 @@ const CheckOut = () => {
 
     const initiateOnlinePayment = async () => {
         try {
-            const response = await axios.post('http://localhost:8000/api/checkout', formData);
+            const response = await axios.post('https://api.cakecrazzy.com/api/checkout', formData);
             console.log(response)
             const { razorpayOrderId, amount, currency } = response.data;
             console.log(amount)
@@ -61,7 +61,7 @@ const CheckOut = () => {
                 order_id: razorpayOrderId,
                 handler: async (paymentResponse) => {
                     try {
-                        const verifyResponse = await axios.post("http://localhost:8000/api/verify-payment", {
+                        const verifyResponse = await axios.post("https://api.cakecrazzy.com/api/verify-payment", {
                             razorpay_payment_id: paymentResponse.razorpay_payment_id,
                             razorpay_order_id: paymentResponse.razorpay_order_id,
                             razorpay_signature: paymentResponse.razorpay_signature,
@@ -100,7 +100,7 @@ const CheckOut = () => {
 
     const submitOrder = async () => {
         try {
-            const response = await axios.post("http://localhost:8000/api/checkout", formData);
+            const response = await axios.post("https://api.cakecrazzy.com/api/checkout", formData);
             if (response.status === 200) {
                 Swal.fire("Success", "Order placed successfully!", "success");
                 sessionStorage.removeItem("cart");
@@ -218,7 +218,7 @@ const CheckOut = () => {
                                             <tr key={`${item.id}-${item.weight}`}>
                                                 <td>
                                                     <img
-                                                        src={`http://localhost:8000/${item.image}`}
+                                                        src={`https://api.cakecrazzy.com/${item.image}`}
                                                         alt={item.name}
                                                         style={{ height: 50 }}
                                                     />

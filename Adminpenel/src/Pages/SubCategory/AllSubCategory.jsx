@@ -12,7 +12,7 @@ const AllSubCategory = () => {
     useEffect(() => {
         const fetchSubcategories = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/get-subcategory');
+                const response = await axios.get('https://api.cakecrazzy.com/api/get-subcategory');
                 setSubcategories(response.data.data); // assuming the data is in response.data.data
             } catch (error) {
                 toast.error("Error fetching subcategories");
@@ -38,7 +38,7 @@ const AllSubCategory = () => {
 
         if (confirmDelete.isConfirmed) {
             try {
-                await axios.delete(`http://localhost:8000/api/delete-subcategory/${id}`);
+                await axios.delete(`https://api.cakecrazzy.com/api/delete-subcategory/${id}`);
                 setSubcategories(subcategories.filter(subcategory => subcategory._id !== id));
                 Swal.fire('Deleted!', 'Your subcategory has been deleted.', 'success');
             } catch (error) {
@@ -84,7 +84,7 @@ const AllSubCategory = () => {
                                     <th scope="row">{index + 1}</th>
                                     <td>{subcategory?.categoryName?.mainCategoryName}</td>
                                     <td>{subcategory.subcategoryName}</td>
-                                    <td> <img src={`http://localhost:8000/${subcategory.subcategoryImage}`} alt={subcategory.subcategoryName} /></td>
+                                    <td> <img src={`https://api.cakecrazzy.com/${subcategory.subcategoryImage}`} alt={subcategory.subcategoryName} /></td>
                                     <td>{subcategory.subcategoryStatus}</td>
                                     <td>
                                         <Link to={`/edit-subcategory/${subcategory._id}`} className="bt edit">

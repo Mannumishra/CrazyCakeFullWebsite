@@ -14,7 +14,7 @@ const EditOrder = () => {
     // Fetch API data
     const getApiData = async () => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/checkout/${id}`);
+            const res = await axios.get(`https://api.cakecrazzy.com/api/checkout/${id}`);
             setOrderData(res.data);
             setOrderStatus(res.data.orderStatus);
             setPaymentStatus(res.data.paymentStatus);
@@ -35,7 +35,7 @@ const EditOrder = () => {
                 orderStatus,
                 paymentStatus,
             };
-            const res = await axios.put(`http://localhost:8000/api/checkout/${id}`, updatedData);
+            const res = await axios.put(`https://api.cakecrazzy.com/api/checkout/${id}`, updatedData);
             toast.success("Order updated successfully!");
             setOrderData(res.data); // Optionally refresh the data
             navigate("/all-orders")
@@ -154,7 +154,7 @@ const EditOrder = () => {
                                             <p className="mb-1">Delivery Date: {new Date(item.deliveryDate).toLocaleString()}</p>
                                             <p className="mb-0">Message: {item.message}</p>
                                             <img
-                                                src={`http://localhost:8000/${item.image}`}
+                                                src={`https://api.cakecrazzy.com/${item.image}`}
                                                 alt={item.name}
                                                 style={{ width: "100px", height: "100px", marginTop: "10px" }}
                                             />

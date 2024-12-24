@@ -12,7 +12,7 @@ const AllCategory = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/get-main-category');
+                const response = await axios.get('https://api.cakecrazzy.com/api/get-main-category');
                 setCategories(response.data.data); // assuming the data is in response.data.data
                 // toast.success(response.data.message);
             } catch (error) {
@@ -39,7 +39,7 @@ const AllCategory = () => {
 
         if (confirmDelete.isConfirmed) {
             try {
-                await axios.delete(`http://localhost:8000/api/delete-main-category/${id}`);
+                await axios.delete(`https://api.cakecrazzy.com/api/delete-main-category/${id}`);
                 setCategories(categories.filter(category => category._id !== id));
                 Swal.fire('Deleted!', 'Your category has been deleted.', 'success');
             } catch (error) {
@@ -97,7 +97,7 @@ const AllCategory = () => {
                                     <th scope="row">{index + 1}</th>
                                     <td>{category.mainCategoryName}</td>
                                     <td>
-                                        <img src={`http://localhost:8000/${category.mainCategoryImage}`} alt={category.mainCategoryName} style={{ width: '50px', height: '50px' }} />
+                                        <img src={`https://api.cakecrazzy.com/${category.mainCategoryImage}`} alt={category.mainCategoryName} style={{ width: '50px', height: '50px' }} />
                                     </td>
                                     <td>{category.mainCategoryStatus === 'True' ? 'Yes' : 'No'}</td>
                                     <td>

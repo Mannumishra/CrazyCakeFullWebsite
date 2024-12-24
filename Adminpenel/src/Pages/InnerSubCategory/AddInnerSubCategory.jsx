@@ -20,7 +20,7 @@ const AddInnerSubCategory = () => {
     useEffect(() => {
         const fetchMainCategories = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/get-main-category');
+                const response = await axios.get('https://api.cakecrazzy.com/api/get-main-category');
                 setMainCategories(response.data.data);
             } catch (error) {
                 toast.error("Error fetching main categories");
@@ -33,7 +33,7 @@ const AddInnerSubCategory = () => {
     useEffect(() => {
         const fetchSubCategories = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/get-subcategory');
+                const response = await axios.get('https://api.cakecrazzy.com/api/get-subcategory');
                 setSubCategories(response.data.data);
             } catch (error) {
                 toast.error("Error fetching subcategories");
@@ -88,7 +88,7 @@ const AddInnerSubCategory = () => {
         if (formData.Image) data.append('Image', formData.Image);  // Appending image file to FormData
 
         try {
-            const response = await axios.post('http://localhost:8000/api/create-inner-subcategory', data, {
+            const response = await axios.post('https://api.cakecrazzy.com/api/create-inner-subcategory', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

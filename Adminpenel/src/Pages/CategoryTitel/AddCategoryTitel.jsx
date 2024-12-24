@@ -19,7 +19,7 @@ const AddCategoryTitel = () => {
         // Fetch categories from the API on component mount
         const fetchCategories = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/get-main-category');
+                const response = await axios.get('https://api.cakecrazzy.com/api/get-main-category');
                 if (response.data && response.data.data) {
                     setCategoriesList(response.data.data); // Set fetched categories
                 }
@@ -76,7 +76,7 @@ const AddCategoryTitel = () => {
         uploadData.append('categories', JSON.stringify(formData.categories)); // Append selected categories
 
         try {
-            const response = await axios.post('http://localhost:8000/api/create-main-category', uploadData, {
+            const response = await axios.post('https://api.cakecrazzy.com/api/create-main-category', uploadData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

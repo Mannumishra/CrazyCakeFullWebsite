@@ -12,7 +12,7 @@ const AllRefrenceCompany = () => {
     useEffect(() => {
         const fetchCompanies = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/all-ref-companies'); // Adjust the API endpoint
+                const response = await axios.get('https://api.cakecrazzy.com/api/all-ref-companies'); // Adjust the API endpoint
                 if (response.data && response.data.data) {
                     setCompanies(response.data.data); // Set the fetched reference companies
                 } else {
@@ -40,7 +40,7 @@ const AllRefrenceCompany = () => {
 
         if (confirmed.isConfirmed) {
             try {
-                const response = await axios.delete(`http://localhost:8000/api/delete-ref-company/${id}`); // Adjust the delete URL
+                const response = await axios.delete(`https://api.cakecrazzy.com/api/delete-ref-company/${id}`); // Adjust the delete URL
                 toast.success(response.data.message);
                 setCompanies(companies.filter(company => company._id !== id)); // Remove deleted company from state
             } catch (error) {

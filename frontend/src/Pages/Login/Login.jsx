@@ -32,7 +32,7 @@ const Login = () => {
     };
 
     try {
-      const response = await axios.post("http://localhost:8000/api/user/login", loginData); // Make API call to login route
+      const response = await axios.post("https://api.cakecrazzy.com/api/user/login", loginData); // Make API call to login route
       if (response.status === 200) {
         sessionStorage.setItem("login", true)
         sessionStorage.setItem("token", response.data.data.token)
@@ -69,7 +69,7 @@ const Login = () => {
     };
 
     try {
-      const response = await axios.post("http://localhost:8000/api/user", registerData);
+      const response = await axios.post("https://api.cakecrazzy.com/api/user", registerData);
       console.log(response)
       // Show success message using SweetAlert2
       Swal.fire({

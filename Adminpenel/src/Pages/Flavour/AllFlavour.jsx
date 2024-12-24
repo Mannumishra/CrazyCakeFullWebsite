@@ -12,7 +12,7 @@ const AllFlavour = () => {
     useEffect(() => {
         const fetchFlovers = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/get-flover'); // Adjusted the URL to fetch flovers
+                const response = await axios.get('https://api.cakecrazzy.com/api/get-flover'); // Adjusted the URL to fetch flovers
                 if (response.data && response.data.data) {
                     setFlovers(response.data.data); // Set the fetched flovers
                 } else {
@@ -40,7 +40,7 @@ const AllFlavour = () => {
 
         if (confirmed.isConfirmed) {
             try {
-                const response = await axios.delete(`http://localhost:8000/api/delete-flover/${id}`); // Adjusted the delete URL
+                const response = await axios.delete(`https://api.cakecrazzy.com/api/delete-flover/${id}`); // Adjusted the delete URL
                 toast.success(response.data.message);
                 setFlovers(flovers.filter(flover => flover._id !== id)); // Remove deleted flover from state
             } catch (error) {

@@ -12,7 +12,7 @@ const AllColor = () => {
     useEffect(() => {
         const fetchColors = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/get-color');
+                const response = await axios.get('https://api.cakecrazzy.com/api/get-color');
                 if (response.data && response.data.data) {
                     setColors(response.data.data); // Set the fetched colors
                 } else {
@@ -40,7 +40,7 @@ const AllColor = () => {
 
         if (confirmed.isConfirmed) {
             try {
-                const response = await axios.delete(`http://localhost:8000/api/delete-color/${id}`); // Adjust the delete URL
+                const response = await axios.delete(`https://api.cakecrazzy.com/api/delete-color/${id}`); // Adjust the delete URL
                 toast.success(response.data.message);
                 setColors(colors.filter(color => color._id !== id)); // Remove deleted color from state
             } catch (error) {

@@ -17,7 +17,7 @@ const EditCategoryTitel = () => {
     useEffect(() => {
         const fetchCategory = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/get-single-main-category/${id}`);
+                const response = await axios.get(`https://api.cakecrazzy.com/api/get-single-main-category/${id}`);
                 const { mainCategoryName, mainCategoryImage, mainCategoryStatus } = response.data.data;
                 setCategory({
                     mainCategoryName, // Updated key name
@@ -53,7 +53,7 @@ const EditCategoryTitel = () => {
         formData.append('mainCategoryStatus', category.mainCategoryStatus ? 'True' : 'False'); // Ensure this key matches your backend
 
         try {
-            const response = await axios.put(`http://localhost:8000/api/update-main-category/${id}`, formData, {
+            const response = await axios.put(`https://api.cakecrazzy.com/api/update-main-category/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

@@ -12,7 +12,7 @@ const AllInnerSubCategory = () => {
     useEffect(() => {
         const fetchInnerSubCategories = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/get-inner-subcategory');
+                const response = await axios.get('https://api.cakecrazzy.com/api/get-inner-subcategory');
                 setInnerSubcategories(response.data.data);
             } catch (error) {
                 toast.error("Error fetching inner subcategories");
@@ -38,7 +38,7 @@ const AllInnerSubCategory = () => {
             });
 
             if (result.isConfirmed) {
-                await axios.delete(`http://localhost:8000/api/delete-inner-subcategory/${id}`);
+                await axios.delete(`https://api.cakecrazzy.com/api/delete-inner-subcategory/${id}`);
                 setInnerSubcategories(innerSubcategories.filter(subcategory => subcategory._id !== id));
                 toast.success("Inner subcategory deleted successfully");
             }
@@ -86,7 +86,7 @@ const AllInnerSubCategory = () => {
                                 <td>{subcategory?.subcategoryName?.subcategoryName}</td>
                                 <td>{subcategory.innerSubcategoryName}</td>
                                 <td>
-                                    <img src={`http://localhost:8000/${subcategory.Image}`} alt={subcategory.innerSubcategoryName} style={{ width: '50px', height: '50px' }} />
+                                    <img src={`https://api.cakecrazzy.com/${subcategory.Image}`} alt={subcategory.innerSubcategoryName} style={{ width: '50px', height: '50px' }} />
                                 </td>
                                 <td>{subcategory.innersubcategoryStatus}</td>
                                 <td>

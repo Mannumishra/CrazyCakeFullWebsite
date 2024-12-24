@@ -11,7 +11,7 @@ const Profile = () => {
 
   const getApiData = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/user/" + userid);
+      const res = await axios.get("https://api.cakecrazzy.com/api/user/" + userid);
       if (res.status === 200) {
         setUser(res.data.data);
       }
@@ -23,7 +23,7 @@ const Profile = () => {
   const getOrderData = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/checkout/user/" + userid
+        "https://api.cakecrazzy.com/api/checkout/user/" + userid
       );
       if (res.status === 200) {
         setOrders(res.data.data); // Store orders in state
@@ -96,7 +96,7 @@ const Profile = () => {
                     <tbody>
                       {order.cartItems.map(item => (
                         <tr key={item._id}>
-                          <td><img src={`http://localhost:8000/${item.image}`} alt="" style={{height:50}}/></td>
+                          <td><img src={`https://api.cakecrazzy.com/${item.image}`} alt="" style={{height:50}}/></td>
                           <td>{item.name}</td>
                           <td>{item.quantity}</td>
                           <td>{item.weight}</td>

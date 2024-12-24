@@ -8,7 +8,7 @@ const AllContactQuery = () => {
     // Fetch users from the API
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/contacts');
+            const response = await axios.get('https://api.cakecrazzy.com/api/contacts');
             console.log(response);
             if (response.data.success) {
                 setUsers(response.data.data); // Save the user data
@@ -35,7 +35,7 @@ const AllContactQuery = () => {
 
         if (result.isConfirmed) {
             try {
-                const response = await axios.delete(`http://localhost:8000/api/contact/${id}`);
+                const response = await axios.delete(`https://api.cakecrazzy.com/api/contact/${id}`);
                 if (response.data.success) {
                     // Remove the deleted user from the local state (UI update)
                     setUsers(users.filter(user => user._id !== id));

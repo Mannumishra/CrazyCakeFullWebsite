@@ -10,7 +10,7 @@ const AllProductTag = () => {
     useEffect(() => {
         const fetchProductTags = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/get-producttag'); // Replace with your actual API endpoint
+                const response = await axios.get('https://api.cakecrazzy.com/api/get-producttag'); // Replace with your actual API endpoint
                 setProductTags(response.data.data);
                 console.log(response)
             } catch (error) {
@@ -33,7 +33,7 @@ const AllProductTag = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    await axios.delete(`http://localhost:8000/api/delete-producttag/${id}`); // Replace with your actual API endpoint
+                    await axios.delete(`https://api.cakecrazzy.com/api/delete-producttag/${id}`); // Replace with your actual API endpoint
 
                     // Remove the deleted tag from the state
                     setProductTags(productTags.filter((tag) => tag._id !== id));
@@ -80,7 +80,7 @@ const AllProductTag = () => {
                                     <td>{tag.sortDescription}</td>
                                     <td>
                                         <img
-                                            src={`http://localhost:8000/${tag.image}`}
+                                            src={`https://api.cakecrazzy.com/${tag.image}`}
                                             alt={tag.tagHeading}
                                             style={{ width: '100px', height: 'auto' }}
                                         />
@@ -96,7 +96,7 @@ const AllProductTag = () => {
                                                 <strong>Min:</strong> {range.priceMinimum}{' '}
                                                 <strong>Max:</strong> {range.priceMaximum}{' '}
                                                 <img
-                                                    src={`http://localhost:8000/${range.priceRangeImage}`}
+                                                    src={`https://api.cakecrazzy.com/${range.priceRangeImage}`}
                                                     alt={`Price Range ${index}`}
                                                     style={{ width: '50px', height: 'auto' }}
                                                 />

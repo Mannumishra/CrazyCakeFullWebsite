@@ -10,7 +10,7 @@ const Header = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/get-category-with-subcategory");
+        const response = await axios.get("https://api.cakecrazzy.com/api/get-category-with-subcategory");
         if (response.data.message === "Categories with subcategories retrieved successfully") {
           setCategories(response.data.data); // Store the categories data
         }

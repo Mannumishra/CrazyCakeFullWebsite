@@ -28,7 +28,7 @@ const AddTag = () => {
 
         try {
             // Send POST request to the backend
-            const response = await axios.post('http://localhost:8000/api/add-tags', formData);
+            const response = await axios.post('https://api.cakecrazzy.com/api/add-tags', formData);
 
             // Show success message
             toast.success('Tag added successfully!');

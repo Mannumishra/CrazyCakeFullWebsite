@@ -25,7 +25,7 @@ const AddRefrenceCompany = () => {
 
         try {
             // Send POST request to create reference company
-            const response = await axios.post('http://localhost:8000/api/create-ref-company', formData);
+            const response = await axios.post('https://api.cakecrazzy.com/api/create-ref-company', formData);
             toast.success(response.data.message);
             navigate('/all-ref-companies'); // Redirect to the reference companies list page
         } catch (error) {

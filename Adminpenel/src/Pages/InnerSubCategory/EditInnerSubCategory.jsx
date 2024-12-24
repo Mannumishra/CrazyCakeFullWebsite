@@ -23,7 +23,7 @@ const EditInnerSubCategory = () => {
     useEffect(() => {
         const fetchMainCategories = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/get-main-category');
+                const response = await axios.get('https://api.cakecrazzy.com/api/get-main-category');
                 setMainCategories(response.data.data);
             } catch (error) {
                 toast.error("Error fetching main categories");
@@ -34,7 +34,7 @@ const EditInnerSubCategory = () => {
         // Fetch subcategories
         const fetchSubCategories = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/get-subcategory');
+                const response = await axios.get('https://api.cakecrazzy.com/api/get-subcategory');
                 setSubCategories(response.data.data);
             } catch (error) {
                 toast.error("Error fetching subcategories");
@@ -45,7 +45,7 @@ const EditInnerSubCategory = () => {
         // Fetch the inner subcategory details for editing
         const fetchInnerSubCategoryDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/single-inner-subcategory/${id}`);
+                const response = await axios.get(`https://api.cakecrazzy.com/api/single-inner-subcategory/${id}`);
                 const data = response.data.data;
                 setFormData({
                     categoryName: data.categoryName._id,
@@ -105,7 +105,7 @@ const EditInnerSubCategory = () => {
         if (formData.Image) data.append('Image', formData.Image);
 
         try {
-            const response = await axios.put(`http://localhost:8000/api/update-inner-subcategory/${id}`, data, {
+            const response = await axios.put(`https://api.cakecrazzy.com/api/update-inner-subcategory/${id}`, data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

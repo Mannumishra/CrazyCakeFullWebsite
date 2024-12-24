@@ -16,7 +16,7 @@ const EditFlavour = () => {
     useEffect(() => {
         const fetchFlavour = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/get-single-flover/${id}`);
+                const response = await axios.get(`https://api.cakecrazzy.com/api/get-single-flover/${id}`);
                 console.log(response); 
                 if (response.data && response.data.data) {
                     setFlavourData({
@@ -52,7 +52,7 @@ const EditFlavour = () => {
         };
 
         try {
-            const response = await axios.put(`http://localhost:8000/api/update-flover/${id}`, updatedData);
+            const response = await axios.put(`https://api.cakecrazzy.com/api/update-flover/${id}`, updatedData);
             toast.success(response.data.message); // Show success message
             navigate('/all-flower'); // Redirect to the all flavours page
         } catch (error) {

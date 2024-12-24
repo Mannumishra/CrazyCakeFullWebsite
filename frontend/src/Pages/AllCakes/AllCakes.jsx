@@ -12,7 +12,7 @@ const AllCakes = () => {
   // Function to fetch products based on selected price range
   const getProductrelatedSubcategory = async () => {
     try {
-      let url = `http://localhost:8000/api/get-product-by-subcatname/${subcatname}`;
+      let url = `https://api.cakecrazzy.com/api/get-product-by-subcatname/${subcatname}`;
 
       // Add price filter if selected
       if (selectedPrice) {
@@ -84,7 +84,7 @@ const AllCakes = () => {
                   <div className="col-md-3 mb-3" key={index}>
                     <div className="card">
                       <Link to={`/product-details/${item.productName}`}>
-                        <img src={`http://localhost:8000/${item.productImage[0]}`} className="w-100" alt="images" />
+                        <img src={`https://api.cakecrazzy.com/${item.productImage[0]}`} className="w-100" alt="images" />
                         <div className="productDetails">
                           <p className="productTitle">{item.productName}</p>
                           <p className="productPrice">Price : ₹{item.Variant[0].finalPrice}</p>

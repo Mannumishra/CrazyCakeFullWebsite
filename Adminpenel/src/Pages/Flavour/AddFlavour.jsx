@@ -33,7 +33,7 @@ const AddFlover = () => {
 
         try {
             // Send a POST request to add the flover
-            const response = await axios.post('http://localhost:8000/api/create-flover', formData); // Adjust the URL as needed
+            const response = await axios.post('https://api.cakecrazzy.com/api/create-flover', formData); // Adjust the URL as needed
             toast.success(response.data.message);
             navigate('/all-flower'); // Redirect to the all flowers page
         } catch (error) {

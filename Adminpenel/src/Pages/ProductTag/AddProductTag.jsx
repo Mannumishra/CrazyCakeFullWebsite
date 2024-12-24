@@ -22,7 +22,7 @@ const AddProductTag = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/all-product');
+                const response = await axios.get('https://api.cakecrazzy.com/api/all-product');
                 setProducts(response.data.data || []); // Assuming the products are in `data.data`
             } catch (error) {
                 toast.error('Failed to fetch products');
@@ -119,7 +119,7 @@ const AddProductTag = () => {
             });
 
             // Send request to backend
-            const response = await axios.post('http://localhost:8000/api/create-producttag', data);
+            const response = await axios.post('https://api.cakecrazzy.com/api/create-producttag', data);
             toast.success(response.data.message);
             navigate('/all-product-tag');
         } catch (error) {

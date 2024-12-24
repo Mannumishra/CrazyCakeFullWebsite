@@ -14,7 +14,7 @@ const EditTag = () => {
     // Fetch the tag data when the component mounts
     const fetchTagData = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/get-single-tags/${id}`);
+            const response = await axios.get(`https://api.cakecrazzy.com/api/get-single-tags/${id}`);
             // console.log(response)
             const tag = response.data.data;
             setTagName(tag.tagName);
@@ -37,7 +37,7 @@ const EditTag = () => {
                 tagName,
                 tagColor,
             };
-            const response = await axios.put(`http://localhost:8000/api/update-tags/${id}`, updatedTag);
+            const response = await axios.put(`https://api.cakecrazzy.com/api/update-tags/${id}`, updatedTag);
             toast.success('Tag updated successfully!');
             navigate('/all-tags');  // Redirect to All Tags page after success
         } catch (error) {

@@ -20,7 +20,7 @@ const EditSubCategory = () => {
     useEffect(() => {
         const fetchMainCategories = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/get-main-category'); // Adjust the URL to your API endpoint
+                const response = await axios.get('https://api.cakecrazzy.com/api/get-main-category'); // Adjust the URL to your API endpoint
                 setMainCategories(response.data.data); // Assuming the response structure
             } catch (error) {
                 toast.error("Error fetching main categories");
@@ -30,7 +30,7 @@ const EditSubCategory = () => {
 
         const fetchSubCategory = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/get-single-subcategory/${id}`);
+                const response = await axios.get(`https://api.cakecrazzy.com/api/get-single-subcategory/${id}`);
                 const { categoryName, subcategoryName, subcategoryStatus, subcategoryImage } = response.data.data;
 
                 setFormData({
@@ -79,7 +79,7 @@ const EditSubCategory = () => {
         if (formData.subcategoryImage) data.append('subcategoryImage', formData.subcategoryImage);
 
         try {
-            const response = await axios.put(`http://localhost:8000/api/update-subcategory/${id}`, data);
+            const response = await axios.put(`https://api.cakecrazzy.com/api/update-subcategory/${id}`, data);
             toast.success(response.data.message);
             navigate('/all-subcategory');
         } catch (error) {

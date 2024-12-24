@@ -39,7 +39,7 @@ const AddCategory = () => {
         uploadData.append('mainCategoryStatus', formData.categoryStatus);
 
         try {
-            const response = await axios.post('http://localhost:8000/api/create-main-category', uploadData, {
+            const response = await axios.post('https://api.cakecrazzy.com/api/create-main-category', uploadData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

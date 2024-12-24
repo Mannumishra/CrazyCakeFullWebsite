@@ -15,7 +15,7 @@ const EditRefrenceCompany = () => {
     useEffect(() => {
         const fetchRefCompany = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/ref-company/${id}`); // Adjusted endpoint
+                const response = await axios.get(`https://api.cakecrazzy.com/api/ref-company/${id}`); // Adjusted endpoint
                 console.log(response)
                 if (response.data && response.data.data) {
                     setRefCompanyData({
@@ -45,7 +45,7 @@ const EditRefrenceCompany = () => {
         setBtnLoading(true); // Set loading state to true
 
         try {
-            const response = await axios.put(`http://localhost:8000/api/update-ref-company/${id}`, refCompanyData); // Adjusted endpoint
+            const response = await axios.put(`https://api.cakecrazzy.com/api/update-ref-company/${id}`, refCompanyData); // Adjusted endpoint
             toast.success(response.data.message); // Show success message
             navigate('/all-ref-companies'); // Redirect to the list page
         } catch (error) {

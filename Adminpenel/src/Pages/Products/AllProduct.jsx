@@ -15,7 +15,7 @@ const AllProduct = () => {
         const fetchProducts = async () => {
             setIsLoading(true);
             try {
-                const response = await axios.get("http://localhost:8000/api/all-product");
+                const response = await axios.get("https://api.cakecrazzy.com/api/all-product");
                 console.log(response)
                 setProducts(response.data.data || []);
             } catch (error) {
@@ -42,7 +42,7 @@ const AllProduct = () => {
 
         if (confirm.isConfirmed) {
             try {
-                await axios.delete(`http://localhost:8000/api/delete-product/${productId}`);
+                await axios.delete(`https://api.cakecrazzy.com/api/delete-product/${productId}`);
                 setProducts(products.filter(product => product._id !== productId));
                 toast.success("Product deleted successfully!");
             } catch (error) {
@@ -122,7 +122,7 @@ const AllProduct = () => {
                                         {product.productImage.map((image, imgIndex) => (
                                             <img
                                                 key={imgIndex}
-                                                src={`http://localhost:8000/${image}`}
+                                                src={`https://api.cakecrazzy.com/${image}`}
                                                 alt="Product"
                                                 style={{ width: "50px", marginRight: "5px" }}
                                             />

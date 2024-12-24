@@ -37,12 +37,12 @@ const AddProduct = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const categoryResponse = await axios.get('http://localhost:8000/api/get-main-category');
-                const subcategoryResponse = await axios.get('http://localhost:8000/api/get-subcategory');
-                const colorResponse = await axios.get('http://localhost:8000/api/get-color');
-                const flowerResponse = await axios.get('http://localhost:8000/api/get-flover');
-                const weightResponse = await axios.get('http://localhost:8000/api/get-size');
-                const tagResponse = await axios.get('http://localhost:8000/api/get-tags');
+                const categoryResponse = await axios.get('https://api.cakecrazzy.com/api/get-main-category');
+                const subcategoryResponse = await axios.get('https://api.cakecrazzy.com/api/get-subcategory');
+                const colorResponse = await axios.get('https://api.cakecrazzy.com/api/get-color');
+                const flowerResponse = await axios.get('https://api.cakecrazzy.com/api/get-flover');
+                const weightResponse = await axios.get('https://api.cakecrazzy.com/api/get-size');
+                const tagResponse = await axios.get('https://api.cakecrazzy.com/api/get-tags');
 
                 setCategories(categoryResponse.data.data);
                 setAllSubcategories(subcategoryResponse.data.data); // Keep all subcategories
@@ -145,7 +145,7 @@ const AddProduct = () => {
         }
 
         try {
-            await axios.post('http://localhost:8000/api/create-product', form, {
+            await axios.post('https://api.cakecrazzy.com/api/create-product', form, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
