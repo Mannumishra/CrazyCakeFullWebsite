@@ -88,64 +88,65 @@ const ContactUs = () => {
             <div className="col-md-3">
               <div className="contactSectionBox">
                 <div>
-                  <span className="Contactsicon">
+                  {/* <span className="Contactsicon">
                     <i className="bi bi-geo-alt"></i>
-                  </span>
+                  </span> */}
                 </div>
                 <div>
                   <p>Address</p>
-                  <address>123 Street, NY, USA</address>
+                  <address>Plot No 3, madam puri road, near our lady fatima school, opp. sai mandir, New Colony, Sector 7, Gurugram, Haryana 122001</address>
                 </div>
               </div>
             </div>
             <div className="col-md-3">
               <div className="contactSectionBox">
                 <div>
-                  <span className="Contactsicon">
+                  {/* <span className="Contactsicon">
                     <i className="bi bi-geo-alt"></i>
-                  </span>
+                  </span> */}
                 </div>
                 <div>
                   <p>Call Us</p>
-                  <a href="tel:+919319846114">+91 9319846114</a>
+                  <a href="tel:+919508080807">+91 9508080807</a>
                 </div>
               </div>
             </div>
             <div className="col-md-3">
               <div className="contactSectionBox">
                 <div>
-                  <span className="Contactsicon">
+                  {/* <span className="Contactsicon">
                     <i className="bi bi-geo-alt"></i>
-                  </span>
+                  </span> */}
                 </div>
                 <div>
                   <p>Email Us</p>
-                  <a href="mailto:info@example.com">info@example.com</a>
+                  <a href="mailto:arvindkumar1068i@gmail.com">arvindkumar1068i@gmail.com</a>
                 </div>
               </div>
             </div>
             <div className="col-md-3">
               <div className="contactSectionBox">
                 <div>
-                  <span className="Contactsicon">
+                  {/* <span className="Contactsicon">
                     <i className="bi bi-geo-alt"></i>
-                  </span>
+                  </span> */}
                 </div>
                 <div>
                   <p>Follow Us</p>
                   <div className="socialMediaLinks">
-                    <a href="">
+                    {/* <a href="https://www.instagram.com/p/DCTnSTiPzrp/?igsh=MTA1YXpubGVlOXhjZg==" target="_blank">
                       <i className="bi bi-facebook"></i>
+                    </a> */}
+                    <a href="https://www.instagram.com/p/DCTnSTiPzrp/?igsh=MTA1YXpubGVlOXhjZg==">
+                      <i className="bi bi-instagram"></i>
                     </a>
-                    <a href="">
+                    <a href="https://wa.me/919508080807" target="_blank" >
                       <i className="bi bi-whatsapp"></i>
                     </a>
-                    <a href="">
-                      <i className="bi bi-youtube"></i>
-                    </a>
-                    <a href="">
+                  
+                    {/* <a href="">
                       <i className="bi bi-linkedin"></i>
-                    </a>
+                    </a> */}
                   </div>
                 </div>
               </div>
@@ -160,7 +161,7 @@ const ContactUs = () => {
           <div className="row">
             <div className="col-md-6">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2765.188744390426!2d77.08410077429787!3d28.730771579614938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d07440faeeedd%3A0x7fd3b4b030819bdf!2sDigi%20India%20Solutions!5e1!3m2!1sen!2sin!4v1731649931595!5m2!1sen!2sin"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3507.459142581131!2d77.0176320737445!3d28.465716191639583!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d19efc1869d49%3A0x3b6db29f19fbe3db!2sCake%20Crazzy!5e0!3m2!1sen!2sin!4v1737788947692!5m2!1sen!2sin"
                 width="100%"
                 height="100%"
                 style={{ border: "0", borderRadius: "20px" }}

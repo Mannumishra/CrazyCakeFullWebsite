@@ -37,9 +37,8 @@ const Footer = () => {
         </div>
         <div className="footer-section">
           <h3>FOLLOW US</h3>
-          <Link to="#"><i class="bi bi-arrow-right-short"></i> Instagram</Link>
-          <Link to="#"><i class="bi bi-arrow-right-short"></i> Facebook</Link>
-          <Link to="#"><i class="bi bi-arrow-right-short"></i> Pinterest</Link>
+          <Link to="https://www.instagram.com/p/DCTnSTiPzrp/?igsh=MTA1YXpubGVlOXhjZg==" target='_blank'><i class="bi bi-arrow-right-short"></i> Instagram</Link>
+          <Link to="https://wa.me/919508080807" target='_blank'><i class="bi bi-arrow-right-short"></i> Whatsapp</Link>
         </div>
       </div>
       {/* Bottom Footer */}
