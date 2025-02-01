@@ -82,7 +82,7 @@ const createProduct = async (req, res) => {
         productName,
         productSubDescription,
         productDescription,
-        productTag: productTag ? mongoose.Types.ObjectId(productTag) : null,
+        productTag: productTag,
         Variant: parsedVariant.map(variant => ({
             ...variant,
             color: variant.color ? new mongoose.Types.ObjectId(variant.color) : null,  // Handle empty color
@@ -113,10 +113,6 @@ const getProducts = async (req, res) => {
             .populate('subcategoryName')
             .populate('productTag')
             .populate({
-                path: 'Variant.color',
-                model: 'Color',
-            })
-            .populate({
                 path: 'Variant.weight',
                 model: 'Size',
             })
@@ -140,7 +136,6 @@ const getProduct = async (req, res) => {
             .populate('categoryName')
             .populate('subcategoryName')
             .populate('productTag')
-            .populate('Variant.color')
             .populate('Variant.weight')
             .populate('Variant.flover');
 
@@ -163,7 +158,6 @@ const getProductByname = async (req, res) => {
         const product = await Product.findOne({ productName: name }).populate('categoryName')
             .populate('subcategoryName')
             .populate('productTag')
-            .populate('Variant.color')
             .populate('Variant.weight')
             .populate('Variant.flover');
         if (!product) {
@@ -212,7 +206,7 @@ const updateProduct = async (req, res) => {
         productName: req.body.productName,
         productSubDescription: req.body.productSubDescription,
         productDescription: req.body.productDescription,
-        productTag: req.body.productTag ? mongoose.Types.ObjectId(req.body.productTag) : null, // Handle optional productTag
+        productTag: req.body.productTag, // Handle optional productTag
         Variant: req.body.Variant ? JSON.parse(req.body.Variant) : [], // Assuming it's a stringified JSON, default to empty array if not present
     };
 

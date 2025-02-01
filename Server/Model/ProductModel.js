@@ -1,11 +1,6 @@
 const mongoose = require("mongoose")
 
 const VariantSchema = new mongoose.Schema({
-    color: {
-        type: mongoose.Schema.ObjectId,
-        ref: "Color",
-        default: null
-    },
     weight: {
         type: mongoose.Schema.ObjectId,
         ref: "Size",

@@ -191,16 +191,7 @@ const Dashboard = () => {
           </Link>
         </div>
 
-        <div className="dashboard-card">
-          <Link to="/all-color">
-            <i className="fa-solid fa-palette"></i>
-            <h3>Manage Color</h3>
-            <p>Set the colors for your products</p>
-            <p>{colors.length} Colors</p>
-            {/* Display colors data */}
-            {/* <pre>{JSON.stringify(colors, null, 2)}</pre> */}
-          </Link>
-        </div>
+      
 
         <div className="dashboard-card">
           <Link to="/all-size">
@@ -218,7 +209,7 @@ const Dashboard = () => {
             <i className="fa-solid fa-seedling"></i>
             <h3>Manage Flower</h3>
             <p>Manage flower products for your store</p>
-            <p>{flowers.length} Flowers</p>
+            <p>{flowers.length} Flavours</p>
             {/* Display flowers data */}
             {/* <pre>{JSON.stringify(flowers, null, 2)}</pre> */}
           </Link>

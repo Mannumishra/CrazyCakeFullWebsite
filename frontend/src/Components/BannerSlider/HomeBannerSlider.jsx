@@ -56,7 +56,7 @@ const HomeBannerSlider = () => {
                       ORDER NOW
                     </a>
                     <h5>
-                      Or Call <a href="tel:+919999999999">+91 9999999999</a>
+                      Or Call <a href="tel:+919508080807">+91 9508080807</a>
                     </h5>
                   </div>
                 </div>

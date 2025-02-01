@@ -15,7 +15,6 @@ const AddProduct = () => {
         productSubDescription: '',
         productTag: '',
         Variant: [{
-            color: '',
             weight: '',
             flover: '',
             price: '',
@@ -30,7 +29,6 @@ const AddProduct = () => {
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
     const [allSubcategories, setAllSubcategories] = useState([]);
-    const [colors, setColors] = useState([]);
     const [flowers, setFlowers] = useState([]);
     const [weights, setWeights] = useState([]);
     const [tag, setTag] = useState([]);
@@ -39,14 +37,12 @@ const AddProduct = () => {
             try {
                 const categoryResponse = await axios.get('https://api.cakecrazzy.com/api/get-main-category');
                 const subcategoryResponse = await axios.get('https://api.cakecrazzy.com/api/get-subcategory');
-                const colorResponse = await axios.get('https://api.cakecrazzy.com/api/get-color');
                 const flowerResponse = await axios.get('https://api.cakecrazzy.com/api/get-flover');
                 const weightResponse = await axios.get('https://api.cakecrazzy.com/api/get-size');
                 const tagResponse = await axios.get('https://api.cakecrazzy.com/api/get-tags');
 
                 setCategories(categoryResponse.data.data);
                 setAllSubcategories(subcategoryResponse.data.data); // Keep all subcategories
-                setColors(colorResponse.data.data);
                 setFlowers(flowerResponse.data.data);
                 setWeights(weightResponse.data.data);
                 setTag(tagResponse.data.data);
@@ -222,7 +218,7 @@ const AddProduct = () => {
                     <div className="col-md-4">
                         <label htmlFor="productTag" className="form-label">Product Tag</label>
                         <select name='productTag' className="form-select" id="productTag" value={formData.productTag} onChange={handleChange}>
-                            <option value=""selected disabled>Select Tag</option>
+                            <option value="" selected disabled>Select Tag</option>
                             {tag.map((item, index) =>
                                 <option key={index} value={item._id}>{item.tagName}</option>
                             )}
@@ -240,16 +236,6 @@ const AddProduct = () => {
 
                             <div className="row">
                                 <div className="col-md-4 mb-1">
-                                    <label htmlFor={`variantColor-${index}`} className="form-label">Color</label>
-                                    <select name="color" className="form-select" id={`variantColor-${index}`} value={variant.color} onChange={(e) => handleVariantChange(index, e)} >
-                                        <option value="" selected disabled>Select Color</option>
-                                        {colors.map((color, i) => (
-                                            <option key={i} value={color._id}>{color.colorName}</option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                <div className="col-md-4 mb-1">
                                     <label htmlFor={`variantWeight-${index}`} className="form-label">Weight</label>
                                     <select name="weight" className="form-select" id={`variantWeight-${index}`} value={variant.weight} onChange={(e) => handleVariantChange(index, e)} >
                                         <option value="" selected disabled>Select Weight</option>
@@ -260,9 +246,9 @@ const AddProduct = () => {
                                 </div>
 
                                 <div className="col-md-4 mb-1">
-                                    <label htmlFor={`variantFlower-${index}`} className="form-label">Flower</label>
+                                    <label htmlFor={`variantFlower-${index}`} className="form-label">Flavours</label>
                                     <select name="flover" className="form-select" id={`variantFlower-${index}`} value={variant.flover} onChange={(e) => handleVariantChange(index, e)} >
-                                        <option value="" selected disabled>Select Flower</option>
+                                        <option value="" selected disabled>Select Flavours</option>
                                         {flowers.map((flower, i) => (
                                             <option key={i} value={flower._id}>{flower.floverName}</option>
                                         ))}

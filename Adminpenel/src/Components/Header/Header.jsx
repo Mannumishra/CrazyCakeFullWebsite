@@ -27,7 +27,7 @@ const Header = () => {
             </div>
           </div>
           <div className="left">
-            <a href="" target="_blank">
+            <a href="https://www.cakecrazzy.com" target="_blank">
               <i class="fa-solid fa-globe"></i>
               Go To Website
             </a>
@@ -49,9 +49,9 @@ const Header = () => {
             <li><Link to="/all-products" onClick={handletoggleBtn}> <i class="fa-solid fa-boxes-stacked"></i> Manage Product</Link></li>
             {/* <li><Link to="/all-inner-subcategory" onClick={handletoggleBtn}> <i class="fa-regular fa-images"></i> Manage Inner Subcategory</Link></li> */}
             {/* <li><Link to="/all-category-titel" onClick={handletoggleBtn}> <i class="fa-regular fa-images"></i> Manage Category Titel</Link></li> */}
-            <li><Link to="/all-color" onClick={handletoggleBtn}> <i class="fa-solid fa-palette"></i> Manage Color</Link></li>
+            {/* <li><Link to="/all-color" onClick={handletoggleBtn}> <i class="fa-solid fa-palette"></i> Manage Color</Link></li> */}
             <li><Link to="/all-size" onClick={handletoggleBtn}> <i class="fa-solid fa-ruler-combined"></i> Manage Size</Link></li>
-            <li><Link to="/all-flower" onClick={handletoggleBtn}> <i class="fa-solid fa-seedling"></i> Manage Flover</Link></li>
+            <li><Link to="/all-flower" onClick={handletoggleBtn}> <i class="fa-solid fa-seedling"></i> Manage Flavours</Link></li>
             <li><Link to="/all-tags" onClick={handletoggleBtn}> <i class="fa-solid fa-tag"></i> Manage Tags</Link></li>
             {/* <li><Link to="/all-ref-companies" onClick={handletoggleBtn}> <i class="fa-solid fa-seedling"></i> Manage Refrence Company</Link></li> */}
             {/* <li><Link to="/all-product-tag" onClick={handletoggleBtn}> <i class="fa-solid fa-boxes-stacked"></i> Manage Product Tag</Link></li> */}
