@@ -81,7 +81,7 @@ const AllCakes = () => {
             <div>
               <div className="row">
                 {cakesArr.map((item, index) => (
-                  <div className="col-md-3 mb-3" key={index}>
+                  <div className="col-md-3 col-6 mb-3" key={index}>
                     <div className="card">
                       <Link to={`/product-details/${item.productName}`}>
                         <img src={`https://api.cakecrazzy.com/${item.productImage[0]}`} className="w-100" alt="images" />

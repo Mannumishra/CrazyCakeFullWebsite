@@ -102,4 +102,11 @@
   .hero-image {
     height: 150px; /* Adjusted height for smaller screens */
   }
+  .features-section {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 10px;
+  }
+  .feature-box{
+    padding: 5px;
+  }
 }

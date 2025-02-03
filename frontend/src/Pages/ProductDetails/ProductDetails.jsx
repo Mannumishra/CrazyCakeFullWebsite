@@ -180,15 +180,16 @@ const ProductDetails = () => {
       <section className="productDetails">
         <div className="container">
           <div className="row">
-            <div className="col-md-6">
+            <div className="col-md-5">
               <div className="slider-container">
                 {data.productImage?.length > 0 ? (
                   <Slider {...settings}>
                     {data.productImage.map((image, index) => (
-                      <div key={index} className="d-flex justify-content-end">
+                      <div key={index} className="productImage">
                         <img
+                        className="productImageMain"
                           src={`https://api.cakecrazzy.com/${image}`}
-                          style={{ borderRadius: "1rem" }}
+                          style={{ borderRadius: "0.5rem" }}
                           alt={`Product Image ${index + 1}`}
                         />
                       </div>
@@ -199,7 +200,7 @@ const ProductDetails = () => {
                 )}
               </div>
             </div>
-            <div className="col-md-6">
+            <div className="col-md-7">
               <div className="detailSection">
                 <h5 className="detailsHeading">{data.productName}</h5>
                 <p className="detailPrice">

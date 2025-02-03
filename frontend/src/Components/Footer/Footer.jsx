@@ -1,8 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Footer.css'; // Import the CSS file for styling
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Footer = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    // Fetch categories from API
+    axios.get("https://api.cakecrazzy.com/api/get-category-with-subcategory")
+      .then((response) => {
+        setCategories(response.data); // Set categories from API response
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, []);
+
   useEffect(()=>{
     window.scrollTo({
       top:'0',
@@ -24,12 +38,17 @@ const Footer = () => {
           <Link to="/frequently-asked-questions"><i class="bi bi-arrow-right-short"></i> FAQs</Link>
         </div>
         <div className="footer-section">
-          <h3>OUR BAKERY</h3>
-          <Link to="#"><i class="bi bi-arrow-right-short"></i> Cakes</Link>
-          <Link to="#"><i class="bi bi-arrow-right-short"></i> Candles</Link>
-          <Link to="#"><i class="bi bi-arrow-right-short"></i> Flowers</Link>
-          <Link to="#"><i class="bi bi-arrow-right-short"></i> Chocolates</Link>
-        </div>
+      <h3>OUR BAKERY</h3>
+      {categories.length > 0 ? (
+        categories.map((category, index) => (
+          <Link key={index} to={`/category/${category.slug}`}>
+            <i className="bi bi-arrow-right-short"></i> {category.name}
+          </Link>
+        ))
+      ) : (
+        <p>Loading categories...</p>
+      )}
+    </div>
         <div className="footer-section">
           <h3>NEED HELP?</h3>
           <Link to="/contact-us"><i class="bi bi-arrow-right-short"></i> Contact Us</Link>
@@ -43,7 +62,7 @@ const Footer = () => {
       </div>
       {/* Bottom Footer */}
       <div className="footer-bottom">
-        <p className='mb-0'>© 2024 Cake Bakery | Crafted with <span className="heart">❤️</span> by Your Bakery</p>
+        <p className='mb-0'>© 2024 Cake Bakery | Crafted with by  <a href='https://www.digiindiasolutions.com' className="heart">Digi India Solution</a></p>
       </div>
       </div>
     </footer>

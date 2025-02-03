@@ -3,12 +3,34 @@ import "./AboutSection.css"; // Import the CSS file
 import cake from "../../images/cake1.jpg";
 import { Link } from "react-router-dom";
 
-import team1 from "../../images/team-1.jpg";
-import team2 from "../../images/team-2.jpg";
-import team3 from "../../images/team-3.jpg";
-import team4 from "../../images/team-4.jpg";
+import team1 from "../../images/1.png";
+import team2 from "../../images/2.png";
+import team3 from "../../images/3.png";
+import team4 from "../../images/4.png";
+
 const AboutUs = () => {
-    const teamMembers = [team1, team2, team3, team4];
+  const teamMembers = [
+    {
+      imgSrc: team4,
+      name: "Gourav Panchal",
+      position: "Web Developer",
+    },
+    {
+      imgSrc: team3,
+      name: "Vishnu Sahu",
+      position: "Senior Assistant",
+    },
+    {
+      imgSrc: team2,
+      name: "Dev Sisodiya",
+      position: "Front-end Developer",
+    },
+    {
+      imgSrc: team1,
+      name: "Aadil Khan",
+      position: "Backend Developer",
+    },
+  ];
 
   return (
     <>
@@ -24,57 +46,67 @@ const AboutUs = () => {
       {/* ----about section ---- */}
       <section className="about-container container">
         <div className="about-image-container">
-          <img 
-            src={cake} // Replace with your croissant image URL
-            alt="Croissant"
-            className="about-image w-100"
-          />
+          <img src={cake} alt="Croissant" className="about-image w-100" />
         </div>
         <div className="about-content">
-        <p className="ourTeam_miniHeading">// About Us</p>
+          <p className="ourTeam_miniHeading">// About Us</p>
           <h3 className="about-title">
             We Bake Every Item From The Core Of Our Hearts
           </h3>
           <p className="about-text">
-            Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu
-            diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet
-            lorem sit clita duo justo magna dolore erat amet.
+            At Cake Crazzy, we believe that every cake tells a story. Our
+            passion for baking is rooted in bringing joy to your celebrations,
+            from birthdays to weddings and every special moment in between.
+            Using the finest ingredients and time-honored recipes, we create
+            delicious, handcrafted cakes that are as beautiful as they are
+            flavorful.
           </p>
           <p className="about-text">
-            Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu
-            diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet
-            lorem sit clita duo justo magna dolore erat amet.
+            Whether you're craving a classic chocolate delight, a customized
+            designer cake, or a special treat for a loved one, we are here to
+            make your sweetest dreams come true. Our commitment to quality,
+            creativity, and customer satisfaction ensures that every bite is a
+            delightful experience.
           </p>
           <ul className="about-features-list">
-            <li className="about-feature-item">✔ Quality Products</li>
-            <li className="about-feature-item">✔ Online Order</li>
-            <li className="about-feature-item">✔ Custom Products</li>
-            <li className="about-feature-item">✔ Home Delivery</li>
+            <li className="about-feature-item">
+              ✔ Premium Quality Ingredients – Freshly baked, never compromised.
+            </li>
+            <li className="about-feature-item">
+              ✔ Easy Online Ordering – Order your favorite cakes with just a few
+              clicks.
+            </li>
+            <li className="about-feature-item">
+              ✔ Custom Creations – Personalize your cake for any occasion.
+            </li>
+            <li className="about-feature-item">
+              ✔ Home Delivery – Get your cake delivered straight to your
+              doorstep.
+            </li>
           </ul>
-          {/* <button className="about-button">Read More</button> */}
         </div>
       </section>
       {/* ----about section ---- end */}
 
-      {/* ----our Team Section ---- */}
+      {/* ----Our Team Section ---- */}
       <section className="OurTeam">
-      <div className="team-section container">
-        <p className="ourTeam_miniHeading">// Our Team</p>
-        <h2>We're Super Professional At Our Skills</h2>
-        <div className="team-grid">
-          {teamMembers.map((imgSrc, index) => (
-            <div key={index} className="team-member">
-              <div className="team-member-photo">
-                <img src={imgSrc} alt={`Team Member ${index + 1}`} />
+        <div className="team-section container">
+          <p className="ourTeam_miniHeading">// Our Team</p>
+          <h2>We're Super Professional At Our Skills</h2>
+          <div className="team-grid">
+            {teamMembers.map((member, index) => (
+              <div key={index} className="team-member">
+                <div className="team-member-photo">
+                  <img src={member.imgSrc} alt={`Team Member ${index + 1}`} />
+                </div>
+                <h3 className="mt-3">{member.name}</h3>
+                <p className="mb-0">{member.position}</p>
               </div>
-              <h3 className="mt-3">Gourav Dada</h3>
-              <p className="mb-0">Web Developer</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
-      {/* ----our Team Section end ---- */}
+      </section>
+      {/* ----Our Team Section ---- end */}
     </>
   );
 };

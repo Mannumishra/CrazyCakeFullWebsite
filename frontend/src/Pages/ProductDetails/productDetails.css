@@ -1,19 +1,16 @@
-.miniImage {
-  padding: 0;
-  list-style-type: none;
-  display: grid !important;
-  justify-content: space-between !important;
-}
 .miniImage li {
-  width: 70px;
+  width: 100px;
 }
 
 .miniImage {
+  padding: 0;
+  list-style-type: none;
   bottom: 50px;
-  display: grid;
+  display: grid !important;
   height: 100%;
   position: absolute;
   top: 0;
+  justify-content: space-between;
   gap: 10px;
 }
 
@@ -134,4 +131,34 @@
 .custom-radio input[type="radio"]:hover {
   border-color: var(--color-pink);
   box-shadow: 0 0 4px var(--color-pink);
+}
+
+.productImageMain{
+  height: 500px;
+  width: 400px;
+}
+
+.productImage{
+  display: flex !important;
+  justify-content: end !important;
+}
+
+
+@media only screen and (max-width:768px) {
+  .miniImage {
+    display: flex !important;
+    position: unset;
+  }
+  
+.productImage{
+  display: flex;
+  justify-content: space-between;
+}
+
+.productImageMain {
+  height: 350px;
+  width: 335px;
+  object-fit: contain;
+}
+
 }

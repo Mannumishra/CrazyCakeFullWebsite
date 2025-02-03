@@ -110,3 +110,21 @@
     border-radius: 1rem;
   }
 
+@media only screen and (max-width: 768px) {
+  .mainProducts {
+    display: block;
+  }
+  .sidebar {
+    width: 100%;
+    border-radius: 8px;
+    margin-right: 0px;
+    margin-bottom: 1rem;
+  }
+  .allProducts , .allContentSide{
+    padding: 10px;
+  }
+  .allContentSide .card img{
+    height: 170px;
+    object-fit: cover;
+  }
+}

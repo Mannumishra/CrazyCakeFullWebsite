@@ -74,7 +74,8 @@ const AllProducts = () => {
           categoryData.map((item, index) =>
             <div className="featured-menu">
               <h2 className="featured-menu-title text-uppercase">{item.mainCategoryName}</h2>
-              <Slider {...settings}>
+              <div className="product-main-category">
+
                 {productData.filter(product => product.categoryName._id === item._id).map((product, productIndex) => (
                   <div key={index} className="product-card">
                     <div className="product-image">
@@ -85,13 +86,12 @@ const AllProducts = () => {
                     <Link to={`/product-details/${product.productName}`} className="order-button">See Details</Link>
                   </div>
                 ))}
-              </Slider>
+              </div>
+
             </div>
           )
         }
       </div>
-
-
     </>
   );
 };

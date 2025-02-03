@@ -86,6 +86,7 @@
 
 .footer-bottom .heart {
   color: #ff6347;
+  text-decoration: none;
 }
 
 /* Media Queries for responsiveness */

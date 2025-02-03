@@ -1,45 +1,46 @@
 import React from "react";
 import Slider from "react-slick";
 import "./testimonials.css";
-import testimonial1 from "../../images/team-1.jpg";
-import testimonial2 from "../../images/team-2.jpg";
-import testimonial3 from "../../images/team-3.jpg";
-import testimonial4 from "../../images/team-4.jpg";
+import testimonial1 from "../../images/1.png";
+import testimonial2 from "../../images/2.png";
+import testimonial3 from "../../images/3.png";
+import testimonial4 from "../../images/4.png";
+import testimonial5 from "../../images/5.png";
 
 const Testimonial = () => {
   const testimonials = [
     {
       imageURL: testimonial1,
-      name: "Aarav Sharma",
+      name: "Aadil Khan",
       title: "Satisfied Customer",
       description:
         "I ordered a custom photo cake for my daughter's birthday, and it was absolutely perfect.",
     },
     {
       imageURL: testimonial2,
-      name: "Vikram Sharma",
-      title: "Cake Lover",
+      name: "Dev Sisodiya",
+      title: "Satisfied Customer",
       description:
         "I was worried about surprising my wife at midnight, but your service was flawless.",
     },
     {
       imageURL: testimonial3,
-      name: "Neha Mehta",
-      title: "Bride",
+      name: "Vishnu Sharma",
+      title: "Satisfied Customer",
       description:
         "The wedding cake you created was nothing short of spectacular!",
     },
     {
       imageURL: testimonial4,
-      name: "Arjun Desai",
-      title: "Frequent Buyer",
+      name: "Gourav Panchal",
+      title: "Satisfied Customer",
       description:
         "I’ve been ordering from your bakery for over a year, and you never fail to impress.",
     },
     {
-      imageURL: testimonial1,
-      name: "Priya Patel",
-      title: "Event Planner",
+      imageURL: testimonial5,
+      name: "Mukesh Mahar",
+      title: "Satisfied Customer",
       description:
         "I ordered a batch of cupcakes for a corporate event, and they were a huge hit.",
     },

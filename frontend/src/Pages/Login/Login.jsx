@@ -120,14 +120,14 @@ const Login = () => {
               />
               <i className="bx bxs-lock-alt" />
             </div>
-            <div className="forgot-link">
+            {/* <div className="forgot-link">
               <a href="#">Forgot Password?</a>
-            </div>
+            </div> */}
             <button type="submit" className="btnLogin">
               Login
             </button>
             <p>or login with social platforms</p>
-            <div className="social-icon">
+            {/* <div className="social-icon">
               <a href="#">
                 <i className="bi bi-facebook"></i>
               </a>
@@ -140,7 +140,7 @@ const Login = () => {
               <a href="#">
                 <i className="bi bi-linkedin"></i>
               </a>
-            </div>
+            </div> */}
           </form>
         </div>
 
@@ -181,7 +181,7 @@ const Login = () => {
             <button type="submit" className="btnLogin">
               Register
             </button>
-            <p>or register with social platforms</p>
+            {/* <p>or register with social platforms</p>
             <div className="social-icon">
               <a href="#">
                 <i className="bi bi-facebook"></i>
@@ -195,7 +195,7 @@ const Login = () => {
               <a href="#">
                 <i className="bi bi-linkedin"></i>
               </a>
-            </div>
+            </div> */}
           </form>
         </div>
 

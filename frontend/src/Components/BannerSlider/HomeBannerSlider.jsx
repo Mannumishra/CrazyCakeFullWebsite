@@ -43,7 +43,7 @@ const HomeBannerSlider = () => {
           {data.map((banner) => (
             <div key={banner._id}>
               <img
-                className="img-fluid w-100"
+                className="banner-Image"
                 alt={banner.bannerName}
                 src={`https://api.cakecrazzy.com/${banner.bannerImage}`}
               />
@@ -52,7 +52,7 @@ const HomeBannerSlider = () => {
                   <div className="bannerContent">
                     {/* <h1>{banner.bannerName}</h1> */}
                     <p className="lead">{banner.bannerName}</p>
-                    <a className="ordernowBtn" href="">
+                    <a className="ordernowBtn" href="tel:+919508080807">
                       ORDER NOW
                     </a>
                     <h5>
