@@ -104,8 +104,8 @@ const EditProduct = () => {
         });
     };
 
-     // Update formData when editor content changes
-     const handleEditorChange = (newContent) => {
+    // Update formData when editor content changes
+    const handleEditorChange = (newContent) => {
         setFormData({ ...formData, productDescription: newContent });
     };
 
