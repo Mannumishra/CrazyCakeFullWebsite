@@ -44,18 +44,9 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    productSubDescription: {
-        type: String,
-        required: true,
-    },
     productDescription: {
         type: String,
         required: true,
-    },
-    productTag: {
-        type: mongoose.Schema.ObjectId,
-        ref: "TagModel",
-        default: null
     },
     Variant: {
         type: [VariantSchema],
@@ -64,10 +55,6 @@ const productSchema = new mongoose.Schema({
     productImage: {
         type: [String],
         required: true
-    },
-    sku: {
-        type: String,
-        default: "SKU001"
     }
 })
 

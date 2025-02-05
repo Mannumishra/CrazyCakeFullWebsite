@@ -8,9 +8,7 @@ const EditCategory = () => {
     const { id } = useParams(); // Get the category ID from the URL
     const navigate = useNavigate();
     const [category, setCategory] = useState({
-        mainCategoryName: '', // Updated key name
-        mainCategoryImage: null, // Updated key name
-        mainCategoryStatus: false, // Updated key name
+        mainCategoryName: '',
     });
     const [btnLoading, setBtnLoading] = useState(false);
 
@@ -18,11 +16,9 @@ const EditCategory = () => {
         const fetchCategory = async () => {
             try {
                 const response = await axios.get(`https://api.cakecrazzy.com/api/get-single-main-category/${id}`);
-                const { mainCategoryName, mainCategoryImage, mainCategoryStatus } = response.data.data;
+                const { mainCategoryName, mainCategoryStatus } = response.data.data;
                 setCategory({
-                    mainCategoryName, // Updated key name
-                    mainCategoryImage, // Updated key name
-                    mainCategoryStatus: mainCategoryStatus === 'True', // Convert to boolean
+                    mainCategoryName,
                 });
             } catch (error) {
                 toast.error('Error fetching category data');
@@ -34,28 +30,18 @@ const EditCategory = () => {
     }, [id]);
 
     const handleChange = (e) => {
-        const { name, value, type, checked, files } = e.target;
-        setCategory((prev) => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value,
-        }));
+        const { name, value } = e.target;
+        setCategory(prevData => ({ ...prevData, [name]: value }));
+
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setBtnLoading(true);
-
-        const formData = new FormData();
-        formData.append('mainCategoryName', category.mainCategoryName); // Ensure this key matches your backend
-        if (category.mainCategoryImage) { // Ensure this key matches your backend
-            formData.append('mainCategoryImage', category.mainCategoryImage); // Ensure this key matches your backend
-        }
-        formData.append('mainCategoryStatus', category.mainCategoryStatus ? 'True' : 'False'); // Ensure this key matches your backend
-
         try {
-            const response = await axios.put(`https://api.cakecrazzy.com/api/update-main-category/${id}`, formData, {
+            const response = await axios.put(`https://api.cakecrazzy.com/api/update-main-category/${id}`, category, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                   'Content-Type': 'application/json',
                 },
             });
             toast.success(response.data.message);
@@ -93,31 +79,6 @@ const EditCategory = () => {
                             onChange={handleChange}
                             required
                         />
-                    </div>
-                    <div className="col-md-6">
-                        <label htmlFor="mainCategoryImage" className="form-label">Category Image</label>
-                        <input
-                            type="file"
-                            name='mainCategoryImage' // Ensure this matches the backend
-                            className="form-control"
-                            id="mainCategoryImage"
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="col-12">
-                        <div className="form-check">
-                            <input
-                                className="form-check-input"
-                                type="checkbox"
-                                name="mainCategoryStatus" // Ensure this matches the backend
-                                id="mainCategoryStatus"
-                                checked={category.mainCategoryStatus}
-                                onChange={handleChange}
-                            />
-                            <label className="form-check-label" htmlFor="mainCategoryStatus">
-                                Active in Homepage
-                            </label>
-                        </div>
                     </div>
                     <div className="col-12 text-center">
                         <button type="submit" className={`${btnLoading ? 'not-allowed' : 'allowed'}`} disabled={btnLoading}>

@@ -10,14 +10,6 @@ const SubCategorySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    subcategoryStatus: {
-        type: String,
-        default: "False"
-    },
-    subcategoryImage: {
-        type: String, // URL or path to the image
-        required: false
-    },
     innersubcategoryExit: {
         type: Boolean,
         default: false

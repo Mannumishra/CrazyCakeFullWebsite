@@ -18,14 +18,13 @@ const deleteImageFile = (relativeFilePath) => {
 
 const createProduct = async (req, res) => {
     console.log(req.body);
-    const { categoryName, subcategoryName, productName, productSubDescription, productDescription, productTag, Variant } = req.body;
+    const { categoryName, subcategoryName, productName, productDescription, Variant } = req.body;
     const errorMessage = [];
 
     // Validation for required fields
     if (!categoryName) errorMessage.push("Category Name is required");
     if (!subcategoryName) errorMessage.push("Subcategory Name is required");
     if (!productName) errorMessage.push("Product Name is required");
-    if (!productSubDescription) errorMessage.push("Product Sub Description is required");
     if (!productDescription) errorMessage.push("Product Description is required");
 
     // If there are any missing fields, return an error
@@ -56,17 +55,6 @@ const createProduct = async (req, res) => {
         });
     }
 
-    // Generate a unique SKU code for the product
-    const generateSKU = async () => {
-        const lastProduct = await Product.findOne().sort({ createdAt: -1 }).select('sku');
-        if (lastProduct) {
-            const lastSku = lastProduct.sku; // Get the last SKU
-            const lastSkuNumber = parseInt(lastSku.split('SKU')[1]); // Extract the number part of the SKU
-            return `SKU${(lastSkuNumber + 1).toString().padStart(3, '0')}`; // Increment and pad with leading zeros
-        }
-        return 'SKU001'; // Default SKU if no products exist
-    };
-
     // Check and parse Variant if it's a string (JSON string)
     let parsedVariant = [];
     try {
@@ -80,17 +68,13 @@ const createProduct = async (req, res) => {
         categoryName,
         subcategoryName,
         productName,
-        productSubDescription,
         productDescription,
-        productTag: productTag,
         Variant: parsedVariant.map(variant => ({
             ...variant,
-            color: variant.color ? new mongoose.Types.ObjectId(variant.color) : null,  // Handle empty color
             weight: variant.weight ? new mongoose.Types.ObjectId(variant.weight) : null,  // Handle empty weight
             flover: variant.flover ? new mongoose.Types.ObjectId(variant.flover) : null   // Handle empty flover
         })),
         productImage: req.files.map(file => file.path), // Save paths to the uploaded images
-        sku: await generateSKU(), // Generate unique SKU
     };
 
     try {
@@ -111,7 +95,6 @@ const getProducts = async (req, res) => {
         const products = await Product.find()
             .populate('categoryName')
             .populate('subcategoryName')
-            .populate('productTag')
             .populate({
                 path: 'Variant.weight',
                 model: 'Size',
@@ -135,7 +118,6 @@ const getProduct = async (req, res) => {
         const product = await Product.findById(id)
             .populate('categoryName')
             .populate('subcategoryName')
-            .populate('productTag')
             .populate('Variant.weight')
             .populate('Variant.flover');
 
@@ -157,7 +139,6 @@ const getProductByname = async (req, res) => {
     try {
         const product = await Product.findOne({ productName: name }).populate('categoryName')
             .populate('subcategoryName')
-            .populate('productTag')
             .populate('Variant.weight')
             .populate('Variant.flover');
         if (!product) {
@@ -179,7 +160,6 @@ const getProductsBySubcategory = async (req, res) => {
         const products = await Product.find()
             .populate('categoryName')
             .populate('subcategoryName')
-            .populate('productTag')
 
         const filterProductData = products.filter((x) => x.subcategoryName.subcategoryName === subcategoryName)
         if (!filterProductData || filterProductData.length === 0) {
@@ -204,9 +184,7 @@ const updateProduct = async (req, res) => {
         categoryName: req.body.categoryName,
         subcategoryName: req.body.subcategoryName,
         productName: req.body.productName,
-        productSubDescription: req.body.productSubDescription,
         productDescription: req.body.productDescription,
-        productTag: req.body.productTag, // Handle optional productTag
         Variant: req.body.Variant ? JSON.parse(req.body.Variant) : [], // Assuming it's a stringified JSON, default to empty array if not present
     };
 

@@ -10,8 +10,6 @@ const EditSubCategory = () => {
     const [formData, setFormData] = useState({
         categoryName: '', // This will store the selected main category ID
         subcategoryName: '',
-        subcategoryStatus: 'False',
-        subcategoryImage: null,
     });
     const [mainCategories, setMainCategories] = useState([]); // For storing fetched categories
     const [isLoading, setIsLoading] = useState(false);
@@ -31,55 +29,31 @@ const EditSubCategory = () => {
         const fetchSubCategory = async () => {
             try {
                 const response = await axios.get(`https://api.cakecrazzy.com/api/get-single-subcategory/${id}`);
-                const { categoryName, subcategoryName, subcategoryStatus, subcategoryImage } = response.data.data;
+                const { categoryName, subcategoryName} = response.data.data;
 
                 setFormData({
                     categoryName: categoryName?._id || categoryName, // Use `_id` if `categoryName` is an object
                     subcategoryName,
-                    subcategoryImage,
-                    subcategoryStatus: subcategoryStatus === 'True' ? 'True' : 'False',
                 });
             } catch (error) {
                 toast.error('Error fetching subcategory data');
                 console.error('Error fetching subcategory:', error);
             }
         };
-
-
         fetchMainCategories();
         fetchSubCategory();
     }, [id]);
 
     const handleChange = (e) => {
-        const { name, value, files } = e.target;
-        if (name === 'subcategoryImage') {
-            setFormData(prevData => ({ ...prevData, subcategoryImage: files[0] }));
-        } else {
+        const { name, value } = e.target;
             setFormData(prevData => ({ ...prevData, [name]: value }));
-        }
     };
-
-
-    const handleCheckboxChange = () => {
-        setFormData(prevData => ({
-            ...prevData,
-            subcategoryStatus: prevData.subcategoryStatus === 'True' ? 'False' : 'True'
-        }));
-    };
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-
-        const data = new FormData();
-        data.append('categoryName', formData.categoryName); // Ensure it's only the ID
-        data.append('subcategoryName', formData.subcategoryName);
-        data.append('subcategoryStatus', formData.subcategoryStatus);
-        if (formData.subcategoryImage) data.append('subcategoryImage', formData.subcategoryImage);
-
         try {
-            const response = await axios.put(`https://api.cakecrazzy.com/api/update-subcategory/${id}`, data);
+            const response = await axios.put(`https://api.cakecrazzy.com/api/update-subcategory/${id}`, formData);
             toast.success(response.data.message);
             navigate('/all-subcategory');
         } catch (error) {
@@ -135,31 +109,6 @@ const EditSubCategory = () => {
                             onChange={handleChange}
                             required
                         />
-                    </div>
-                    <div className="col-md-6">
-                        <label htmlFor="subcategoryImage" className="form-label">Subcategory Image</label>
-                        <input
-                            type="file"
-                            name='subcategoryImage'
-                            className="form-control"
-                            id="subcategoryImage"
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="col-12">
-                        <div className="form-check">
-                            <input
-                                className="form-check-input"
-                                type="checkbox"
-                                name="categoryActive"
-                                id="categoryActive"
-                                checked={formData.subcategoryStatus === 'True'}
-                                onChange={handleCheckboxChange}
-                            />
-                            <label className="form-check-label" htmlFor="categoryActive">
-                                Active
-                            </label>
-                        </div>
                     </div>
                     <div className="col-12 text-center">
                         <button type="submit" disabled={isLoading} className={`${isLoading ? 'not-allowed' : 'allowed'}`}>

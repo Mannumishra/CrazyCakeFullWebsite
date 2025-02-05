@@ -71,7 +71,7 @@ const AllProduct = () => {
                 </div>
             </div>
 
-            <div className="filteration">
+            {/* <div className="filteration">
                 <div className="search">
                     <label htmlFor="search">Search</label> &nbsp;
                     <input
@@ -82,14 +82,13 @@ const AllProduct = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
-            </div>
+            </div> */}
 
             <section className="main-table">
                 <table className="table table-bordered table-striped table-hover">
                     <thead>
                         <tr>
                             <th>S no</th>
-                            <th>Sku</th>
                             <th>Category</th>
                             <th>Subcategory</th>
                             <th>Product Name</th>
@@ -114,7 +113,6 @@ const AllProduct = () => {
                             filteredProducts.map((product, index) => (
                                 <tr key={product._id}>
                                     <td>{index + 1}</td>
-                                    <td>{product.sku}</td>
                                     <td>{product.categoryName?.mainCategoryName || "N/A"}</td>
                                     <td>{product.subcategoryName?.subcategoryName || "N/A"}</td>
                                     <td>{product.productName}</td>

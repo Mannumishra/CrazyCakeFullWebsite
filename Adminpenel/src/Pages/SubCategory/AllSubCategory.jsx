@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const AllSubCategory = () => {
     const [subcategories, setSubcategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    
+
     useEffect(() => {
         const fetchSubcategories = async () => {
             try {
@@ -71,8 +71,6 @@ const AllSubCategory = () => {
                             <th scope="col">Sr.No.</th>
                             <th scope="col">Category Name</th>
                             <th scope="col">Subcategory Name</th>
-                            <th scope="col">Subcategory Image</th>
-                            <th scope="col">Subcategory Status</th>
                             <th scope="col">Edit</th>
                             <th scope="col">Delete</th>
                         </tr>
@@ -84,8 +82,6 @@ const AllSubCategory = () => {
                                     <th scope="row">{index + 1}</th>
                                     <td>{subcategory?.categoryName?.mainCategoryName}</td>
                                     <td>{subcategory.subcategoryName}</td>
-                                    <td> <img src={`https://api.cakecrazzy.com/${subcategory.subcategoryImage}`} alt={subcategory.subcategoryName} /></td>
-                                    <td>{subcategory.subcategoryStatus}</td>
                                     <td>
                                         <Link to={`/edit-subcategory/${subcategory._id}`} className="bt edit">
                                             Edit <i className="fa-solid fa-pen-to-square"></i>

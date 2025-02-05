@@ -12,7 +12,6 @@ const AddProduct = () => {
         subcategoryName: '',
         productName: '',
         productDescription: '',
-        productSubDescription: '',
         productTag: '',
         Variant: [{
             weight: '',
@@ -29,23 +28,17 @@ const AddProduct = () => {
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
     const [allSubcategories, setAllSubcategories] = useState([]);
-    const [flowers, setFlowers] = useState([]);
     const [weights, setWeights] = useState([]);
-    const [tag, setTag] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const categoryResponse = await axios.get('https://api.cakecrazzy.com/api/get-main-category');
                 const subcategoryResponse = await axios.get('https://api.cakecrazzy.com/api/get-subcategory');
-                const flowerResponse = await axios.get('https://api.cakecrazzy.com/api/get-flover');
                 const weightResponse = await axios.get('https://api.cakecrazzy.com/api/get-size');
-                const tagResponse = await axios.get('https://api.cakecrazzy.com/api/get-tags');
 
                 setCategories(categoryResponse.data.data);
-                setAllSubcategories(subcategoryResponse.data.data); // Keep all subcategories
-                setFlowers(flowerResponse.data.data);
+                setAllSubcategories(subcategoryResponse.data.data);
                 setWeights(weightResponse.data.data);
-                setTag(tagResponse.data.data);
             } catch (error) {
                 console.error('Error fetching data', error);
                 toast.error('Error loading data!');
@@ -131,8 +124,6 @@ const AddProduct = () => {
         form.append('subcategoryName', formData.subcategoryName);
         form.append('productName', formData.productName);
         form.append('productDescription', formData.productDescription);
-        form.append('productSubDescription', formData.productSubDescription);
-        form.append('productTag', formData.productTag);
         form.append('Variant', JSON.stringify(formData.Variant));
 
         // Append images to FormData
@@ -204,28 +195,11 @@ const AddProduct = () => {
                     </div>
 
                     <div className="col-md-12">
-                        <label htmlFor="productSubDescription" className="form-label">Product Sub Description<sup className='text-danger'>*</sup></label>
-                        <textarea name='productSubDescription' rows={2} className="form-control" id="productSubDescription" placeholder='Product Sub Description' value={formData.productSubDescription} onChange={handleChange} required />
-                    </div>
-
-                    <div className="col-md-12">
                         <label htmlFor="productDescription" className="form-label">Product Description<sup className='text-danger'>*</sup></label>
                         <textarea name='productDescription' rows={6} className="form-control" id="productDescription" placeholder='Product Description' value={formData.productDescription} onChange={handleChange} required />
                     </div>
 
-
-
-                    <div className="col-md-4">
-                        <label htmlFor="productTag" className="form-label">Product Tag</label>
-                        <select name='productTag' className="form-select" id="productTag" value={formData.productTag} onChange={handleChange}>
-                            <option value="" selected disabled>Select Tag</option>
-                            {tag.map((item, index) =>
-                                <option key={index} value={item._id}>{item.tagName}</option>
-                            )}
-                        </select>
-                    </div>
-
-                    <div className="col-md-8">
+                    <div className="col-md-12">
                         <label htmlFor="productImage" className="form-label">Product Image<sup className='text-danger'>*</sup></label>
                         <input type="file" name="productImage" className="form-control" id="productImage" multiple onChange={handleFileChange} required />
                     </div>
@@ -235,42 +209,26 @@ const AddProduct = () => {
                         <div key={index} className="variant-container">
 
                             <div className="row">
-                                <div className="col-md-4 mb-1">
-                                    <label htmlFor={`variantWeight-${index}`} className="form-label">Weight</label>
-                                    <select name="weight" className="form-select" id={`variantWeight-${index}`} value={variant.weight} onChange={(e) => handleVariantChange(index, e)} >
+                                <div className="col-md-3 mb-1">
+                                    <label htmlFor={`variantWeight-${index}`} className="form-label">Weight/Sizes<sup className='text-danger'>*</sup></label>
+                                    <select name="weight" className="form-select" id={`variantWeight-${index}`} value={variant.weight} onChange={(e) => handleVariantChange(index, e)} required >
                                         <option value="" selected disabled>Select Weight</option>
                                         {weights.map((weight, i) => (
                                             <option key={i} value={weight._id}>{weight.sizeweight}</option>
                                         ))}
                                     </select>
                                 </div>
-
-                                <div className="col-md-4 mb-1">
-                                    <label htmlFor={`variantFlower-${index}`} className="form-label">Flavours</label>
-                                    <select name="flover" className="form-select" id={`variantFlower-${index}`} value={variant.flover} onChange={(e) => handleVariantChange(index, e)} >
-                                        <option value="" selected disabled>Select Flavours</option>
-                                        {flowers.map((flower, i) => (
-                                            <option key={i} value={flower._id}>{flower.floverName}</option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                {/* <div className="col-md-4">
-                                    <label htmlFor={`variantStock-${index}`} className="form-label">Stock</label>
-                                    <input type="number" name="stock" className="form-control" id={`variantStock-${index}`} placeholder='Stock' value={variant.stock} onChange={(e) => handleVariantChange(index, e)}  />
-                                </div> */}
-
-                                <div className="col-md-4">
+                                <div className="col-md-3">
                                     <label htmlFor={`variantPrice-${index}`} className="form-label">Price<sup className='text-danger'>*</sup></label>
                                     <input type="number" name="price" className="form-control" id={`variantPrice-${index}`} placeholder='Price' value={variant.price} onChange={(e) => handleVariantChange(index, e)} required />
                                 </div>
 
-                                <div className="col-md-4">
+                                <div className="col-md-3">
                                     <label htmlFor={`variantDiscountPrice-${index}`} className="form-label">Discount %<sup className='text-danger'>*</sup></label>
                                     <input type="number" name="discountPrice" className="form-control" id={`variantDiscountPrice-${index}`} placeholder='Discount %' value={variant.discountPrice} onChange={(e) => handleVariantChange(index, e)} required />
                                 </div>
 
-                                <div className="col-md-4">
+                                <div className="col-md-3">
                                     <label htmlFor={`variantFinalPrice-${index}`} className="form-label">Final Price<sup className='text-danger'>*</sup></label>
                                     <input type="number" name="finalPrice" className="form-control" id={`variantFinalPrice-${index}`} placeholder='Final Price' value={variant.finalPrice} readOnly />
                                 </div>

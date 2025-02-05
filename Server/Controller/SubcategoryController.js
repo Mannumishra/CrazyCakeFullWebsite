@@ -1,31 +1,15 @@
-const fs = require('fs');
-const path = require('path');
 const MainCategory = require("../Model/MainCategoryModel");
 const Subcategory = require("../Model/SubcategoryModel");
 
-// Helper function to delete an image file
-const deleteImageFile = (relativeFilePath) => {
-    const absolutePath = path.join(__dirname, "..", relativeFilePath);
-    fs.unlink(absolutePath, (err) => {
-        if (err) {
-            console.error("Failed to delete image:", err);
-        } else {
-            console.log("Image deleted:", absolutePath);
-        }
-    });
-};
 
 // Create a new subcategory
 const createSubcategory = async (req, res) => {
-    const { categoryName, subcategoryName, subcategoryStatus } = req.body;
-    const subcategoryImage = req.file ? req.file.path : null;
+    const { categoryName, subcategoryName } = req.body;
 
     if (!categoryName) {
-        if (subcategoryImage) deleteImageFile(subcategoryImage);
         return res.status(400).json({ success: false, message: "Category Name is required" });
     }
     if (!subcategoryName) {
-        if (subcategoryImage) deleteImageFile(subcategoryImage);
         return res.status(400).json({ success: false, message: "Sub Category Name is required" });
     }
 
@@ -33,7 +17,6 @@ const createSubcategory = async (req, res) => {
         // Check if the category ID is valid
         const validCategory = await MainCategory.findById(categoryName);
         if (!validCategory) {
-            if (subcategoryImage) deleteImageFile(subcategoryImage);
             return res.status(404).json({ success: false, message: "Invalid Category Id" });
         }
 
@@ -47,7 +30,6 @@ const createSubcategory = async (req, res) => {
         });
 
         if (existingSubcategory) {
-            if (subcategoryImage) deleteImageFile(subcategoryImage);
             return res.status(400).json({
                 success: false,
                 message: "Subcategory name already exists in this category"
@@ -57,9 +39,7 @@ const createSubcategory = async (req, res) => {
         // Create the subcategory
         const subcategory = new Subcategory({
             categoryName,
-            subcategoryName: normalizedSubcategoryName, // Store the normalized name
-            subcategoryStatus: subcategoryStatus || "False",
-            subcategoryImage
+            subcategoryName: normalizedSubcategoryName,
         });
 
         await subcategory.save();
@@ -136,14 +116,12 @@ const getSubcategoryByName = async (req, res) => {
 
 // Update a subcategory by ID and delete the old image if a new one is provided
 const updateSubcategory = async (req, res) => {
-    const { categoryName, subcategoryName, subcategoryStatus } = req.body;
-    const subcategoryImage = req.file ? req.file.path : null;
+    const { categoryName, subcategoryName } = req.body;
 
     try {
         const subcategory = await Subcategory.findById(req.params.id);
 
         if (!subcategory) {
-            if (subcategoryImage) deleteImageFile(subcategoryImage);
             return res.status(404).json({ message: "Subcategory not found" });
         }
 
@@ -159,7 +137,6 @@ const updateSubcategory = async (req, res) => {
             });
 
             if (existingSubcategory) {
-                if (subcategoryImage) deleteImageFile(subcategoryImage);
                 return res.status(400).json({
                     success: false,
                     message: "Subcategory name already exists in this category",
@@ -167,16 +144,9 @@ const updateSubcategory = async (req, res) => {
             }
         }
 
-        // If a new image is provided, delete the old image
-        if (subcategoryImage && subcategory.subcategoryImage) {
-            deleteImageFile(subcategory.subcategoryImage);
-        }
-
         // Update the subcategory with new data
         if (categoryName) subcategory.categoryName = categoryName;
         if (subcategoryName) subcategory.subcategoryName = normalizedSubcategoryName;
-        if (subcategoryStatus) subcategory.subcategoryStatus = subcategoryStatus;
-        if (subcategoryImage) subcategory.subcategoryImage = subcategoryImage;
 
         await subcategory.save();
         res.status(200).json({ message: "Subcategory updated successfully", data: subcategory });
@@ -192,16 +162,9 @@ const updateSubcategory = async (req, res) => {
 const deleteSubcategory = async (req, res) => {
     try {
         const subcategory = await Subcategory.findByIdAndDelete(req.params.id);
-
         if (!subcategory) {
             return res.status(404).json({ message: "Subcategory not found" });
         }
-
-        // Delete the image if it exists
-        if (subcategory.subcategoryImage) {
-            deleteImageFile(subcategory.subcategoryImage);
-        }
-
         res.status(200).json({ message: "Subcategory deleted successfully" });
     } catch (error) {
         console.error("Error deleting subcategory:", error);

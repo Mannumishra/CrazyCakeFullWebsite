@@ -14,12 +14,9 @@ const EditProduct = () => {
         subcategoryName: "",
         productName: "",
         productDescription: "",
-        productSubDescription: "",
-        productTag: "",
         Variant: [
             {
                 weight: "",
-                flover: "",
                 price: "",
                 discountPrice: "",
                 finalPrice: "",
@@ -32,9 +29,7 @@ const EditProduct = () => {
     // State to store dynamic data
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
-    const [flowers, setFlowers] = useState([]);
     const [weights, setWeights] = useState([]);
-    const [tag, setTag] = useState([]);
 
 
     // State to store filtered subcategories
@@ -53,20 +48,12 @@ const EditProduct = () => {
                 const subcategoryResponse = await axios.get(
                     "https://api.cakecrazzy.com/api/get-subcategory"
                 );
-                const flowerResponse = await axios.get(
-                    "https://api.cakecrazzy.com/api/get-flover"
-                );
                 const weightResponse = await axios.get(
                     "https://api.cakecrazzy.com/api/get-size"
                 );
-
-                const tagResponse = await axios.get("https://api.cakecrazzy.com/api/get-tags");
-
                 setCategories(categoryResponse.data.data);
                 setSubcategories(subcategoryResponse.data.data);
-                setFlowers(flowerResponse.data.data);
                 setWeights(weightResponse.data.data);
-                setTag(tagResponse.data.data);
 
                 // Fetch product details
                 const productResponse = await axios.get(
@@ -77,7 +64,6 @@ const EditProduct = () => {
                     ...productData,
                     categoryName: productData.categoryName ? productData.categoryName._id : "",
                     subcategoryName: productData.subcategoryName ? productData.subcategoryName._id : "",
-                    productTag: productData.productTag ? productData.productTag._id : "",
                     Variant: productData.Variant || [],
                     productImage: [], // Reset images for new uploads
                 });
@@ -175,8 +161,6 @@ const EditProduct = () => {
         form.append("subcategoryName", formData.subcategoryName);
         form.append("productName", formData.productName);
         form.append("productDescription", formData.productDescription);
-        form.append("productSubDescription", formData.productSubDescription);
-        form.append("productTag", formData.productTag);
 
         // Append variants
         form.append("Variant", JSON.stringify(formData.Variant));
@@ -252,26 +236,8 @@ const EditProduct = () => {
                     </div>
 
                     <div className="col-md-12">
-                        <label htmlFor="productSubDescription" className="form-label">Product Sub Description<sup className="text-danger">*</sup></label>
-                        <textarea name='productSubDescription' rows={2} className="form-control" id="productSubDescription" value={formData.productSubDescription} onChange={handleChange} required />
-                    </div>
-
-                    <div className="col-md-12">
                         <label htmlFor="productDescription" className="form-label">Product Description<sup className="text-danger">*</sup></label>
                         <textarea name='productDescription' rows={6} className="form-control" id="productDescription" value={formData.productDescription} onChange={handleChange} required />
-                    </div>
-
-
-                    <div className="col-md-4">
-                        <label htmlFor="productTag" className="form-label">Product Tag<sup className="text-danger">*</sup></label>
-                        <select name='productTag' className="form-select" id="productTag" value={formData.productTag} onChange={handleChange}>
-                            <option value="" selected disabled>Select Category</option>
-                            {
-                                tag.map((item, index) =>
-                                    <option value={item._id}>{item.tagName}</option>
-                                )
-                            }
-                        </select>
                     </div>
 
                     <div className="col-md-8">
@@ -286,7 +252,7 @@ const EditProduct = () => {
                             <div key={index} className="variant-container">
                                 <div className="row">
                                     <div className="col-md-3 mb-1">
-                                        <label htmlFor={`weight-${index}`} className="form-label">Weight<sup className="text-danger">*</sup></label>
+                                        <label htmlFor={`weight-${index}`} className="form-label">Weight/Sizes<sup className="text-danger">*</sup></label>
                                         <select
                                             name="weight"
                                             className="form-select"
@@ -298,24 +264,6 @@ const EditProduct = () => {
                                             {weights.map((item) => (
                                                 <option key={item._id} value={item._id}>
                                                     {item.sizeweight}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    <div className="col-md-3 mb-1">
-                                        <label htmlFor={`flover-${index}`} className="form-label">Flover<sup className="text-danger">*</sup></label>
-                                        <select
-                                            name="flover"
-                                            className="form-select"
-                                            id={`flover-${index}`}
-                                            value={variant.flover} // Link to the specific variant's flover
-                                            onChange={(e) => handleVariantChange(index, e)}
-                                        >
-                                            <option value="" disabled>Select Flover</option>
-                                            {flowers.map((item) => (
-                                                <option key={item._id} value={item._id}>
-                                                    {item.floverName}
                                                 </option>
                                             ))}
                                         </select>

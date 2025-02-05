@@ -9,8 +9,6 @@ const AddSubCategory = () => {
     const [formData, setFormData] = useState({
         categoryName: '',
         subcategoryName: '',
-        subcategoryStatus: 'False',
-        subcategoryImage: null,
     });
     const [mainCategories, setMainCategories] = useState([]);
     const navigate = useNavigate();
@@ -29,38 +27,19 @@ const AddSubCategory = () => {
     }, []);
 
     const handleChange = (e) => {
-        const { name, value, files } = e.target;
-        if (name === 'subcategoryImage') {
-            setFormData(prevData => ({ ...prevData, subcategoryImage: files[0] }));
-        } else {
-            setFormData(prevData => ({ ...prevData, [name]: value }));
-        }
-    };
-
-    const handleCheckboxChange = () => {
-        setFormData(prevData => ({
-            ...prevData,
-            subcategoryStatus: prevData.subcategoryStatus === 'True' ? 'False' : 'True'
-        }));
+        const { name, value } = e.target;
+        setFormData(prevData => ({ ...prevData, [name]: value }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-
-        const data = new FormData();
-        data.append('categoryName', formData.categoryName);
-        data.append('subcategoryName', formData.subcategoryName);
-        data.append('subcategoryStatus', formData.subcategoryStatus);
-        if (formData.subcategoryImage) data.append('subcategoryImage', formData.subcategoryImage);
-
         try {
-            const response = await axios.post('https://api.cakecrazzy.com/api/create-subcategory', data, {
+            const response = await axios.post('https://api.cakecrazzy.com/api/create-subcategory', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'application/json',
                 }
             });
-
             toast.success(response.data.message);
             navigate('/all-subcategory');
         } catch (error) {
@@ -114,31 +93,6 @@ const AddSubCategory = () => {
                             onChange={handleChange}
                             required
                         />
-                    </div>
-                    <div className="col-md-6">
-                        <label htmlFor="subcategoryImage" className="form-label">Subcategory Image</label>
-                        <input
-                            type="file"
-                            name='subcategoryImage'
-                            className="form-control"
-                            id="subcategoryImage"
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="col-12">
-                        <div className="form-check">
-                            <input
-                                className="form-check-input"
-                                type="checkbox"
-                                name="subcategoryStatus"
-                                id="subcategoryStatus"
-                                checked={formData.subcategoryStatus === 'True'}
-                                onChange={handleCheckboxChange}
-                            />
-                            <label className="form-check-label" htmlFor="subcategoryStatus">
-                                Active
-                            </label>
-                        </div>
                     </div>
                     <div className="col-12 text-center">
                         <button type="submit" disabled={isLoading} className={`${isLoading ? 'not-allowed' : 'allowed'}`}>

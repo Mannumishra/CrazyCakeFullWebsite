@@ -1,28 +1,13 @@
-const fs = require("fs");
-const path = require("path");
 const MainCategory = require("../Model/MainCategoryModel");
-const Subcategory = require("../Model/SubcategoryModel");
-
-
-const deleteImageFile = (relativeFilePath) => {
-    const absolutePath = path.join(__dirname, "..", relativeFilePath);
-    fs.unlink(absolutePath, (err) => {
-        if (err) {
-            console.error("Failed to delete image:", err);
-        } else {
-            console.log("Image deleted:", absolutePath);
-        }
-    });
-};
+const Subcategory = require("../Model/SubcategoryModel");;
 
 const createMainCategory = async (req, res) => {
     try {
-        const { mainCategoryName, mainCategoryStatus } = req.body;
-        const mainCategoryImage = req.file ? req.file.path : null;
+        console.log("I am hit" , req.body)
+        const { mainCategoryName } = req.body;
 
-        if (!mainCategoryName || !mainCategoryImage) {
-            if (mainCategoryImage) deleteImageFile(mainCategoryImage);
-            return res.status(400).json({ message: "Main category name and image are required." });
+        if (!mainCategoryName) {
+            return res.status(400).json({ message: "Main category name are required." });
         }
 
         // Convert input name to lowercase for consistent comparison
@@ -33,14 +18,11 @@ const createMainCategory = async (req, res) => {
             mainCategoryName: { $regex: `^${normalizedCategoryName}$`, $options: "i" },
         });
         if (existingCategory) {
-            if (mainCategoryImage) deleteImageFile(mainCategoryImage);
             return res.status(400).json({ message: "Main category name already exists." });
         }
 
         const newCategory = new MainCategory({
-            mainCategoryName: normalizedCategoryName, // Store the normalized name
-            mainCategoryImage,
-            mainCategoryStatus: mainCategoryStatus || "False",
+            mainCategoryName: normalizedCategoryName,
         });
 
         await newCategory.save();
@@ -56,13 +38,11 @@ const createMainCategory = async (req, res) => {
 const updateMainCategory = async (req, res) => {
     try {
         const { id } = req.params;
-        const { mainCategoryName, mainCategoryStatus } = req.body;
-        const mainCategoryImage = req.file ? req.file.path : null;
+        const { mainCategoryName} = req.body;
 
         // Find the category to update
         const category = await MainCategory.findById(id);
         if (!category) {
-            if (mainCategoryImage) deleteImageFile(mainCategoryImage);
             return res.status(404).json({ message: "Main Category not found" });
         }
 
@@ -75,21 +55,12 @@ const updateMainCategory = async (req, res) => {
             });
 
             if (existingCategory) {
-                if (mainCategoryImage) deleteImageFile(mainCategoryImage);
                 return res.status(400).json({ message: "Main category name already exists." });
             }
 
             // Update the name with the normalized version
             category.mainCategoryName = normalizedCategoryName;
         }
-
-        // Delete old image if a new one is uploaded
-        if (mainCategoryImage && category.mainCategoryImage) {
-            deleteImageFile(category.mainCategoryImage);
-        }
-
-        category.mainCategoryImage = mainCategoryImage || category.mainCategoryImage;
-        category.mainCategoryStatus = mainCategoryStatus || category.mainCategoryStatus;
 
         await category.save();
         res.status(200).json({ message: "Main Category updated successfully", data: category });
@@ -110,11 +81,6 @@ const deleteMainCategory = async (req, res) => {
         const category = await MainCategory.findByIdAndDelete(id);
         if (!category) {
             return res.status(404).json({ message: "Main Category not found" });
-        }
-
-        // Delete the image file from local storage
-        if (category.mainCategoryImage) {
-            deleteImageFile(category.mainCategoryImage);
         }
 
         res.status(200).json({ message: "Main Category deleted successfully" });
@@ -203,7 +169,6 @@ const getCategoriesWithSubcategories = async (req, res) => {
             const categoryWithSubcategories = {
                 _id: category._id,  // Retain the category _id
                 mainCategoryName: category.mainCategoryName,  // Retain the category name
-                mainCategoryImage: category.mainCategoryImage,  // Retain the category image
                 subcategories: transformedSubcategories,  // Add the transformed subcategories array
             };
 

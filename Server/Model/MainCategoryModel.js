@@ -5,14 +5,6 @@ const MainCategorySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    mainCategoryImage: {
-        type: String,
-        required: true
-    },
-    mainCategoryStatus: {
-        type: String,
-        default: "False"
-    },
     subcategoryExit: {
         type: Boolean,
         default: false
