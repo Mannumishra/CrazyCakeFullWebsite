@@ -133,7 +133,7 @@ const AddProduct = () => {
         }
 
         try {
-            await axios.post('http://localhost:8000/api/create-product', form, {
+            await axios.post('https://api.cakecrazzy.com/api/create-product', form, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
