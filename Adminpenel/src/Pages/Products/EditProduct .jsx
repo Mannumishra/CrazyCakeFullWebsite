@@ -1,12 +1,14 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import JoditEditor from 'jodit-react';
 
 const EditProduct = () => {
     const { id } = useParams(); // Get product ID from URL
     const navigate = useNavigate()
+    const editor = useRef(null);
     console.log(id);
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -100,6 +102,11 @@ const EditProduct = () => {
             ...formData,
             productImage: e.target.files,
         });
+    };
+
+     // Update formData when editor content changes
+     const handleEditorChange = (newContent) => {
+        setFormData({ ...formData, productDescription: newContent });
     };
 
     // Handle variant change
@@ -237,7 +244,13 @@ const EditProduct = () => {
 
                     <div className="col-md-12">
                         <label htmlFor="productDescription" className="form-label">Product Description<sup className="text-danger">*</sup></label>
-                        <textarea name='productDescription' rows={6} className="form-control" id="productDescription" value={formData.productDescription} onChange={handleChange} required />
+                        {/* <textarea name='productDescription' rows={6} className="form-control" id="productDescription" value={formData.productDescription} onChange={handleChange} required /> */}
+                        <JoditEditor
+                            ref={editor}
+                            value={formData.productDescription}
+                            onChange={handleEditorChange}
+                            placeholder="Enter Product Description here..."
+                        />
                     </div>
 
                     <div className="col-md-8">

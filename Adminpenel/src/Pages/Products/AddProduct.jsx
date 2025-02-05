@@ -1,25 +1,24 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import JoditEditor from 'jodit-react';
 
 const AddProduct = () => {
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false);
+    const editor = useRef(null);
     const [formData, setFormData] = useState({
         categoryName: '',
         subcategoryName: '',
         productName: '',
         productDescription: '',
-        productTag: '',
         Variant: [{
             weight: '',
-            flover: '',
             price: '',
             discountPrice: '',
             finalPrice: '',
-            stock: '',
         }],
         productImage: [],
     });
@@ -72,6 +71,11 @@ const AddProduct = () => {
         });
     };
 
+    // Update formData when editor content changes
+    const handleEditorChange = (newContent) => {
+        setFormData({ ...formData, productDescription: newContent });
+    };
+
     const handleVariantChange = (index, e) => {
         const { name, value } = e.target;
         const updatedVariants = [...formData.Variant];
@@ -96,13 +100,10 @@ const AddProduct = () => {
             Variant: [
                 ...formData.Variant,
                 {
-                    color: '',
                     weight: '',
-                    flover: '',
                     price: '',
                     discountPrice: '',
                     finalPrice: '',
-                    stock: '',
                 }
             ],
         });
@@ -132,7 +133,7 @@ const AddProduct = () => {
         }
 
         try {
-            await axios.post('https://api.cakecrazzy.com/api/create-product', form, {
+            await axios.post('http://localhost:8000/api/create-product', form, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -196,7 +197,13 @@ const AddProduct = () => {
 
                     <div className="col-md-12">
                         <label htmlFor="productDescription" className="form-label">Product Description<sup className='text-danger'>*</sup></label>
-                        <textarea name='productDescription' rows={6} className="form-control" id="productDescription" placeholder='Product Description' value={formData.productDescription} onChange={handleChange} required />
+                        {/* <textarea name='productDescription' rows={6} className="form-control" id="productDescription" placeholder='Product Description' value={formData.productDescription} onChange={handleChange} required /> */}
+                        <JoditEditor
+                            ref={editor}
+                            value={formData.productDescription}
+                            onChange={handleEditorChange}
+                            placeholder="Enter Product Description here..."
+                        />
                     </div>
 
                     <div className="col-md-12">
