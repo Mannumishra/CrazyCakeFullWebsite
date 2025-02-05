@@ -294,7 +294,7 @@ const ProductDetails = () => {
                   <div className="descrip">
                     <b>Description:</b>
                     <hr />
-                    <p>{data.productDescription}</p>
+                    <div dangerouslySetInnerHTML={{ __html: data.productDescription }} />
                   </div>
                 </div>
               </div>

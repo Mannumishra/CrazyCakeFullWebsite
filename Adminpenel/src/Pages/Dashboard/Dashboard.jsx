@@ -204,16 +204,6 @@ const Dashboard = () => {
           </Link>
         </div>
 
-        <div className="dashboard-card">
-          <Link to="/all-flower">
-            <i className="fa-solid fa-seedling"></i>
-            <h3>Manage Flower</h3>
-            <p>Manage flower products for your store</p>
-            <p>{flowers.length} Flavours</p>
-            {/* Display flowers data */}
-            {/* <pre>{JSON.stringify(flowers, null, 2)}</pre> */}
-          </Link>
-        </div>
 
         <div className="dashboard-card">
           <Link to="/all-products">
@@ -223,17 +213,6 @@ const Dashboard = () => {
             <p>{products.length} Products</p>
             {/* Display products data */}
             {/* <pre>{JSON.stringify(products, null, 2)}</pre> */}
-          </Link>
-        </div>
-
-        <div className="dashboard-card">
-          <Link to="/all-tags">
-            <i className="fa-solid fa-tag"></i>
-            <h3>Manage Tags</h3>
-            <p>Create and update product tags</p>
-            <p>{tags.length} Tags</p>
-            {/* Display tags data */}
-            {/* <pre>{JSON.stringify(tags, null, 2)}</pre> */}
           </Link>
         </div>
 
