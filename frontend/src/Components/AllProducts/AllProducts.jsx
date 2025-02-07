@@ -95,8 +95,9 @@ const AllProducts = () => {
                   </div>
                   <h3 className="product-title">{product.productName}</h3>
                   <p className="d-flex gap-2 align-items-center">
-                    <span className="product-main-price"> {product.Variant[0].finalPrice}</span>
-                    <span className="discount-price">₹ <del>{product.Variant[0].price}</del>{product.Variant[0].discountPrice}% OFF</span>
+                    <span className="product-main-price">{product.Variant[0].finalPrice.toFixed(2)}
+                    </span>
+                    <span className="discount-price">₹ <del>{product.Variant[0].price}</del> &nbsp; {product.Variant[0].discountPrice}% OFF</span>
                   </p>
                   <Link to={`/product-details/${product.productName}`} className="order-button">Buy Now</Link>
                 </div>
