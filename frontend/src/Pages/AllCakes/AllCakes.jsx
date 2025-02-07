@@ -88,8 +88,8 @@ const AllCakes = () => {
                         <div className="productDetails">
                           <p className="productTitle">{item.productName}</p>
                           <p className="d-flex gap-2 align-items-center m-0">
-                            <span className="productPrice">₹{item.Variant[0].finalPrice}</span>
-                            <span className="discount-price">₹ <del>375</del> 20% OFF</span>
+                            <span className="productPrice">₹{item.Variant[0].finalPrice.toFixed(2)}</span>
+                            <span className="discount-price">₹ <del>{item.Variant[0].price}</del> &nbsp; {item.Variant[0].discountPrice}% OFF</span>
                           </p>
                         </div>
                       </Link>
