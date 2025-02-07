@@ -84,8 +84,9 @@
   }
   
   .productTitle{
-    color: var(--color-pink);
-    font-size: 14px;
+    color: black;
+    font-size: 12px;
+    font-weight: 500;
     text-decoration: none;
   }
 

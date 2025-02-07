@@ -1,5 +1,6 @@
 .allproducts {
-  margin: 50px 0;
+  margin-top: 20px;
+  margin-bottom: 0;
   overflow: hidden; /* Prevent overflow */
   box-sizing: border-box; /* Ensure the padding doesn't cause overflow */
 }
@@ -25,8 +26,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
-  box-sizing: border-box; /* Prevent overflow */
+  /* height: 100%; */
+  box-sizing: border-box;
+  max-width: 19%;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
 }
 
 .product-card:hover {
@@ -40,20 +43,18 @@
 }
 
 .product-image img {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
+  width: 100%;
+  height: 250px;
   object-fit: cover;
+  border-radius: 10px;
 }
 
 .product-title {
-  font-size: 22px;
-  font-weight: bold;
-  color: var(--color-pink);
-  font-family: var(--font-family-design);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: poppins;
   margin-top: 15px;
   margin-bottom: 10px;
-  text-align: center;
 }
 
 .product-description {
@@ -67,18 +68,17 @@
 
 .order-button {
   display: block;
-  padding: 12px 30px;
+  padding: 5px 30px;
   background-color: #f92c8b;
   color: white;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 14px;
   text-align: center;
   text-decoration: none;
   border-radius: 50px;
-  margin-top: auto; /* Ensure button is at the bottom */
+  margin-top: auto;
   transition: background-color 0.3s ease;
-  width: 100%;
-  max-width: 250px; /* Ensure the button doesn't stretch too wide */
+  width: fit-content;
+  max-width: 250px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -114,15 +114,56 @@
 .product-main-category{
   display: flex;
   flex-wrap: wrap;
+  gap: 10px;
 }
 
+.discount-price{
+  gap: 10px;
+  color: green;
+  font-size: 12px;
+}
+
+.product-main-price{
+  font-weight: 500;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.prev-btn, .next-btn {
+  background-color: var(--color-pink);
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.prev-btn:hover, .next-btn:hover {
+  background-color: #cc5200;
+}
+
+
+
 @media (max-width: 768px) {
+  .allproducts{
+    margin-top: 20px;
+    margin-bottom: 0 !important;
+  }
+  .product-card{
+    max-width: 48%;
+  }
   .featured-menu-title {
     font-size: 28px;
   }
 
   .product-title {
-    font-size: 18px;
+    font-size: 12px;
   }
 
   .product-description {

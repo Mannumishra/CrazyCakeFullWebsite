@@ -87,7 +87,10 @@ const AllCakes = () => {
                         <img src={`https://api.cakecrazzy.com/${item.productImage[0]}`} className="w-100" alt="images" />
                         <div className="productDetails">
                           <p className="productTitle">{item.productName}</p>
-                          <p className="productPrice">Price : ₹{item.Variant[0].finalPrice}</p>
+                          <p className="d-flex gap-2 align-items-center m-0">
+                            <span className="productPrice">₹{item.Variant[0].finalPrice}</span>
+                            <span className="discount-price">₹ <del>375</del> 20% OFF</span>
+                          </p>
                         </div>
                       </Link>
                     </div>

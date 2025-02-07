@@ -243,7 +243,7 @@ const ProductDetails = () => {
                     />
                   </div>
 
-                  {
+                  {/* {
                     data?.categoryName?.mainCategoryName === "cake" ? <div className="mt-3">
                       <label htmlFor="withEgg" className="custom-radio">
                         <input
@@ -268,7 +268,7 @@ const ProductDetails = () => {
                         Eggless
                       </label>
                     </div> : null
-                  }
+                  } */}
 
                 </div>
 

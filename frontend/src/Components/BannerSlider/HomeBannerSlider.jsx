@@ -37,7 +37,7 @@ const HomeBannerSlider = () => {
   };
 
   return (
-    <div className="container-fluid px-0 position-relative">
+    <div className="container-fluid px-0 position-relative" style={{ zIndex: -1 }}>
       <div className="slider-container">
         <Slider {...settings}>
           {data.map((banner) => (

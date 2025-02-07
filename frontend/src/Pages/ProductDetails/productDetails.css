@@ -2,15 +2,16 @@
   width: 100px;
 }
 
+.miniImage li a img {
+  width: 150px;
+  height: 100px;
+  margin-top: 1rem;
+}
+
 .miniImage {
   padding: 0;
   list-style-type: none;
-  bottom: 50px;
-  display: grid !important;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  justify-content: space-between;
+  display: flex !important;
   gap: 10px;
 }
 
@@ -135,7 +136,7 @@
 
 .productImageMain{
   height: 500px;
-  width: 400px;
+  width: 100%;
 }
 
 .productImage{
@@ -145,6 +146,11 @@
 
 
 @media only screen and (max-width:768px) {
+  .miniImage li a img {
+    /* width: 150px; */
+    height: 80px;
+    margin-top: 0;
+  }
   .miniImage {
     display: flex !important;
     position: unset;
@@ -156,9 +162,10 @@
 }
 
 .productImageMain {
-  height: 350px;
-  width: 335px;
-  object-fit: contain;
+  height: auto;
+  width: 100%;
+  object-fit:fill;
+  margin-bottom: 1rem;
 }
 
 }
